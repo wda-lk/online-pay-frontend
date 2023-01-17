@@ -1,0 +1,74 @@
+<div class="container">
+
+    <mat-tab-group>
+        <mat-tab label="Complain">
+
+    <mat-card class="example-card" class="col-md-12">
+        <mat-card-header>
+            <mat-card-title>Complains</mat-card-title>
+            <mat-card-subtitle>Type here youre complain
+            </mat-card-subtitle>
+        </mat-card-header>
+        <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+        <mat-card-content>
+
+            <!-- <mat-form-field class="col-md-12">
+                <input matInput type="text" id="name" name="name" required placeholder="නම (Name)" 
+                    [(ngModel)]="cusname" />
+            </mat-form-field>
+            <br>
+            <mat-form-field class="col-md-12">
+                <input matInput type="text" id="tellno" name="tellno" required placeholder="දුරකතන අංකය (Mobile Number)"
+                    [(ngModel)]="mobno" />
+            </mat-form-field> -->
+            <br>
+            <mat-form-field class="col-md-12">
+                <!-- <input matInput type="text" id="compl" name="compl" required placeholder="පැමිණිල්ල (Complain)" [(ngModel)]="compla" /> -->
+                <textarea matInput type="text" id="compl" name="compl" placeholder="පැමිණිල්ල (Complain)" [(ngModel)]="compla"></textarea>
+            </mat-form-field>
+            <br>
+
+            <mat-card-actions align="right">
+                <button mat-raised-button type="submit" (click)="savecomplain()" color="primary" type="submit">Submit</button>
+            </mat-card-actions>
+        </mat-card-content>
+    </mat-card>
+
+</mat-tab>
+
+<mat-tab label="Submitted Complains"> 
+    
+        <mat-card>
+                <mat-card-title>
+                       Youre Submitted Complains
+                </mat-card-title>
+                <mat-card-content>
+                    <table class="table table-hover">
+                        <thead class="text-info">
+                            <th>ID</th>
+                            <th>Date </th>
+                            <th>Complain</th>
+                            <!-- <th>more</th> -->
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of com_list;">
+                                <td><label>{{item.online_complain_id}}</label> </td>
+                                <td><label>{{item.online_complain_date | date:'yyyy / MM / dd'}}</label> </td>
+                                <td><label>{{item.online_complains}}</label> </td>
+                                <!-- <td><span class="material-icons"
+                                        (click)="moreinfo(item.g_detail_id)">read_more</span> </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br>
+                    <hr>
+   
+                </mat-card-content>
+            </mat-card>
+
+</mat-tab>
+
+</mat-tab-group>
+
+    
+</div>
