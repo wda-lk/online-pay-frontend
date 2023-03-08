@@ -1,1 +1,1 @@
- export const ip = 'http://localhost:3001/online/';
+export const ip = "https://kurunegalamcapi.cat2020.org/online/";
