@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8254933b-7c97-477f-bcda-7c0626a978c3" name="Changes" comment="Fix return not working after payment">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectId" id="2Kfb7GEGsnml4DoorwmlmJt41yG" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/yohanediriweera/Code/WDA/online-pay-frontend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.protractor.protractor_package": "/Users/yohanediriweera/Code/WDA/online-pay-frontend/node_modules/protractor",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "ts.external.directory.path": "/Users/yohanediriweera/Code/WDA/online-pay-frontend/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dist/WEB" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8254933b-7c97-477f-bcda-7c0626a978c3" name="Changes" comment="" />
+      <created>1674368414866</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1674368414866</updated>
+      <workItem from="1674368416035" duration="10322000" />
+      <workItem from="1674465899607" duration="315000" />
+      <workItem from="1674617599199" duration="15108000" />
+      <workItem from="1676951397750" duration="1612000" />
+      <workItem from="1677558485800" duration="11789000" />
+      <workItem from="1677818444979" duration="11611000" />
+      <workItem from="1678160349066" duration="1545000" />
+      <workItem from="1678249734834" duration="1149000" />
+      <workItem from="1678419391841" duration="2218000" />
+      <workItem from="1678697362102" duration="112000" />
+      <workItem from="1678697490349" duration="1059000" />
+      <workItem from="1678767862891" duration="2160000" />
+    </task>
+    <task id="LOCAL-00001" summary="Add redirect results">
+      <created>1674390078074</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1674390078074</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Change urls">
+      <created>1674447546368</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1674447546368</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Format file">
+      <created>1674635990847</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1674635990847</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Format file">
+      <created>1674636066601</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1674636066601</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Change gully response control">
+      <created>1674636485015</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1674636485015</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Format file">
+      <created>1674636552563</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1674636552563</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Setup app for localhost support">
+      <created>1674707732649</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1674707732649</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Turn gateway to production">
+      <created>1677830634994</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1677830634994</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Setup payment gateway to production">
+      <created>1678259293442</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1678259293442</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Fix return not working after payment">
+      <created>1678421652858</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1678421652858</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="angular.json" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/.." />
+    </ignored-roots>
+    <MESSAGE value="Add redirect results" />
+    <MESSAGE value="Change urls" />
+    <MESSAGE value="Change gully response control" />
+    <MESSAGE value="Format file" />
+    <MESSAGE value="Setup app for localhost support" />
+    <MESSAGE value="Turn gateway to production" />
+    <MESSAGE value="Setup payment gateway to production" />
+    <MESSAGE value="Fix return not working after payment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix return not working after payment" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/src/app/online/payassess/payassess.component.ts</url>
+          <line>153</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
