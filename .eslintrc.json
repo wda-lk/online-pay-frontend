@@ -1,3 +1,28 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": [
+    "@atlaskit/design-system"
+  ],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@atlaskit/design-system/recommended"
+  ],
+  "rules": {
+    "@atlaskit/design-system/ensure-design-token-usage": [
+      "error",
+      {
+        "shouldEnsureFallbackUsage": true
+      }
+    ],
+    "@atlaskit/design-system/ensure-design-token-usage-spacing": "error",
+    "@atlaskit/design-system/no-deprecated-design-token-usage": "warn",
+    "@atlaskit/design-system/no-unsafe-design-token-usage": [
+      "error",
+      {
+        "shouldEnsureFallbackUsage": true
+      }
+    ],
+    "@atlaskit/design-system/use-visually-hidden": "error",
+    "@atlaskit/design-system/no-deprecated-imports": "error",
+    "@atlaskit/design-system/no-deprecated-apis": "error"
+  }
 }

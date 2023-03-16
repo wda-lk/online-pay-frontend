@@ -1,5 +1,6 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import "@atlaskit/css-reset/dist/bundle.css"
+import "@/styles/globals.css"
+import type { AppProps } from "next/app"
 
 export default function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />
