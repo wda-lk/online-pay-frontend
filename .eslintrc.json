@@ -23,6 +23,21 @@
     ],
     "@atlaskit/design-system/use-visually-hidden": "error",
     "@atlaskit/design-system/no-deprecated-imports": "error",
-    "@atlaskit/design-system/no-deprecated-apis": "error"
+    "@atlaskit/design-system/no-deprecated-apis": "error",
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": [
+          "none",
+          "all",
+          "multiple",
+          "single"
+        ],
+        "allowSeparatedGroups": false
+      }
+    ]
   }
 }
