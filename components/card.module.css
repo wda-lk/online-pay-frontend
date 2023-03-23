@@ -8,7 +8,7 @@
 	border-radius: 4px;
 }
 
-.header-logo {
+.headerLogo {
 	margin: auto auto 12px;
 }
 
@@ -20,11 +20,11 @@
 	align-items: center;
 }
 
-.footer-logo {
+.footerLogo {
 	margin: auto;
 }
 
-.footer-text {
+.footerText {
 	margin-top: 8px;
 	text-align: center;
 }
