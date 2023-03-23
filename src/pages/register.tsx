@@ -10,19 +10,13 @@ import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../components/card"
 import LoadingButton from "@atlaskit/button/loading-button"
 import TextField from "@atlaskit/textfield"
+import utilStyles from "../../styles/utils.module.css"
 
 
 export default class RegistrationPage extends Component<{}> {
   render() {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center"
-        }}
-      >
+      <div className={utilStyles.fullHeightContainer}>
         <Card
           content={
             <Form
