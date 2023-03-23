@@ -1,20 +1,17 @@
-import { N30A, N800 } from "@atlaskit/theme/colors"
+import { N30A, N700, N800 } from "@atlaskit/theme/colors"
 import Image from "next/image"
 import React from "react"
-import { ReactElement } from "react"
+import { ReactNode } from "react"
+import logoDefault from "../public/logo/cat2020-default.svg"
+import logoNeutral from "../public/logo/cat2020-compact-neutral.svg"
 import { token } from "@atlaskit/tokens"
 
 
-export interface CardProps {
-  logo: {
-    url: string,
-    alt: string
-  }
-  content: ReactElement
-  footer: ReactElement
+type CardProps = {
+  content: ReactNode
 }
 
-export default function UserFormCard({ logo, content, footer }: CardProps) {
+export default function Card(props: CardProps) {
   return (
     <div
       style={{
@@ -34,14 +31,14 @@ export default function UserFormCard({ logo, content, footer }: CardProps) {
       }}
     >
       <Image
-        src={logo.url}
-        alt="{logo.alt}"
+        src={logoDefault}
+        alt="Cat2020 logo"
         style={{
           margin: "auto",
           marginBottom: "12px"
         }}
       />
-      {content}
+      {props.content}
       <div
         style={{
           marginTop: "24px",
@@ -52,7 +49,23 @@ export default function UserFormCard({ logo, content, footer }: CardProps) {
           alignItems: "center"
         }}
       >
-        {footer}
+        <Image
+          src={logoNeutral}
+          alt="Cat2020 Neutral logo"
+          style={{
+            margin: "auto"
+          }}
+        />
+        <div style={{
+          marginTop: "8px",
+          textAlign: "center",
+          color: token("color.text.success", N700)
+        }}
+        >
+          © 2023 CAT2020
+          <br/>
+          Wayamba Development Authority
+        </div>
       </div>
     </div>
   )

@@ -4,17 +4,17 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/register',
-        permanent: true,
+        source: "/",
+        destination: "/login",
+        permanent: true
       },
       {
-        source: '/index',
-        destination: '/register',
-        permanent: true,
-      },
+        source: "/index",
+        destination: "/login",
+        permanent: true
+      }
     ]
-  },
+  }
 }
 
 module.exports = nextConfig

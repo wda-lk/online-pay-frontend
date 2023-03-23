@@ -12,7 +12,7 @@ import LoadingButton from "@atlaskit/button/loading-button"
 import TextField from "@atlaskit/textfield"
 
 
-export default class RegistrationPage extends Component<{}> {
+export default class LoginPage extends Component<{}> {
   render() {
     return (
       <div
@@ -38,48 +38,14 @@ export default class RegistrationPage extends Component<{}> {
               {({ formProps, submitting }) => (
                 <form {...formProps}>
                   <FormHeader
-                    title="Create an Account"
+                    title="Login to an Account"
                     description="* indicates a required field"
                   />
-                  <FormSection>
-                    <Field
-                      label="NIC Number"
-                      name="nicNumber"
-                      isRequired
-                    >
-                      {({ fieldProps }: any) => (
-                        <>
-                          <TextField {...fieldProps}/>
-                        </>
-                      )}
-                    </Field>
-                    <Field
-                      label="Name (with initials)"
-                      name="name"
-                      isRequired
-                    >
-                      {({ fieldProps }: any) => (
-                        <>
-                          <TextField {...fieldProps}/>
-                        </>
-                      )}
-                    </Field>
-                  </FormSection>
                   <FormSection>
                     <Field
                       label="Mobile Number"
                       name="mobile"
                       isRequired
-                    >
-                      {({ fieldProps }: any) => (
-                        <>
-                          <TextField {...fieldProps}/>
-                        </>
-                      )}
-                    </Field>
-                    <Field
-                      label="Email"
-                      name="email"
                     >
                       {({ fieldProps }: any) => (
                         <>
@@ -98,27 +64,17 @@ export default class RegistrationPage extends Component<{}> {
                         </>
                       )}
                     </Field>
-                    <Field
-                      label="Confirm Password"
-                      name="passwordConfirmation"
-                      isRequired
-                    >
-                      {({ fieldProps }: any) => (
-                        <>
-                          <TextField {...fieldProps}/>
-                        </>
-                      )}
-                    </Field>
                   </FormSection>
                   <FormFooter>
                     <ButtonGroup>
-                      <Button appearance="link">Already have an account? Log in</Button>
+                      <Button appearance="link">Forgot Password?</Button>
+                      <Button appearance="link">Create an account</Button>
                       <LoadingButton
                         type="submit"
                         appearance="primary"
                         isLoading={submitting}
                       >
-                        Create
+                        Login
                       </LoadingButton>
                     </ButtonGroup>
                   </FormFooter>
