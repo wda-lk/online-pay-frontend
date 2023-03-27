@@ -7,14 +7,14 @@ import Form, {
 import React, { Component } from "react"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
-import Card from "../../components/card"
+import Card from "../../../components/card"
 import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import TextField from "@atlaskit/textfield"
-import styles from "./login.module.css"
+import styles from "./index.module.css"
 import { token } from "@atlaskit/tokens"
-import utilStyles from "../../styles/utils.module.css"
+import utilStyles from "../../../styles/utils.module.css"
 
 
 export default class LoginPage extends Component<{}> {
@@ -66,7 +66,7 @@ export default class LoginPage extends Component<{}> {
                   <FormFooter>
                     <ButtonGroup>
                       <div className={styles.buttonGroupInternal}>
-                        <Button appearance="link">Forgot Password?</Button>
+                        <Button appearance="link">Can&apos;t log in?</Button>
                         <HipchatMediaAttachmentCountIcon
                           primaryColor={token("color.icon.disabled", N400A)}
                           size="small"

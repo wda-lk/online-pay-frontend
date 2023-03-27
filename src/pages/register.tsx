@@ -43,7 +43,7 @@ export default class RegistrationPage extends Component<{}> {
                     >
                       {({ fieldProps }: any) => (
                         <>
-                          <TextField {...fieldProps}/>
+                          <TextField {...fieldProps} maxLength={12}/>
                         </>
                       )}
                     </Field>
@@ -67,7 +67,7 @@ export default class RegistrationPage extends Component<{}> {
                     >
                       {({ fieldProps }: any) => (
                         <>
-                          <TextField {...fieldProps}/>
+                          <TextField {...fieldProps} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"/>
                         </>
                       )}
                     </Field>
