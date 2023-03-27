@@ -8,7 +8,6 @@ import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../components/card"
 import LoadingButton from "@atlaskit/button/loading-button"
-import Test from "../../components/test"
 import TextField from "@atlaskit/textfield"
 import utilStyles from "../../styles/utils.module.css"
 
@@ -41,9 +40,10 @@ export default function RegistrationPage() {
                     isRequired
                   >
                     {({ fieldProps }: any) => (
-                      <>
-                        <TextField {...fieldProps} maxLength={12}/>
-                      </>
+                      <TextField
+                        {...fieldProps}
+                        maxLength={12}
+                      />
                     )}
                   </Field>
                   <Field
@@ -52,9 +52,7 @@ export default function RegistrationPage() {
                     isRequired
                   >
                     {({ fieldProps }: any) => (
-                      <>
-                        <TextField {...fieldProps}/>
-                      </>
+                      <TextField {...fieldProps}/>
                     )}
                   </Field>
                 </FormSection>
@@ -65,14 +63,7 @@ export default function RegistrationPage() {
                     isRequired
                   >
                     {({ fieldProps }: any) => (
-                      <>
-                        <TextField
-                          {...fieldProps}
-                          elemBeforeInput={
-                            <Test/>
-                          }
-                        />
-                      </>
+                      <TextField {...fieldProps}/>
                     )}
                   </Field>
                   <Field
@@ -80,9 +71,7 @@ export default function RegistrationPage() {
                     name="email"
                   >
                     {({ fieldProps }: any) => (
-                      <>
-                        <TextField {...fieldProps}/>
-                      </>
+                      <TextField {...fieldProps}/>
                     )}
                   </Field>
                   <Field
@@ -91,9 +80,7 @@ export default function RegistrationPage() {
                     isRequired
                   >
                     {({ fieldProps }: any) => (
-                      <>
-                        <TextField {...fieldProps}/>
-                      </>
+                      <TextField {...fieldProps}/>
                     )}
                   </Field>
                   <Field
@@ -102,9 +89,7 @@ export default function RegistrationPage() {
                     isRequired
                   >
                     {({ fieldProps }: any) => (
-                      <>
-                        <TextField {...fieldProps}/>
-                      </>
+                      <TextField {...fieldProps}/>
                     )}
                   </Field>
                 </FormSection>
