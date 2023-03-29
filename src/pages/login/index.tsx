@@ -1,4 +1,5 @@
 import Form, {
+  ErrorMessage,
   Field,
   FormFooter,
   FormHeader,
@@ -11,26 +12,41 @@ import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import TextField from "@atlaskit/textfield"
+import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
+import WatchIcon from "@atlaskit/icon/glyph/watch"
 import styles from "./index.module.css"
 import { token } from "@atlaskit/tokens"
+import { useState } from "react"
+import { users } from "../../../lib/users"
 import utilStyles from "../../../styles/utils.module.css"
 
 
 export default function LoginPage() {
+  const [passwordVisible, setPasswordVisibility] = useState(false)
+
+  const handleSubmit = (data: { mobileNumber: string; password: string; }) => {
+    let existingUser = users.find(e => e.mobileNumber === data.mobileNumber)
+    if (!existingUser) {
+      return {
+        mobileNumber: "Mobile number is not registered. Please try another one."
+      }
+    }
+    const errors = {
+      password: existingUser.password !== data.password
+                ? "Passwords is incorrect. Please double check."
+                : undefined
+    }
+    if (!errors.password) {
+      console.log(data)
+    }
+    return errors
+  }
+
   return (
     <div className={utilStyles.fullHeightContainer}>
       <Card
         content={
-          <Form
-            <{ username: string; password: string; remember: boolean }>
-            onSubmit={(data) => {
-              console.log("form data", data)
-              return new Promise(
-                (resolve) => setTimeout(resolve, 2000)
-              ).then(() => data.username === "error" ? { username: "IN_USE" } : undefined
-              )
-            }}
-          >
+          <Form onSubmit={handleSubmit}>
             {({ formProps, submitting }) => (
               <form {...formProps}>
                 <FormHeader
@@ -39,24 +55,54 @@ export default function LoginPage() {
                 />
                 <FormSection>
                   <Field
+                    name="mobileNumber"
                     label="Mobile Number"
-                    name="mobile"
+                    defaultValue=""
                     isRequired
                   >
-                    {({ fieldProps }: any) => (
+                    {({ fieldProps, error }) => (
                       <>
-                        <TextField {...fieldProps}/>
+                        <TextField
+                          {...fieldProps}
+                          maxLength={10}
+                        />
+                        {error && (
+                          <ErrorMessage>
+                            {error}
+                          </ErrorMessage>
+                        )}
                       </>
                     )}
                   </Field>
                   <Field
-                    label="Password"
                     name="password"
+                    label="Password"
+                    defaultValue=""
                     isRequired
                   >
-                    {({ fieldProps }: any) => (
+                    {({ fieldProps, error }) => (
                       <>
-                        <TextField {...fieldProps}/>
+                        <TextField
+                          {...fieldProps}
+                          elemAfterInput={
+                            <Button
+                              iconBefore={
+                                passwordVisible
+                                ? <WatchFilledIcon label="Toggle Password" size="medium"/>
+                                : <WatchIcon label="Toggle Password" size="medium"/>
+                              }
+                              appearance="subtle-link"
+                              spacing="compact"
+                              onClick={() => setPasswordVisibility(!passwordVisible)}
+                            />
+                          }
+                          type={passwordVisible ? "text" : "password"}
+                        />
+                        {error && (
+                          <ErrorMessage>
+                            {error}
+                          </ErrorMessage>
+                        )}
                       </>
                     )}
                   </Field>

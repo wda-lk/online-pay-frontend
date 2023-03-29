@@ -25,13 +25,13 @@ export default function RegistrationPage() {
   const handleSubmit = (data: { nicNumber: string; password: string; confirmPassword: string }) => {
     const errors = {
       nicNumber: users.some(e => e.nic === data.nicNumber)
-                 ? "User NIC is already taken. Try another one."
+                 ? "NIC is already taken. Please try another one."
                  : undefined,
       confirmPassword: data.password !== data.confirmPassword
                        ? "Passwords doesn't match. Please double check."
                        : undefined
     }
-    if (!errors.nicNumber) {
+    if (!errors.nicNumber && !errors.confirmPassword) {
       console.log(data)
     }
     return errors
@@ -102,23 +102,21 @@ export default function RegistrationPage() {
                       value && !value.includes("@") ? "INVALID" : undefined
                     }
                   >
-                    {({ fieldProps, error, valid }) => {
-                      return (
-                        <>
-                          <TextField {...fieldProps}/>
-                          {error && !valid && (
-                            <HelperMessage>
-                              Enter a valid Email which includes a `@` character
-                            </HelperMessage>
-                          )}
-                          {error && (
-                            <ErrorMessage>
-                              Your email is not valid.
-                            </ErrorMessage>
-                          )}
-                        </>
-                      )
-                    }}
+                    {({ fieldProps, error, valid }) => (
+                      <>
+                        <TextField {...fieldProps}/>
+                        {error && !valid && (
+                          <HelperMessage>
+                            Enter a valid Email which includes a `@` character
+                          </HelperMessage>
+                        )}
+                        {error && (
+                          <ErrorMessage>
+                            Your email is not valid.
+                          </ErrorMessage>
+                        )}
+                      </>
+                    )}
                   </Field>
                   <Field
                     name="password"
@@ -129,38 +127,36 @@ export default function RegistrationPage() {
                       value && value.length < 6 ? "INVALID" : undefined
                     }
                   >
-                    {({ fieldProps, error, valid }) => {
-                      return (
-                        <>
-                          <TextField
-                            {...fieldProps}
-                            elemAfterInput={
-                              <Button
-                                iconBefore={
-                                  passwordVisible
-                                  ? <WatchFilledIcon label="Toggle Password" size="medium"/>
-                                  : <WatchIcon label="Toggle Password" size="medium"/>
-                                }
-                                appearance="subtle-link"
-                                spacing="compact"
-                                onClick={() => setPasswordVisibility(!passwordVisible)}
-                              />
-                            }
-                            type={passwordVisible ? "text" : "password"}
-                          />
-                          {error && !valid && (
-                            <HelperMessage>
-                              Use 6 or more characters with a mix of letters, numbers and symbols.
-                            </HelperMessage>
-                          )}
-                          {error && (
-                            <ErrorMessage>
-                              Password needs to have more than 6 characters.
-                            </ErrorMessage>
-                          )}
-                        </>
-                      )
-                    }}
+                    {({ fieldProps, error, valid }) => (
+                      <>
+                        <TextField
+                          {...fieldProps}
+                          elemAfterInput={
+                            <Button
+                              iconBefore={
+                                passwordVisible
+                                ? <WatchFilledIcon label="Toggle Password" size="medium"/>
+                                : <WatchIcon label="Toggle Password" size="medium"/>
+                              }
+                              appearance="subtle-link"
+                              spacing="compact"
+                              onClick={() => setPasswordVisibility(!passwordVisible)}
+                            />
+                          }
+                          type={passwordVisible ? "text" : "password"}
+                        />
+                        {error && !valid && (
+                          <HelperMessage>
+                            Use 6 or more characters with a mix of letters, numbers and symbols.
+                          </HelperMessage>
+                        )}
+                        {error && (
+                          <ErrorMessage>
+                            Password needs to have more than 6 characters.
+                          </ErrorMessage>
+                        )}
+                      </>
+                    )}
                   </Field>
                   <Field
                     name="confirmPassword"
