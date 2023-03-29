@@ -15,25 +15,19 @@ import TextField from "@atlaskit/textfield"
 import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
 import WatchIcon from "@atlaskit/icon/glyph/watch"
 import { useState } from "react"
+import { users } from "../../lib/users"
 import utilStyles from "../../styles/utils.module.css"
 
 
 export default function RegistrationPage() {
   const [passwordVisible, setPasswordVisibility] = useState(false)
-  const users = [
-    { nic: "912000000V" },
-    { nic: "912000000V" },
-    { nic: "951200042V" },
-    { nic: "770653312V" },
-    { nic: "927571811V" }
-  ]
 
   const handleSubmit = (data: { nicNumber: string; password: string; confirmPassword: string }) => {
     const errors = {
       nicNumber: users.some(e => e.nic === data.nicNumber)
                  ? "User NIC is already taken. Try another one."
                  : undefined,
-      confirmPassword: data.password === data.confirmPassword
+      confirmPassword: data.password !== data.confirmPassword
                        ? "Passwords doesn't match. Please double check."
                        : undefined
     }
