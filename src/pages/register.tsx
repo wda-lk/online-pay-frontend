@@ -1,32 +1,53 @@
 import Form, {
+  ErrorMessage,
   Field,
   FormFooter,
   FormHeader,
-  FormSection
+  FormSection,
+  HelperMessage
 } from "@atlaskit/form"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../components/card"
+import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import TextField from "@atlaskit/textfield"
+import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
+import WatchIcon from "@atlaskit/icon/glyph/watch"
+import { useState } from "react"
 import utilStyles from "../../styles/utils.module.css"
 
 
 export default function RegistrationPage() {
+  const [passwordVisible, setPasswordVisibility] = useState(false)
+  const users = [
+    { nic: "912000000V" },
+    { nic: "912000000V" },
+    { nic: "951200042V" },
+    { nic: "770653312V" },
+    { nic: "927571811V" }
+  ]
+
+  const handleSubmit = (data: { nicNumber: string; password: string; confirmPassword: string }) => {
+    const errors = {
+      nicNumber: users.some(e => e.nic === data.nicNumber)
+                 ? "User NIC is already taken. Try another one."
+                 : undefined,
+      confirmPassword: data.password === data.confirmPassword
+                       ? "Passwords doesn't match. Please double check."
+                       : undefined
+    }
+    if (!errors.nicNumber) {
+      console.log(data)
+    }
+    return errors
+  }
+
   return (
     <div className={utilStyles.fullHeightContainer}>
       <Card
         content={
-          <Form
-            <{ username: string; password: string; remember: boolean }>
-            onSubmit={(data) => {
-              console.log("form data", data)
-              return new Promise(
-                (resolve) => setTimeout(resolve, 2000)
-              ).then(() => data.username === "error" ? { username: "IN_USE" } : undefined
-              )
-            }}
-          >
+          <Form onSubmit={handleSubmit}>
             {({ formProps, submitting }) => (
               <form {...formProps}>
                 <FormHeader
@@ -35,20 +56,29 @@ export default function RegistrationPage() {
                 />
                 <FormSection>
                   <Field
-                    label="NIC Number"
                     name="nicNumber"
+                    label="NIC Number"
+                    defaultValue=""
                     isRequired
                   >
-                    {({ fieldProps }: any) => (
-                      <TextField
-                        {...fieldProps}
-                        maxLength={12}
-                      />
+                    {({ fieldProps, error }) => (
+                      <>
+                        <TextField
+                          {...fieldProps}
+                          maxLength={12}
+                        />
+                        {error && (
+                          <ErrorMessage>
+                            {error}
+                          </ErrorMessage>
+                        )}
+                      </>
                     )}
                   </Field>
                   <Field
-                    label="Name (with initials)"
                     name="name"
+                    label="Name (with initials)"
+                    defaultValue=""
                     isRequired
                   >
                     {({ fieldProps }: any) => (
@@ -58,44 +88,122 @@ export default function RegistrationPage() {
                 </FormSection>
                 <FormSection>
                   <Field
+                    name="mobileNumber"
                     label="Mobile Number"
-                    name="mobile"
+                    defaultValue=""
                     isRequired
                   >
                     {({ fieldProps }: any) => (
-                      <TextField {...fieldProps}/>
+                      <TextField
+                        {...fieldProps}
+                        maxLength={10}
+                      />
                     )}
                   </Field>
                   <Field
-                    label="Email"
                     name="email"
+                    label="Email"
+                    defaultValue=""
+                    validate={(value) =>
+                      value && !value.includes("@") ? "INVALID" : undefined
+                    }
                   >
-                    {({ fieldProps }: any) => (
-                      <TextField {...fieldProps}/>
-                    )}
+                    {({ fieldProps, error, valid }) => {
+                      return (
+                        <>
+                          <TextField {...fieldProps}/>
+                          {error && !valid && (
+                            <HelperMessage>
+                              Enter a valid Email which includes a `@` character
+                            </HelperMessage>
+                          )}
+                          {error && (
+                            <ErrorMessage>
+                              Your email is not valid.
+                            </ErrorMessage>
+                          )}
+                        </>
+                      )
+                    }}
                   </Field>
                   <Field
-                    label="Password"
                     name="password"
+                    label="Password"
+                    defaultValue=""
                     isRequired
+                    validate={(value) =>
+                      value && value.length < 6 ? "INVALID" : undefined
+                    }
                   >
-                    {({ fieldProps }: any) => (
-                      <TextField {...fieldProps}/>
-                    )}
+                    {({ fieldProps, error, valid }) => {
+                      return (
+                        <>
+                          <TextField
+                            {...fieldProps}
+                            elemAfterInput={
+                              <Button
+                                iconBefore={
+                                  passwordVisible
+                                  ? <WatchFilledIcon label="Toggle Password" size="medium"/>
+                                  : <WatchIcon label="Toggle Password" size="medium"/>
+                                }
+                                appearance="subtle-link"
+                                spacing="compact"
+                                onClick={() => setPasswordVisibility(!passwordVisible)}
+                              />
+                            }
+                            type={passwordVisible ? "text" : "password"}
+                          />
+                          {error && !valid && (
+                            <HelperMessage>
+                              Use 6 or more characters with a mix of letters, numbers and symbols.
+                            </HelperMessage>
+                          )}
+                          {error && (
+                            <ErrorMessage>
+                              Password needs to have more than 6 characters.
+                            </ErrorMessage>
+                          )}
+                        </>
+                      )
+                    }}
                   </Field>
                   <Field
+                    name="confirmPassword"
                     label="Confirm Password"
-                    name="passwordConfirmation"
+                    defaultValue=""
                     isRequired
                   >
-                    {({ fieldProps }: any) => (
-                      <TextField {...fieldProps}/>
+                    {({ fieldProps, error }) => (
+                      <>
+                        <TextField
+                          {...fieldProps}
+                          elemAfterInput={
+                            <Button
+                              iconBefore={
+                                passwordVisible
+                                ? <WatchFilledIcon label="Toggle Password" size="medium"/>
+                                : <WatchIcon label="Toggle Password" size="medium"/>
+                              }
+                              appearance="subtle-link"
+                              spacing="compact"
+                              onClick={() => setPasswordVisibility(!passwordVisible)}
+                            />
+                          }
+                          type={passwordVisible ? "text" : "password"}
+                        />
+                        {error && (
+                          <ErrorMessage>
+                            {error}
+                          </ErrorMessage>
+                        )}
+                      </>
                     )}
                   </Field>
                 </FormSection>
                 <FormFooter>
                   <ButtonGroup>
-                    <Button appearance="link">Already have an account? Log in</Button>
+                    <Button appearance="link"><Link href="/login/">Already have an account? Log in</Link></Button>
                     <LoadingButton
                       type="submit"
                       appearance="primary"
