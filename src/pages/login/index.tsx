@@ -9,6 +9,7 @@ import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
 import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
+import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import TextField from "@atlaskit/textfield"
@@ -24,11 +25,11 @@ import utilStyles from "../../../styles/utils.module.css"
 export default function LoginPage() {
   const [passwordVisible, setPasswordVisibility] = useState(false)
 
-  const handleSubmit = (data: { mobileNumber: string; password: string; }) => {
-    let existingUser = users.find(e => e.mobileNumber === data.mobileNumber)
+  const handleSubmit = (data: { nicNumber: string; password: string; }) => {
+    let existingUser = users.find(e => e.nicNumber === data.nicNumber)
     if (!existingUser) {
       return {
-        mobileNumber: "Mobile number is not registered. Please try another one."
+        mobileNumber: "NIC number is not registered. Please try another one."
       }
     }
     const errors = {
@@ -55,8 +56,8 @@ export default function LoginPage() {
                 />
                 <FormSection>
                   <Field
-                    name="mobileNumber"
-                    label="Mobile Number"
+                    name="nicNumber"
+                    label="NIC Number"
                     defaultValue=""
                     isRequired
                   >
@@ -64,7 +65,8 @@ export default function LoginPage() {
                       <>
                         <TextField
                           {...fieldProps}
-                          maxLength={10}
+                          style={{ textTransform: "uppercase" }}
+                          maxLength={12}
                         />
                         {error && (
                           <ErrorMessage>
@@ -116,7 +118,9 @@ export default function LoginPage() {
                         size="small"
                         label=""
                       />
-                      <Button appearance="link">Create an account</Button>
+                      <Button appearance="link">
+                        <Link href="/register">Create an account</Link>
+                      </Button>
                       <LoadingButton
                         type="submit"
                         appearance="primary"

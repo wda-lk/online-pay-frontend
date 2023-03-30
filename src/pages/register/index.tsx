@@ -8,31 +8,53 @@ import Form, {
 } from "@atlaskit/form"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
-import Card from "../../components/card"
+import Card from "../../../components/card"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import TextField from "@atlaskit/textfield"
 import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
 import WatchIcon from "@atlaskit/icon/glyph/watch"
+import { useRouter } from "next/router"
 import { useState } from "react"
-import { users } from "../../lib/users"
-import utilStyles from "../../styles/utils.module.css"
+import { users } from "../../../lib/users"
+import utilStyles from "../../../styles/utils.module.css"
 
 
 export default function RegistrationPage() {
   const [passwordVisible, setPasswordVisibility] = useState(false)
+  const router = useRouter()
 
-  const handleSubmit = (data: { nicNumber: string; password: string; confirmPassword: string }) => {
+  const handleSubmit = (
+    data: {
+      nicNumber: string;
+      email: string;
+      password: string;
+      confirmPassword: string
+    }) => {
     const errors = {
-      nicNumber: users.some(e => e.nic === data.nicNumber)
+      nicNumber: users.some(e => e.nicNumber === data.nicNumber)
                  ? "NIC is already taken. Please try another one."
                  : undefined,
       confirmPassword: data.password !== data.confirmPassword
                        ? "Passwords doesn't match. Please double check."
                        : undefined
     }
+
     if (!errors.nicNumber && !errors.confirmPassword) {
-      console.log(data)
+      users.push(
+        {
+          nicNumber: data.nicNumber,
+          email: data.email,
+          password: data.password,
+          isActive: false
+        }
+      )
+      console.log(`Created new user from: ${data.nicNumber}`)
+      router.push(
+        {
+          pathname: "/register/verify-account",
+          query: { "nic-number": data.nicNumber, "email": data.email }
+        }).then(r => console.log(r))
     }
     return errors
   }
@@ -59,6 +81,7 @@ export default function RegistrationPage() {
                       <>
                         <TextField
                           {...fieldProps}
+                          style={{ textTransform: "uppercase" }}
                           maxLength={12}
                         />
                         {error && (
@@ -193,7 +216,9 @@ export default function RegistrationPage() {
                 </FormSection>
                 <FormFooter>
                   <ButtonGroup>
-                    <Button appearance="link"><Link href="/login/">Already have an account? Log in</Link></Button>
+                    <Button appearance="link">
+                      <Link href="/login">Already have an account? Log in</Link>
+                    </Button>
                     <LoadingButton
                       type="submit"
                       appearance="primary"
