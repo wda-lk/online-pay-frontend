@@ -10,15 +10,12 @@ declare let Checkout: any;
   styleUrls: ['./onpay.component.css']
 })
 export class OnpayComponent implements OnInit {
-
   mg: allert.Globle;
   urlgully = statics.ip + 'gully/';
   userId;
   list;
   ses;
   loading;
-
-
   description;
   payment;
   rate;
@@ -26,12 +23,9 @@ export class OnpayComponent implements OnInit {
   applicatyion_id;
   application_cat;
   app_cat_name;
-
   cus_name;
-
   condition: boolean = false;
-
-
+  expression;
 
 
   constructor(private http: HttpClient) {
