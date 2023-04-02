@@ -3,8 +3,8 @@
     "target": "https://bankofceylon.gateway.mastercard.com",
     "secure": true,
     "pathRewrite": {
-    "^/posts": ""
-  },
+      "^/posts": ""
+    },
     "changeOrigin": true
   }
 }
