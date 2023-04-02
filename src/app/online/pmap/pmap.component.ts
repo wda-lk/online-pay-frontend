@@ -48,7 +48,7 @@ export class PmapComponent implements OnInit {
     this.cusid = yy[0].idOnline;
   }
 
-  map(form: NgForm) {
+  map() {
     console.log(this.owner);
     console.log(this.kform);
     console.log(this.recit);

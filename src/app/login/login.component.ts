@@ -11,7 +11,7 @@ import * as statics from '../global';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private LOGO = require('../../assets/images/cat.png');
+  LOGO = require('../../assets/images/cat.png');
   url = statics.ip;
   name;
   unames = '';
