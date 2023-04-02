@@ -16,17 +16,15 @@ import { element } from 'protractor';
   styleUrls: ['./main-nav.component.css']
 })
 export class MainNavComponent {
-  private LOGO = require('../../assets/images/cat.png');
+  LOGO = require('../../assets/images/cat.png');
   private urlprivilage = statics.ip + 'privilage';
   privilage: Iprivilage;
-
   isLogin = true;
   // tslint:disable-next-line:member-ordering
   privilages = [];
-
-
   url = statics.ip;
   name;
+  panelOpenState;
 
   constructor(private breakpointObserver: BreakpointObserver, private login: LoginService, private http: HttpClient) {
 
