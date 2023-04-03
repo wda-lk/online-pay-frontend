@@ -1,11 +1,11 @@
 .fullHeightContainer {
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
 }
 
 @media screen and (min-width: 480px) {
 	.fullHeightContainer {
 		min-height: 100vh;
+		flex-direction: column;
+		justify-content: center;
 	}
 }
