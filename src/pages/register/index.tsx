@@ -39,7 +39,7 @@ export default function RegistrationPage() {
                        ? "Passwords doesn't match. Please double check."
                        : undefined
     }
-
+    // Todo - Create an inactive user in the database
     if (!errors.nicNumber && !errors.confirmPassword) {
       users.push(
         {
