@@ -6,38 +6,48 @@ import Form, {
   FormSection,
   HelperMessage
 } from "@atlaskit/form"
+import Banner from "@atlaskit/banner"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
+import ErrorIcon from "@atlaskit/icon/glyph/error"
+import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
+import { N400A } from "@atlaskit/theme/colors"
+import { NextPage } from "next"
 import TextField from "@atlaskit/textfield"
+import styles from "@/pages/login/index.module.css"
+import { token } from "@atlaskit/tokens"
 import { useRef } from "react"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { users } from "../../../lib/users"
-import utilStyles from "../../../styles/utils.module.css"
 
 
-export default function VerifyAccountPage() {
+const VerifyAccountPage: NextPage = () => {
   const router = useRouter()
   const [hasSentVerification, sendVerification] = useState(false)
+  const [isBannerShown, showBanner] = useState(false)
   const existingUser = useRef(users.find(e => e.email === router.query.email))
+
+  const getExistingUser = () => {
+    if (existingUser.current) {
+      return existingUser.current
+    }
+    // Todo - Alert
+    showBanner(!isBannerShown)
+    throw new Error("User account unavailable. Please fill out the registration form.")
+  }
 
   const handleEmailSubmit = (data: { email: string; }) => {
     if (router.query.email !== data.email) {
-      if (existingUser.current) {
-        // Todo - Persist the changed data of the user
-        existingUser.current.email = data.email
-        console.log(existingUser)
-        console.log("User Email was changed.")
-      } else {
-        console.log("Critical error occurred. Inactive user doesn't exist for the email.")
-        return
-      }
+      // Todo - Persist the changed data of the user
+      getExistingUser().email = data.email
+      console.log("User Email was changed.")
     }
     // Todo - Fetch code from backend and send it to the email
-    console.log("Verification code was emailed.")
+    console.log("User account unavailable. Please fill out the registration form.")
     sendVerification(!hasSentVerification)
   }
 
@@ -53,7 +63,7 @@ export default function VerifyAccountPage() {
             <Field
               name="email"
               label="Email the verification to"
-              defaultValue={router.query.email}
+              defaultValue={router.query.email || ""}
               isRequired
               validate={(value) =>
                 value && !value.includes("@") ? "INVALID" : undefined
@@ -103,10 +113,9 @@ export default function VerifyAccountPage() {
     }
     if (!errors.code) {
       // Todo - Persist the changed data of the user
-      if (existingUser.current) {
-        existingUser.current.isActive = true
-      }
-      console.log(existingUser)
+      getExistingUser().isActive = true
+      console.log("User account activated.")
+      router.push({ pathname: "/login" }).then(r => console.log(r))
     }
     return errors
   }
@@ -116,13 +125,13 @@ export default function VerifyAccountPage() {
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
-            title="Verification code sent"
+            title="Verify user account"
             description="* indicates a required field"
           />
           <FormSection>
             <Field
               name="code"
-              label="Code to verify your account"
+              label={`Code was sent to ${getExistingUser().email}`}
               defaultValue=""
               isRequired
             >
@@ -135,7 +144,7 @@ export default function VerifyAccountPage() {
                   />
                   {!error && (
                     <HelperMessage>
-                      Enter the six digit verification code
+                      Six digit verification code
                     </HelperMessage>
                   )}
                   {error && (
@@ -149,16 +158,29 @@ export default function VerifyAccountPage() {
           </FormSection>
           <FormFooter>
             <ButtonGroup>
-              <Button appearance="link">
-                <Link href="/register">Return to registration</Link>
-              </Button>
-              <LoadingButton
-                type="submit"
-                appearance="primary"
-                isLoading={submitting}
-              >
-                Verify
-              </LoadingButton>
+              <div className={styles.buttonGroupInternal}>
+                <Button appearance="link">
+                  <Link href="/register">Return to registration</Link>
+                </Button>
+                <HipchatMediaAttachmentCountIcon
+                  primaryColor={token("color.icon.disabled", N400A)}
+                  size="small"
+                  label=""
+                />
+                <Button
+                  appearance="link"
+                  onClick={e => sendVerification(!hasSentVerification)}
+                >
+                  Resend code
+                </Button>
+                <LoadingButton
+                  type="submit"
+                  appearance="primary"
+                  isLoading={submitting}
+                >
+                  Verify
+                </LoadingButton>
+              </div>
             </ButtonGroup>
           </FormFooter>
         </form>
@@ -166,8 +188,21 @@ export default function VerifyAccountPage() {
     </Form>
 
   return (
-    <div className={utilStyles.fullHeightContainer}>
-      <Card content={hasSentVerification ? verificationCodeForm : verificationEmailForm}/>
-    </div>
+    <>
+      {isBannerShown && (
+        <Banner
+          appearance="error"
+          icon={<ErrorIcon label="" secondaryColor="inherit"/>}
+        >
+          Bitbucket is experiencing an incident, but we’re on it. Check our status
+          page for more details.{" "}
+        </Banner>
+      )}
+      <Card>
+        {hasSentVerification ? verificationCodeForm : verificationEmailForm}
+      </Card>
+    </>
   )
 }
+
+export default VerifyAccountPage
