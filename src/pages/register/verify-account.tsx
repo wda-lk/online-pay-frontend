@@ -6,20 +6,24 @@ import Form, {
   FormSection,
   HelperMessage
 } from "@atlaskit/form"
+import React, { useRef } from "react"
 import Banner from "@atlaskit/banner"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
 import ErrorIcon from "@atlaskit/icon/glyph/error"
 import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
+import Image from "next/image"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
+import SlotLabel from "../../../components/slot-label"
+import SlotWrapper from "../../../components/slot-wrapper"
 import TextField from "@atlaskit/textfield"
+import openLetterImage from "../../../public/images/open-letter.svg"
 import styles from "@/pages/login/index.module.css"
 import { token } from "@atlaskit/tokens"
-import { useRef } from "react"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { users } from "../../../lib/users"
@@ -124,71 +128,90 @@ const VerifyAccountPage: NextPage = () => {
     </Form>
 
   const verifyForm =
-    <Form onSubmit={handleCodeSubmit}>
-      {({ formProps, submitting }) => (
-        <form {...formProps}>
-          <FormHeader
-            title="Verify user account"
-            description="* indicates a required field"
-          />
-          <FormSection>
-            <Field
-              name="code"
-              label={`Code was sent to ${existingUser.current && existingUser.current.email}`}
-              defaultValue=""
-              isRequired
-            >
-              {({ fieldProps, error }) => (
-                <>
-                  <TextField
-                    {...fieldProps}
-                    minLength={6}
-                    maxLength={6}
-                  />
-                  {!error && (
-                    <HelperMessage>
-                      Six digit verification code
-                    </HelperMessage>
-                  )}
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
-                </>
-              )}
-            </Field>
-          </FormSection>
-          <FormFooter>
-            <ButtonGroup>
-              <div className={styles.buttonGroupInternal}>
-                <Button appearance="link">
-                  <Link href="/register">Return to registration</Link>
-                </Button>
-                <HipchatMediaAttachmentCountIcon
-                  primaryColor={token("color.icon.disabled", N400A)}
-                  size="small"
-                  label=""
+    <>
+      <Form onSubmit={handleCodeSubmit}>
+        {({ formProps, submitting }) => (
+          <form {...formProps}>
+            <FormHeader
+              title="Verify Your Account"
+              description="* indicates a required field"
+            />
+            <FormSection>
+              <SlotWrapper hasExtraPadding={true}>
+                <p>
+                  We sent a verification code to you at<br/>
+                  <b>{existingUser.current && existingUser.current.email}</b>
+                </p>
+                <Image
+                  style={{
+                    margin: "12px 0 0 0",
+                    height: "88px",
+                    width: "100px"
+                  }}
+                  src={openLetterImage}
+                  alt="Email sent"
                 />
-                <Button
-                  appearance="link"
-                  onClick={e => sendVerification(!hasSentVerification)}
-                >
-                  Resend code
-                </Button>
-                <LoadingButton
-                  type="submit"
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Verify
-                </LoadingButton>
-              </div>
-            </ButtonGroup>
-          </FormFooter>
-        </form>
-      )}
-    </Form>
+              </SlotWrapper>
+            </FormSection>
+            <FormSection>
+              <Field
+                name="code"
+                label="Verification Code"
+                defaultValue=""
+                isRequired
+              >
+                {({ fieldProps, error }) => (
+                  <>
+                    <TextField
+                      {...fieldProps}
+                      minLength={6}
+                      maxLength={6}
+                    />
+                    {!error && (
+                      <HelperMessage>
+                        Six digit verification code
+                      </HelperMessage>
+                    )}
+                    {error && (
+                      <ErrorMessage>
+                        {error}
+                      </ErrorMessage>
+                    )}
+                  </>
+                )}
+              </Field>
+            </FormSection>
+            <FormFooter>
+              <ButtonGroup>
+                <div className={styles.buttonGroupInternal}>
+                  <Button appearance="link">
+                    <Link href="/register">Return to registration</Link>
+                  </Button>
+                  <HipchatMediaAttachmentCountIcon
+                    primaryColor={token("color.icon.disabled", N400A)}
+                    size="small"
+                    label=""
+                  />
+                  <Button
+                    appearance="link"
+                    onClick={e => sendVerification(!hasSentVerification)}
+                  >
+                    Resend code
+                  </Button>
+                  <LoadingButton
+                    type="submit"
+                    appearance="primary"
+                    isLoading={submitting}
+                  >
+                    Verify
+                  </LoadingButton>
+                </div>
+              </ButtonGroup>
+            </FormFooter>
+          </form>
+        )}
+      </Form>
+    </>
 
   return (
     <>
