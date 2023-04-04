@@ -31,27 +31,46 @@ const VerifyAccountPage: NextPage = () => {
   const [isBannerShown, showBanner] = useState(false)
   const existingUser = useRef(users.find(e => e.email === router.query.email))
 
-  const getExistingUser = () => {
-    if (existingUser.current) {
-      return existingUser.current
-    }
-    // Todo - Alert
-    showBanner(!isBannerShown)
-    throw new Error("User account unavailable. Please fill out the registration form.")
-  }
-
   const handleEmailSubmit = (data: { email: string; }) => {
-    if (router.query.email !== data.email) {
-      // Todo - Persist the changed data of the user
-      getExistingUser().email = data.email
-      console.log("User Email was changed.")
+    let user = existingUser.current
+    if (user) {
+      if (router.query.email !== data.email) {
+        // Todo - Persist the changed data of the user
+        user.email = data.email
+        console.log("User Email was changed.")
+      }
+      // Todo - Fetch code from backend and send it to the email
+      sendVerification(!hasSentVerification)
+      isBannerShown && showBanner(!isBannerShown)
+    } else {
+      console.log("User account unavailable. Please fill out the registration form.")
+      !isBannerShown && showBanner(!isBannerShown)
     }
-    // Todo - Fetch code from backend and send it to the email
-    console.log("User account unavailable. Please fill out the registration form.")
-    sendVerification(!hasSentVerification)
   }
 
-  const verificationEmailForm =
+  const handleCodeSubmit = (data: { code: string; }) => {
+    let user = existingUser.current
+    if (user) {
+      // Todo - Verify if the codes match from API
+      const errors = {
+        code: data.code !== "123456"
+              ? "Invalid code, Please double check your Email."
+              : undefined
+      }
+      if (!errors.code) {
+        // Todo - Persist the changed data of the user
+        user.isActive = true
+        console.log("User account activated.")
+        router.push({ pathname: "/login" }).then(r => console.log(r))
+      }
+      return errors
+    } else {
+      console.log("User account unavailable. Please fill out the registration form.")
+      !isBannerShown && showBanner(!isBannerShown)
+    }
+  }
+
+  const emailForm =
     <Form onSubmit={handleEmailSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
@@ -104,23 +123,7 @@ const VerifyAccountPage: NextPage = () => {
       )}
     </Form>
 
-  const handleCodeSubmit = (data: { code: string; }) => {
-    // Todo - Verify if the codes match
-    const errors = {
-      code: data.code !== "123456"
-            ? "Invalid code, Please double check your Email."
-            : undefined
-    }
-    if (!errors.code) {
-      // Todo - Persist the changed data of the user
-      getExistingUser().isActive = true
-      console.log("User account activated.")
-      router.push({ pathname: "/login" }).then(r => console.log(r))
-    }
-    return errors
-  }
-
-  const verificationCodeForm =
+  const verifyForm =
     <Form onSubmit={handleCodeSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
@@ -131,7 +134,7 @@ const VerifyAccountPage: NextPage = () => {
           <FormSection>
             <Field
               name="code"
-              label={`Code was sent to ${getExistingUser().email}`}
+              label={`Code was sent to ${existingUser.current && existingUser.current.email}`}
               defaultValue=""
               isRequired
             >
@@ -194,12 +197,11 @@ const VerifyAccountPage: NextPage = () => {
           appearance="error"
           icon={<ErrorIcon label="" secondaryColor="inherit"/>}
         >
-          Bitbucket is experiencing an incident, but we’re on it. Check our status
-          page for more details.{" "}
+          User account unavailable. Please fill out the registration form.{" "}
         </Banner>
       )}
       <Card>
-        {hasSentVerification ? verificationCodeForm : verificationEmailForm}
+        {hasSentVerification ? verifyForm : emailForm}
       </Card>
     </>
   )
