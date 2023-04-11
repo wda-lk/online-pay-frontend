@@ -17,7 +17,7 @@ import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
 import WatchIcon from "@atlaskit/icon/glyph/watch"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { users } from "../../../lib/users"
+import { users } from "../../../lib/data"
 
 
 const RegistrationPage: NextPage = () => {

@@ -19,7 +19,7 @@ import WatchIcon from "@atlaskit/icon/glyph/watch"
 import styles from "./index.module.css"
 import { token } from "@atlaskit/tokens"
 import { useState } from "react"
-import { users } from "../../../lib/users"
+import { users } from "../../../lib/data"
 
 
 const LoginPage: NextPage = () => {
@@ -28,7 +28,7 @@ const LoginPage: NextPage = () => {
   const handleSubmit = (data: { nicNumber: string; password: string; }) => {
     let existingUser = users.find(e => e.nicNumber === data.nicNumber)
     if (!existingUser) {
-      return { mobileNumber: "NIC number is not registered. Please try another one." }
+      return { nicNumber: "NIC number is not registered. Please try another one." }
     }
     const errors = {
       password: existingUser.password !== data.password
@@ -36,6 +36,7 @@ const LoginPage: NextPage = () => {
                 : undefined
     }
     if (!errors.password) {
+      // Todo - User is logged in
       console.log(data)
     }
     return errors

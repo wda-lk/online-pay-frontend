@@ -18,7 +18,6 @@ import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
-import SlotLabel from "../../../components/slot-label"
 import SlotWrapper from "../../../components/slot-wrapper"
 import TextField from "@atlaskit/textfield"
 import openLetterImage from "../../../public/images/open-letter.svg"
@@ -26,7 +25,7 @@ import styles from "@/pages/login/index.module.css"
 import { token } from "@atlaskit/tokens"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { users } from "../../../lib/users"
+import { users } from "../../../lib/data"
 
 
 const VerifyAccountPage: NextPage = () => {
@@ -137,7 +136,7 @@ const VerifyAccountPage: NextPage = () => {
               description="* indicates a required field"
             />
             <FormSection>
-              <SlotWrapper hasExtraPadding={true}>
+              <SlotWrapper>
                 <p>
                   We sent a verification code to you at<br/>
                   <b>{existingUser.current && existingUser.current.email}</b>
@@ -194,7 +193,7 @@ const VerifyAccountPage: NextPage = () => {
                   />
                   <Button
                     appearance="link"
-                    onClick={e => sendVerification(!hasSentVerification)}
+                    onClick={() => sendVerification(!hasSentVerification)}
                   >
                     Resend code
                   </Button>
