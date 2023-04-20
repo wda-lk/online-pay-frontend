@@ -1,1 +1,1 @@
-export const ip = "https://www.kurunegalapsapi.cat2020.org/online/";
+export const ip = "https://kurunegalapsapi.cat2020.org/online/";
