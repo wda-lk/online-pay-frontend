@@ -1,6 +1,6 @@
 {
   "/posts": {
-    "target": "https://test-bankofceylon.mtf.gateway.mastercard.com",
+    "target": "https://bankofceylon.gateway.mastercard.com",
     "secure": true,
     "pathRewrite": {
       "^/posts": ""
