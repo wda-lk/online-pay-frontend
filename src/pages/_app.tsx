@@ -1,7 +1,12 @@
 import "@atlaskit/css-reset/dist/bundle.css"
-import "@/styles/globals.css"
 import type { AppProps } from "next/app"
+import { FlagsProvider } from "@atlaskit/flag"
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
+
+const App = ({ Component, pageProps }: AppProps) => (
+  <FlagsProvider>
+    <Component {...pageProps} />
+  </FlagsProvider>
+)
+
+export default App

@@ -1,0 +1,42 @@
+.fullHeightContainer {
+	display: flex;
+}
+
+@media screen and (min-width: 480px) {
+	.fullHeightContainer {
+		min-height: 100vh;
+		flex-direction: column;
+		justify-content: center;
+	}
+}
+
+.card {
+	display: flex;
+	width: 400px;
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 16px;
+	flex-direction: column;
+	border-radius: 4px;
+}
+
+.headerLogo {
+	margin: auto auto 12px;
+}
+
+.footer {
+	margin-top: 24px;
+	padding-top: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.footerLogo {
+	margin: auto;
+}
+
+.footerText {
+	margin-top: 8px;
+	text-align: center;
+}
