@@ -5,41 +5,72 @@ import Form, {
   FormHeader,
   FormSection
 } from "@atlaskit/form"
+import {
+  N400A,
+  Y300
+} from "@atlaskit/theme/colors"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
 import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
-import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
 import TextField from "@atlaskit/textfield"
+import WarningIcon from "@atlaskit/icon/glyph/warning"
 import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
 import WatchIcon from "@atlaskit/icon/glyph/watch"
 import styles from "./index.module.css"
 import { token } from "@atlaskit/tokens"
+import { useFlags } from "@atlaskit/flag"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import { users } from "../../../lib/data"
 
 
 const LoginPage: NextPage = () => {
+  const router = useRouter()
+  const { showFlag } = useFlags()
   const [passwordVisible, setPasswordVisibility] = useState(false)
 
   const handleSubmit = (data: { nicNumber: string; password: string; }) => {
     let existingUser = users.find(e => e.nicNumber === data.nicNumber)
+    // validate input data against existing user data
     if (!existingUser) {
       return { nicNumber: "NIC number is not registered. Please try another one." }
     }
-    const errors = {
-      password: existingUser.password !== data.password
-                ? "Passwords is incorrect. Please double check."
-                : undefined
+    if (existingUser.password !== data.password) {
+      return { password: "Passwords is incorrect. Please double check." }
     }
-    if (!errors.password) {
-      // Todo - User is logged in
+    if (!existingUser.isActive) {
+      showFlag({
+                 isAutoDismiss: true,
+                 icon: (
+                   <WarningIcon
+                     label="Warning"
+                     primaryColor={token("color.icon.warning", Y300)}
+                   />
+                 ),
+                 title: "Failed to log you in",
+                 description: "To use our services, your account needs to be activated. Clicking on the below link " +
+                              "will take you to our activation portal.",
+                 actions: [
+                   {
+                     content: "Activate my account",
+                     onClick: () => router
+                       .push({
+                               pathname: "/register/verify-account",
+                               query: { "nic-number": data.nicNumber, "email": existingUser!.email }
+                             })
+                       .then(r => console.log(r))
+                   }
+                 ]
+               })
+    } else {
+      // user logged in without any issues
+      router.push("/dashboard").then(r => console.log(r))
       console.log(data)
     }
-    return errors
   }
 
   return (
@@ -109,7 +140,9 @@ const LoginPage: NextPage = () => {
             <FormFooter>
               <ButtonGroup>
                 <div className={styles.buttonGroupInternal}>
-                  <Button appearance="link">Can&apos;t log in?</Button>
+                  <Button appearance="link">
+                    <Link href="/login/reset-password">Can&apos;t log in?</Link>
+                  </Button>
                   <HipchatMediaAttachmentCountIcon
                     primaryColor={token("color.icon.disabled", N400A)}
                     size="small"

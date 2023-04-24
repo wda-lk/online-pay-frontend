@@ -3,13 +3,7 @@ export const users = [
     nicNumber: "912000000V",
     email: "adminkurunegala@cat20.lk",
     password: "admin",
-    isActive: false
-  },
-  {
-    nicNumber: "912000000V",
-    email: "adminpol@cat20.lk",
-    password: "admin",
-    isActive: false
+    isActive: true
   },
   {
     nicNumber: "951200042V",
