@@ -1,8 +1,8 @@
 import { N30A, N700, N800 } from "@atlaskit/theme/colors"
 import Image from "next/image"
 import React from "react"
-import logoDefault from "../public/logo/cat2020-default.svg"
-import logoNeutral from "../public/logo/cat2020-compact-neutral.svg"
+import logoDefault from "../public/logo/icon&logo.svg"
+import logoNeutral from "../public/logo/icon&logo-comp&neu.svg"
 import styles from "./card.module.css"
 import { token } from "@atlaskit/tokens"
 
