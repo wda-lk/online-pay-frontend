@@ -141,7 +141,7 @@ const LoginPage: NextPage = () => {
               <ButtonGroup>
                 <div className={styles.buttonGroupInternal}>
                   <Button appearance="link">
-                    <Link href="/login/reset-password">Can&apos;t log in?</Link>
+                    <Link href="/login/reset-password"><a>Can&apos;t log in?</a></Link>
                   </Button>
                   <HipchatMediaAttachmentCountIcon
                     primaryColor={token("color.icon.disabled", N400A)}
@@ -149,7 +149,7 @@ const LoginPage: NextPage = () => {
                     label=""
                   />
                   <Button appearance="link">
-                    <Link href="/register">Create an account</Link>
+                    <Link href="/register"><a>Create an account</a></Link>
                   </Button>
                   <LoadingButton
                     type="submit"

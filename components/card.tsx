@@ -1,8 +1,8 @@
 import { N30A, N700, N800 } from "@atlaskit/theme/colors"
-import Image from "next/image"
+import Image from "next/future/image"
 import React from "react"
-import logoDefault from "../public/logo/cat2020-default.svg"
-import logoNeutral from "../public/logo/cat2020-compact-neutral.svg"
+import logo from "../public/logo/logo.svg"
+import logoCompact from "../public/logo/logo=comp&neu.svg"
 import styles from "./card.module.css"
 import { token } from "@atlaskit/tokens"
 
@@ -26,7 +26,7 @@ const Card = ({ children }: CardProps) => (
     >
       <Image
         className={styles.headerLogo}
-        src={logoDefault}
+        src={logo}
         alt="Cat2020 logo"
       />
       {children}
@@ -36,7 +36,7 @@ const Card = ({ children }: CardProps) => (
       >
         <Image
           className={styles.footerLogo}
-          src={logoNeutral}
+          src={logoCompact}
           alt="Cat2020 Neutral logo"
         />
         <div

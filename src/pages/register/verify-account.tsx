@@ -13,7 +13,7 @@ import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
 import ErrorIcon from "@atlaskit/icon/glyph/error"
 import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
-import Image from "next/image"
+import Image from "next/future/image"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
@@ -111,7 +111,7 @@ const VerifyAccountPage: NextPage = () => {
           <FormFooter>
             <ButtonGroup>
               <Button appearance="link">
-                <Link href="/register">Return to registration</Link>
+                <Link href="/register"><a>Return to registration</a></Link>
               </Button>
               <LoadingButton
                 type="submit"
@@ -184,7 +184,7 @@ const VerifyAccountPage: NextPage = () => {
               <ButtonGroup>
                 <div className={styles.buttonGroupInternal}>
                   <Button appearance="link">
-                    <Link href="/register">Return to registration</Link>
+                    <Link href="/register"><a>Return to registration</a></Link>
                   </Button>
                   <HipchatMediaAttachmentCountIcon
                     primaryColor={token("color.icon.disabled", N400A)}

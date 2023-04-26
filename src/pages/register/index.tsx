@@ -215,7 +215,7 @@ const RegistrationPage: NextPage = () => {
             <FormFooter>
               <ButtonGroup>
                 <Button appearance="link">
-                  <Link href="/login">Already have an account? Log in</Link>
+                  <Link href="/login"><a>Already have an account? Log in</a></Link>
                 </Button>
                 <LoadingButton
                   type="submit"
