@@ -19,6 +19,7 @@
     "@atlaskit/empty-state": "^7.4.11",
     "@atlaskit/flag": "^15.1.4",
     "@atlaskit/form": "^8.8.4",
+    "@atlaskit/notification-indicator": "^9.0.4",
     "@atlaskit/page-layout": "^1.4.0",
     "@atlaskit/textfield": "^5.3.6",
     "@atlaskit/tokens": "^1.2.5",
