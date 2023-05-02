@@ -28,13 +28,16 @@ import TextField from "@atlaskit/textfield"
 import openLetterImage from "../../../public/images/open-letter.svg"
 import styles from "@/pages/login/index.module.css"
 import { token } from "@atlaskit/tokens"
+import { useRouter } from "next/router"
 
 
 const ResetPasswordPage: NextPage = () => {
+  const router = useRouter()
+  const [isBannerShown, showBanner] = useState(false)
   const [hasSentRecovery, sendRecovery] = useState(false)
   const existingUser: MutableRefObject<User | undefined> = useRef()
 
-  const handleSubmit = (data: { email: string }) => {
+  const handleEmailSubmit = (data: { email: string }) => {
     let user = users.find(e => e.email === data.email)
     if (!user) {
       return { email: "Email address is not registered. Please try another one." }
@@ -44,8 +47,30 @@ const ResetPasswordPage: NextPage = () => {
     return
   }
 
+  const handleCodeSubmit = (data: { code: string; }) => {
+    let user = existingUser.current
+    if (user) {
+      // Todo - Verify if the codes match from API
+      const errors = {
+        code: data.code !== "123456"
+              ? "Invalid code, Please double check your Email."
+              : undefined
+      }
+      if (!errors.code) {
+        // Todo - Persist the changed data of the user
+        user.isActive = true
+        console.log("User account activated.")
+        router.push({ pathname: "/login" }).then(r => console.log(r))
+      }
+      return errors
+    } else {
+      console.log("User account unavailable. Please fill out the registration form.")
+      !isBannerShown && showBanner(!isBannerShown)
+    }
+  }
+
   const emailForm =
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleEmailSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
@@ -96,8 +121,8 @@ const ResetPasswordPage: NextPage = () => {
       )}
     </Form>
 
-  const recoverForm =
-    <Form onSubmit={handleSubmit}>
+  const recoveryForm =
+    <Form onSubmit={handleCodeSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
@@ -182,7 +207,7 @@ const ResetPasswordPage: NextPage = () => {
 
   return (
     <Card>
-      {emailForm}
+      {hasSentRecovery ? recoveryForm : emailForm}
     </Card>
   )
 }
