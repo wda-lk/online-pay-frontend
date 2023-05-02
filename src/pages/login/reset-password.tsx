@@ -17,17 +17,17 @@ import {
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
+import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
 import Image from "next/future/image"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
+import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
 import SlotWrapper from "../../../components/slot-wrapper"
 import TextField from "@atlaskit/textfield"
 import openLetterImage from "../../../public/images/open-letter.svg"
 import styles from "@/pages/login/index.module.css"
-import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
 import { token } from "@atlaskit/tokens"
-import { N400A } from "@atlaskit/theme/colors"
 
 
 const ResetPasswordPage: NextPage = () => {
