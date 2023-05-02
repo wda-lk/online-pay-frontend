@@ -42,6 +42,7 @@ const RegistrationPage: NextPage = () => {
       confirmPassword: string
     }) => {
     const errors = {
+      // Todo NIC and email should be unique
       mobileNumber: users.some(e => e.mobileNumber === data.mobileNumber)
                  ? "Mobile number is already taken. Please try another one."
                  : undefined,
