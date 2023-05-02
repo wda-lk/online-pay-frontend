@@ -33,11 +33,11 @@ const LoginPage: NextPage = () => {
   const { showFlag } = useFlags()
   const [passwordVisible, setPasswordVisibility] = useState(false)
 
-  const handleSubmit = (data: { nicNumber: string; password: string; }) => {
-    let existingUser = users.find(e => e.nicNumber === data.nicNumber)
+  const handleSubmit = (data: { mobileNumber: string; password: string; }) => {
+    let existingUser = users.find(e => e.mobileNumber === data.mobileNumber)
     // validate input data against existing user data
     if (!existingUser) {
-      return { nicNumber: "NIC number is not registered. Please try another one." }
+      return { mobileNumber: "Mobile number is not registered. Please try another one." }
     }
     if (existingUser.password !== data.password) {
       return { password: "Passwords is incorrect. Please double check." }
@@ -60,7 +60,7 @@ const LoginPage: NextPage = () => {
                      onClick: () => router
                        .push({
                                pathname: "/register/verify-account",
-                               query: { "nic-number": data.nicNumber, "email": existingUser!.email }
+                               query: { "mobile-number": data.mobileNumber, "email": existingUser!.email }
                              })
                        .then(r => console.log(r))
                    }
@@ -84,8 +84,8 @@ const LoginPage: NextPage = () => {
             />
             <FormSection>
               <Field
-                name="nicNumber"
-                label="NIC Number"
+                name="mobileNumber"
+                label="Mobile Number"
                 defaultValue=""
                 isRequired
               >

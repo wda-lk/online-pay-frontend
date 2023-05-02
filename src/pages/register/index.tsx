@@ -42,15 +42,15 @@ const RegistrationPage: NextPage = () => {
       confirmPassword: string
     }) => {
     const errors = {
-      nicNumber: users.some(e => e.nicNumber === data.nicNumber)
-                 ? "NIC is already taken. Please try another one."
+      mobileNumber: users.some(e => e.mobileNumber === data.mobileNumber)
+                 ? "Mobile number is already taken. Please try another one."
                  : undefined,
       confirmPassword: data.password !== data.confirmPassword
                        ? "Passwords doesn't match. Please double check."
                        : undefined
     }
     // Todo - Create an inactive user in the database
-    if (!errors.nicNumber && !errors.confirmPassword) {
+    if (!errors.mobileNumber && !errors.confirmPassword) {
       users.push(
         {
           nicNumber: data.nicNumber,
