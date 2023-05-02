@@ -6,6 +6,13 @@ import Form, {
   FormSection,
   HelperMessage
 } from "@atlaskit/form"
+import Select, {
+  ValueType
+} from "@atlaskit/select"
+import {
+  districts,
+  users
+} from "../../../lib/data"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "../../../components/card"
@@ -17,7 +24,6 @@ import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
 import WatchIcon from "@atlaskit/icon/glyph/watch"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { users } from "../../../lib/data"
 
 
 const RegistrationPage: NextPage = () => {
@@ -26,9 +32,13 @@ const RegistrationPage: NextPage = () => {
 
   const handleSubmit = (
     data: {
-      nicNumber: string;
-      email: string;
-      password: string;
+      nicNumber: string
+      name: string
+      address: string
+      district: string
+      mobileNumber: string
+      email: string
+      password: string
       confirmPassword: string
     }) => {
     const errors = {
@@ -44,12 +54,16 @@ const RegistrationPage: NextPage = () => {
       users.push(
         {
           nicNumber: data.nicNumber,
+          name: data.name,
+          address: data.address,
+          district: data.district,
+          mobileNumber: data.mobileNumber,
           email: data.email,
           password: data.password,
           isActive: false
         }
       )
-      console.log(`Created new user from: ${data.nicNumber}`)
+      console.log(`Created new user for: ${data.mobileNumber}`)
       router.push(
         {
           pathname: "/register/verify-account",
@@ -98,6 +112,40 @@ const RegistrationPage: NextPage = () => {
               >
                 {({ fieldProps }: any) => (
                   <TextField {...fieldProps}/>
+                )}
+              </Field>
+              <Field
+                name="address"
+                label="Address"
+                defaultValue=""
+                isRequired
+              >
+                {({ fieldProps }: any) => (
+                  <TextField {...fieldProps}/>
+                )}
+              </Field>
+              <Field<ValueType<{}>>
+                name="district"
+                label="District"
+                defaultValue={null}
+                isRequired
+                validate={(value) => {
+                  if (value) {
+                    return
+                  }
+                  return "Please select a district."
+                }}
+              >
+                {({ fieldProps: { id, ...rest }, error }) => (
+                  <>
+                    <Select<{}>
+                      inputId={id}
+                      {...rest}
+                      options={districts}
+                      isClearable
+                    />
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                  </>
                 )}
               </Field>
             </FormSection>

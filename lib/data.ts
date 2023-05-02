@@ -1,26 +1,71 @@
 export const users = [
   {
     nicNumber: "912000000V",
+    name: "Name",
+    address: "Address",
+    district: "District",
     email: "adminkurunegala@cat20.lk",
+    mobileNumber: "Mobile",
     password: "admin",
     isActive: true
   },
   {
     nicNumber: "951200042V",
-    email: "lahiru@cat20.lk",
+    name: "Name",
+    address: "Address",
+    district: "District",
+    email: "malaka@cat20.lk",
+    mobileNumber: "Mobile",
     password: "admin",
     isActive: false
   },
   {
     nicNumber: "770653312V",
+    name: "Name",
+    address: "Address",
+    district: "District",
     email: "prasa.medawachchiya@gmail.com",
+    mobileNumber: "Mobile",
     password: "admin",
     isActive: false
   },
   {
     nicNumber: "927571811V",
+    name: "Name",
+    address: "Address",
+    district: "District",
     email: "rambewaps2015@gmail.com",
+    mobileNumber: "Mobile",
     password: "admin",
     isActive: false
   }
 ]
+
+export const districts = [
+  { label: "Ampara", value: "ampara" },
+  { label: "Anuradhapura", value: "anuradhapura" },
+  { label: "Badulla", value: "badulla" },
+  { label: "Batticaloa", value: "batticaloa" },
+  { label: "Colombo", value: "colombo" },
+  { label: "Galle", value: "galle" },
+  { label: "Gampaha", value: "gampaha" },
+  { label: "Hambantota", value: "hambantota" },
+  { label: "Jaffna", value: "jaffna" },
+  { label: "Kalutara", value: "kalutara" },
+  { label: "Kandy", value: "kandy" },
+  { label: "Kegalle", value: "kegalle" },
+  { label: "Kilinochchi", value: "kilinochchi" },
+  { label: "Kurunegala", value: "kurunegala" },
+  { label: "Mannar", value: "mannar" },
+  { label: "Matale", value: "matale" },
+  { label: "Matara", value: "matara" },
+  { label: "Moneragala", value: "moneragala" },
+  { label: "Mullaitivu", value: "mullaitivu" },
+  { label: "Nuwara Eliya", value: "nuwara-eliya" },
+  { label: "Polonnaruwa", value: "polonnaruwa" },
+  { label: "Puttalam", value: "puttalam" },
+  { label: "Ratnapura", value: "ratnapura" },
+  { label: "Trincomalee", value: "trincomalee" },
+  { label: "Vavuniya", value: "vavuniya" }
+]
+
