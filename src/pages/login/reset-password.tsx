@@ -25,6 +25,8 @@ import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
 import SlotWrapper from "../../../components/slot-wrapper"
 import TextField from "@atlaskit/textfield"
+import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
+import WatchIcon from "@atlaskit/icon/glyph/watch"
 import openLetterImage from "../../../public/images/open-letter.svg"
 import styles from "@/pages/login/index.module.css"
 import { token } from "@atlaskit/tokens"
@@ -33,8 +35,9 @@ import { useRouter } from "next/router"
 
 const ResetPasswordPage: NextPage = () => {
   const router = useRouter()
-  const [isBannerShown, showBanner] = useState(false)
   const [hasSentRecovery, sendRecovery] = useState(false)
+  const [hasVerifiedCode, verifyCode] = useState(false)
+  const [passwordVisible, setPasswordVisibility] = useState(false)
   const existingUser: MutableRefObject<User | undefined> = useRef()
 
   const handleEmailSubmit = (data: { email: string }) => {
@@ -48,25 +51,31 @@ const ResetPasswordPage: NextPage = () => {
   }
 
   const handleCodeSubmit = (data: { code: string; }) => {
-    let user = existingUser.current
-    if (user) {
-      // Todo - Verify if the codes match from API
-      const errors = {
-        code: data.code !== "123456"
-              ? "Invalid code, Please double check your Email."
-              : undefined
-      }
-      if (!errors.code) {
-        // Todo - Persist the changed data of the user
-        user.isActive = true
-        console.log("User account activated.")
-        router.push({ pathname: "/login" }).then(r => console.log(r))
-      }
-      return errors
-    } else {
-      console.log("User account unavailable. Please fill out the registration form.")
-      !isBannerShown && showBanner(!isBannerShown)
+    // Todo - Verify if the codes match from API
+    const errors = {
+      code: data.code !== "123456"
+            ? "Invalid code, Please double check your Email."
+            : undefined
     }
+    if (!errors.code) {
+      verifyCode(true)
+      return
+    }
+    return errors
+  }
+
+  const handleResetSubmit = (data: { password: string, confirmPassword: string }) => {
+    const errors = {
+      confirmPassword: data.password !== data.confirmPassword
+                       ? "Passwords doesn't match. Please double check."
+                       : undefined
+    }
+    if (!errors.confirmPassword) {
+      existingUser.current && (existingUser.current.password = data.password)
+      router.push({ pathname: "/login" }).then(r => console.log(r))
+      return
+    }
+    return errors
   }
 
   const emailForm =
@@ -187,7 +196,7 @@ const ResetPasswordPage: NextPage = () => {
                 />
                 <Button
                   appearance="link"
-                  onClick={() => sendRecovery(true)}
+                  onClick={() => sendRecovery(false)}
                 >
                   Resend code
                 </Button>
@@ -205,9 +214,111 @@ const ResetPasswordPage: NextPage = () => {
       )}
     </Form>
 
+  const resetForm =
+    <Form onSubmit={handleResetSubmit}>
+      {({ formProps, submitting }) => (
+        <form {...formProps}>
+          <FormHeader
+            title="Enter your new password"
+            description="* indicates a required field"
+          />
+          <FormSection>
+            <Field
+              name="password"
+              label="Password"
+              defaultValue=""
+              isRequired
+              validate={(value) =>
+                value && value.length < 6 ? "INVALID" : undefined
+              }
+            >
+              {({ fieldProps, error, valid }) => (
+                <>
+                  <TextField
+                    {...fieldProps}
+                    elemAfterInput={
+                      <Button
+                        iconBefore={
+                          passwordVisible
+                          ? <WatchFilledIcon label="Toggle Password" size="medium"/>
+                          : <WatchIcon label="Toggle Password" size="medium"/>
+                        }
+                        appearance="subtle-link"
+                        spacing="compact"
+                        onClick={() => setPasswordVisibility(!passwordVisible)}
+                      />
+                    }
+                    type={passwordVisible ? "text" : "password"}
+                  />
+                  {error && !valid && (
+                    <HelperMessage>
+                      Use 6 or more characters with a mix of letters, numbers and symbols.
+                    </HelperMessage>
+                  )}
+                  {error && (
+                    <ErrorMessage>
+                      Password needs to have more than 6 characters.
+                    </ErrorMessage>
+                  )}
+                </>
+              )}
+            </Field>
+            <Field
+              name="confirmPassword"
+              label="Confirm Password"
+              defaultValue=""
+              isRequired
+            >
+              {({ fieldProps, error }) => (
+                <>
+                  <TextField
+                    {...fieldProps}
+                    elemAfterInput={
+                      <Button
+                        iconBefore={
+                          passwordVisible
+                          ? <WatchFilledIcon label="Toggle Password" size="medium"/>
+                          : <WatchIcon label="Toggle Password" size="medium"/>
+                        }
+                        appearance="subtle-link"
+                        spacing="compact"
+                        onClick={() => setPasswordVisibility(!passwordVisible)}
+                      />
+                    }
+                    type={passwordVisible ? "text" : "password"}
+                  />
+                  {error && (
+                    <ErrorMessage>
+                      {error}
+                    </ErrorMessage>
+                  )}
+                </>
+              )}
+            </Field>
+          </FormSection>
+          <FormFooter>
+            <ButtonGroup>
+              <div className={styles.buttonGroupInternal}>
+                <Button appearance="link">
+                  <Link href="/login"><a>Return to log in</a></Link>
+                </Button>
+                <LoadingButton
+                  type="submit"
+                  appearance="primary"
+                  isLoading={submitting}
+                >
+                  Confirm the reset
+                </LoadingButton>
+              </div>
+            </ButtonGroup>
+          </FormFooter>
+        </form>
+      )}
+    </Form>
+
   return (
     <Card>
-      {hasSentRecovery ? recoveryForm : emailForm}
+      {hasSentRecovery ? hasVerifiedCode ? resetForm : recoveryForm : emailForm}
     </Card>
   )
 }
