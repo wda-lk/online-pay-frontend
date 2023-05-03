@@ -6,7 +6,9 @@ import Form, {
   FormSection,
   HelperMessage
 } from "@atlaskit/form"
-import React, { useRef } from "react"
+import React, {
+  useRef
+} from "react"
 import Banner from "@atlaskit/banner"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
@@ -18,6 +20,7 @@ import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
+import { RadioGroup } from "@atlaskit/radio"
 import SlotWrapper from "../../../components/slot-wrapper"
 import TextField from "@atlaskit/textfield"
 import openLetterImage from "../../../public/images/open-letter.svg"
@@ -30,8 +33,11 @@ import { users } from "../../../lib/data"
 
 const VerifyAccountPage: NextPage = () => {
   const router = useRouter()
+  const mobileNumber = router.query["mobile-number"]
+  console.log(router.query.email == undefined)
   const [hasSentVerification, sendVerification] = useState(false)
   const [isBannerShown, showBanner] = useState(false)
+  const [hasSetDefaultVerifyMethod, setVerifyMethod] = useState(true)
   // Todo - API - Query user account
   // Todo - Can we keep the account in context
   const existingUser = useRef(users.find(e => e.email === router.query.email))
@@ -84,30 +90,78 @@ const VerifyAccountPage: NextPage = () => {
           />
           <FormSection>
             <Field
-              name="email"
-              label="Email the verification to"
-              defaultValue={router.query.email || ""}
-              isRequired
-              validate={(value) =>
-                value && !value.includes("@") ? "INVALID" : undefined
-              }
+              name="verificationMethodField"
+              label="Pick a verification method"
             >
-              {({ fieldProps, error, valid }) => (
-                <>
-                  <TextField {...fieldProps} />
-                  {error && !valid && (
-                    <HelperMessage>
-                      Enter a valid Email which includes a `@` character
-                    </HelperMessage>
-                  )}
-                  {error && (
-                    <ErrorMessage>
-                      Your email is not valid.
-                    </ErrorMessage>
-                  )}
-                </>
+              {({ fieldProps: { value } }) => (
+                <RadioGroup
+                  name="verificationMethod"
+                  defaultValue={hasSetDefaultVerifyMethod ? "sms" : "email"}
+                  onChange={e =>
+                    e.currentTarget.value == "sms" ? setVerifyMethod(true)
+                                                   : setVerifyMethod(false)
+                  }
+                  isRequired
+                  options={[
+                    {
+                      name: "verificationMethod",
+                      value: "sms",
+                      label: "SMS",
+                      isDisabled: router.query["mobile-number"] == undefined
+                    },
+                    {
+                      name: "verificationMethod",
+                      value: "email",
+                      label: "Email",
+                      isDisabled: router.query.email == undefined
+                    }
+                  ]}
+                  value={value}
+                />
               )}
             </Field>
+            {
+              hasSetDefaultVerifyMethod
+              ?
+              <Field
+                name="mobileNumber"
+                label="Mobile Number"
+                defaultValue={router.query["mobile-number"] || ""}
+                isRequired
+              >
+                {({ fieldProps }: any) => (
+                  <TextField
+                    {...fieldProps}
+                    maxLength={10}
+                  />
+                )}
+              </Field>
+              :
+              <Field
+                name="email"
+                label="Email the verification to"
+                defaultValue={router.query.email || ""}
+                isRequired
+                validate={(value) =>
+                  value && !value.includes("@") ? "Your email is not valid." : undefined
+                }
+              >
+                {({ fieldProps, error, valid }) => (
+                  <>
+                    <TextField {...fieldProps} />
+                    {error && !valid && (
+                      <HelperMessage>
+                        Enter a valid Email which includes a `@` character
+                      </HelperMessage>
+                    )}
+                    {error && (
+                      <ErrorMessage>{error}</ErrorMessage>
+                    )}
+                  </>
+                )}
+              </Field>
+            }
+
           </FormSection>
           <FormFooter>
             <ButtonGroup>
