@@ -32,17 +32,18 @@ const VerifyAccountPage: NextPage = () => {
   const router = useRouter()
   const [hasSentVerification, sendVerification] = useState(false)
   const [isBannerShown, showBanner] = useState(false)
+  // Todo - API - Query user account
+  // Todo - Can we keep the account in context
   const existingUser = useRef(users.find(e => e.email === router.query.email))
 
   const handleEmailSubmit = (data: { email: string; }) => {
     let user = existingUser.current
     if (user) {
       if (router.query.email !== data.email) {
-        // Todo - Persist the changed data of the user
+        // Todo - API - Update user's email
         user.email = data.email
-        console.log("User Email was changed.")
       }
-      // Todo - Fetch code from backend and send it to the email
+      // Todo - API - Generate a recovery code
       sendVerification(!hasSentVerification)
       isBannerShown && showBanner(!isBannerShown)
     } else {
@@ -54,14 +55,14 @@ const VerifyAccountPage: NextPage = () => {
   const handleCodeSubmit = (data: { code: string; }) => {
     let user = existingUser.current
     if (user) {
-      // Todo - Verify if the codes match from API
+      // Todo - Frontend - Verify the codes
       const errors = {
         code: data.code !== "123456"
               ? "Invalid code, Please double check your Email."
               : undefined
       }
       if (!errors.code) {
-        // Todo - Persist the changed data of the user
+        // Todo - API - Update user's active status
         user.isActive = true
         console.log("User account activated.")
         router.push({ pathname: "/login" }).then(r => console.log(r))
@@ -127,90 +128,88 @@ const VerifyAccountPage: NextPage = () => {
     </Form>
 
   const verifyForm =
-    <>
-      <Form onSubmit={handleCodeSubmit}>
-        {({ formProps, submitting }) => (
-          <form {...formProps}>
-            <FormHeader
-              title="Verify Your Account"
-              description="* indicates a required field"
-            />
-            <FormSection>
-              <SlotWrapper>
-                <p>
-                  We sent a verification code to you at<br/>
-                  <b>{existingUser.current && existingUser.current.email}</b>
-                </p>
-                <Image
-                  style={{
-                    margin: "12px 0 0 0",
-                    height: "88px",
-                    width: "100px"
-                  }}
-                  src={openLetterImage}
-                  alt="Email sent"
-                />
-              </SlotWrapper>
-            </FormSection>
-            <FormSection>
-              <Field
-                name="code"
-                label="Verification Code"
-                defaultValue=""
-                isRequired
-              >
-                {({ fieldProps, error }) => (
-                  <>
-                    <TextField
-                      {...fieldProps}
-                      minLength={6}
-                      maxLength={6}
-                    />
-                    {!error && (
-                      <HelperMessage>
-                        Six digit verification code
-                      </HelperMessage>
-                    )}
-                    {error && (
-                      <ErrorMessage>
-                        {error}
-                      </ErrorMessage>
-                    )}
-                  </>
-                )}
-              </Field>
-            </FormSection>
-            <FormFooter>
-              <ButtonGroup>
-                <div className={styles.buttonGroupInternal}>
-                  <Button appearance="link">
-                    <Link href="/register"><a>Return to registration</a></Link>
-                  </Button>
-                  <HipchatMediaAttachmentCountIcon
-                    primaryColor={token("color.icon.disabled", N400A)}
-                    size="small"
-                    label=""
+    <Form onSubmit={handleCodeSubmit}>
+      {({ formProps, submitting }) => (
+        <form {...formProps}>
+          <FormHeader
+            title="Verify Your Account"
+            description="* indicates a required field"
+          />
+          <FormSection>
+            <SlotWrapper>
+              <p>
+                We sent a verification code to you at<br/>
+                <b>{existingUser.current && existingUser.current.email}</b>
+              </p>
+              <Image
+                style={{
+                  margin: "12px 0 0 0",
+                  height: "88px",
+                  width: "100px"
+                }}
+                src={openLetterImage}
+                alt="Email sent"
+              />
+            </SlotWrapper>
+          </FormSection>
+          <FormSection>
+            <Field
+              name="code"
+              label="Verification Code"
+              defaultValue=""
+              isRequired
+            >
+              {({ fieldProps, error }) => (
+                <>
+                  <TextField
+                    {...fieldProps}
+                    minLength={6}
+                    maxLength={6}
                   />
-                  <Button
-                    appearance="link"
-                    onClick={() => sendVerification(!hasSentVerification)}
-                  >
-                    Resend code
-                  </Button>
-                  <LoadingButton
-                    type="submit"
-                    appearance="primary"
-                    isLoading={submitting}
-                  >
-                    Verify
-                  </LoadingButton>
-                </div>
-              </ButtonGroup>
-            </FormFooter>
-          </form>
-        )}
-      </Form>
-    </>
+                  {!error && (
+                    <HelperMessage>
+                      Six digit verification code
+                    </HelperMessage>
+                  )}
+                  {error && (
+                    <ErrorMessage>
+                      {error}
+                    </ErrorMessage>
+                  )}
+                </>
+              )}
+            </Field>
+          </FormSection>
+          <FormFooter>
+            <ButtonGroup>
+              <div className={styles.buttonGroupInternal}>
+                <Button appearance="link">
+                  <Link href="/register"><a>Return to registration</a></Link>
+                </Button>
+                <HipchatMediaAttachmentCountIcon
+                  primaryColor={token("color.icon.disabled", N400A)}
+                  size="small"
+                  label=""
+                />
+                <Button
+                  appearance="link"
+                  onClick={() => sendVerification(!hasSentVerification)}
+                >
+                  Resend code
+                </Button>
+                <LoadingButton
+                  type="submit"
+                  appearance="primary"
+                  isLoading={submitting}
+                >
+                  Verify
+                </LoadingButton>
+              </div>
+            </ButtonGroup>
+          </FormFooter>
+        </form>
+      )}
+    </Form>
 
   return (
     <>

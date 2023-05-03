@@ -33,9 +33,9 @@ const LoginPage: NextPage = () => {
   const { showFlag } = useFlags()
   const [passwordVisible, setPasswordVisibility] = useState(false)
 
-  const handleSubmit = (data: { mobileNumber: string; password: string; }) => {
+  const handleSubmit = (data: { mobileNumber: string, password: string }) => {
     let existingUser = users.find(e => e.mobileNumber === data.mobileNumber)
-    // validate input data against existing user data
+    // Todo - API - Query user account
     if (!existingUser) {
       return { mobileNumber: "Mobile number is not registered. Please try another one." }
     }
@@ -43,31 +43,33 @@ const LoginPage: NextPage = () => {
       return { password: "Passwords is incorrect. Please double check." }
     }
     if (!existingUser.isActive) {
-      showFlag({
-                 isAutoDismiss: true,
-                 icon: (
-                   <WarningIcon
-                     label="Warning"
-                     primaryColor={token("color.icon.warning", Y300)}
-                   />
-                 ),
-                 title: "Failed to log you in",
-                 description: "To use our services, your account needs to be activated. Clicking on the below link " +
-                              "will take you to our activation portal.",
-                 actions: [
-                   {
-                     content: "Activate my account",
-                     onClick: () => router
-                       .push({
-                               pathname: "/register/verify-account",
-                               query: { "mobile-number": data.mobileNumber, "email": existingUser!.email }
-                             })
-                       .then(r => console.log(r))
-                   }
-                 ]
-               })
+      showFlag(
+        {
+          isAutoDismiss: true,
+          icon: (
+            <WarningIcon
+              label="Warning"
+              primaryColor={token("color.icon.warning", Y300)}
+            />
+          ),
+          title: "Failed to log you in",
+          description: "To use our services, your account needs to be activated. Clicking on the below link " +
+                       "will take you to our activation portal.",
+          actions: [
+            {
+              content: "Activate my account",
+              onClick: () => router
+                .push(
+                  {
+                    pathname: "/register/verify-account",
+                    query: { "mobile-number": data.mobileNumber, "email": existingUser!.email }
+                  })
+                .then(r => console.log(r))
+            }
+          ]
+        })
     } else {
-      // user logged in without any issues
+      // Todo - Frontend - Create a user session
       router.push("/dashboard").then(r => console.log(r))
       console.log(data)
     }

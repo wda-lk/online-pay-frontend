@@ -1,4 +1,20 @@
-export const users = [
+export interface User {
+  nicNumber: string,
+  name: string,
+  address: string,
+  district: string,
+  email?: string,
+  mobileNumber: string,
+  password: string,
+  isActive: boolean
+}
+
+interface District {
+  label: string,
+  value: string
+}
+
+export const users: User[] = [
   {
     nicNumber: "912000000V",
     name: "Name",
@@ -41,7 +57,7 @@ export const users = [
   }
 ]
 
-export const districts = [
+export const districts: District[] = [
   { label: "Ampara", value: "ampara" },
   { label: "Anuradhapura", value: "anuradhapura" },
   { label: "Badulla", value: "badulla" },

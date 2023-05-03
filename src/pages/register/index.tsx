@@ -42,15 +42,16 @@ const RegistrationPage: NextPage = () => {
       confirmPassword: string
     }) => {
     const errors = {
+      // Todo - Frontend - NIC and email should be unique
       mobileNumber: users.some(e => e.mobileNumber === data.mobileNumber)
-                 ? "Mobile number is already taken. Please try another one."
-                 : undefined,
+                    ? "Mobile number is already taken. Please try another one."
+                    : undefined,
       confirmPassword: data.password !== data.confirmPassword
                        ? "Passwords doesn't match. Please double check."
                        : undefined
     }
-    // Todo - Create an inactive user in the database
     if (!errors.mobileNumber && !errors.confirmPassword) {
+      // Todo - API - Create an inactive user
       users.push(
         {
           nicNumber: data.nicNumber,
