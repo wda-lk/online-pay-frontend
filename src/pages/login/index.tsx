@@ -35,7 +35,7 @@ const LoginPage: NextPage = () => {
 
   const handleSubmit = (data: { mobileNumber: string, password: string }) => {
     let existingUser = users.find(e => e.mobileNumber === data.mobileNumber)
-    // validate input data against existing user data
+    // Todo - API - Query user account
     if (!existingUser) {
       return { mobileNumber: "Mobile number is not registered. Please try another one." }
     }
@@ -69,7 +69,7 @@ const LoginPage: NextPage = () => {
           ]
         })
     } else {
-      // user logged in without any issues
+      // Todo - Frontend - Create a user session
       router.push("/dashboard").then(r => console.log(r))
       console.log(data)
     }

@@ -41,17 +41,19 @@ const ResetPasswordPage: NextPage = () => {
   const existingUser: MutableRefObject<User | undefined> = useRef()
 
   const handleEmailSubmit = (data: { email: string }) => {
+    // Todo - API - Query user account
     let user = users.find(e => e.email === data.email)
     if (!user) {
       return { email: "Email address is not registered. Please try another one." }
     }
     existingUser.current = user
+    // Todo - API - Generate a recovery code
     sendRecovery(true)
     return
   }
 
   const handleCodeSubmit = (data: { code: string; }) => {
-    // Todo - Verify if the codes match from API
+    // Todo - Frontend - Verify the codes
     const errors = {
       code: data.code !== "123456"
             ? "Invalid code, Please double check your Email."
@@ -71,6 +73,8 @@ const ResetPasswordPage: NextPage = () => {
                        : undefined
     }
     if (!errors.confirmPassword) {
+      // Todo - API - Update a user's password
+      // Todo - Frontend - Invalidate user's sessions
       existingUser.current && (existingUser.current.password = data.password)
       router.push({ pathname: "/login" }).then(r => console.log(r))
       return

@@ -32,19 +32,18 @@ const VerifyAccountPage: NextPage = () => {
   const router = useRouter()
   const [hasSentVerification, sendVerification] = useState(false)
   const [isBannerShown, showBanner] = useState(false)
-  const existingUser = useRef(
-    users.find(e => e.email === router.query.email)
-  )
+  // Todo - API - Query user account
+  // Todo - Can we keep the account in context
+  const existingUser = useRef(users.find(e => e.email === router.query.email))
 
   const handleEmailSubmit = (data: { email: string; }) => {
     let user = existingUser.current
     if (user) {
       if (router.query.email !== data.email) {
-        // Todo - Persist the changed data of the user
+        // Todo - API - Update user's email
         user.email = data.email
-        console.log("User Email was changed.")
       }
-      // Todo - Fetch code from backend and send it to the email
+      // Todo - API - Generate a recovery code
       sendVerification(!hasSentVerification)
       isBannerShown && showBanner(!isBannerShown)
     } else {
@@ -56,14 +55,14 @@ const VerifyAccountPage: NextPage = () => {
   const handleCodeSubmit = (data: { code: string; }) => {
     let user = existingUser.current
     if (user) {
-      // Todo - Verify if the codes match from API
+      // Todo - Frontend - Verify the codes
       const errors = {
         code: data.code !== "123456"
               ? "Invalid code, Please double check your Email."
               : undefined
       }
       if (!errors.code) {
-        // Todo - Persist the changed data of the user
+        // Todo - API - Update user's active status
         user.isActive = true
         console.log("User account activated.")
         router.push({ pathname: "/login" }).then(r => console.log(r))
