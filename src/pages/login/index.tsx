@@ -61,7 +61,7 @@ const LoginPage: NextPage = () => {
               onClick: () => router
                 .push(
                   {
-                    pathname: "/register/verify-account",
+                    pathname: "/register/activate-account",
                     query: { "mobile-number": data.mobileNumber, "email": existingUser!.email }
                   })
                 .then(r => console.log(r))

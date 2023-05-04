@@ -37,7 +37,7 @@ const RegistrationPage: NextPage = () => {
       address: string
       district: string
       mobileNumber: string
-      email: string
+      email?: string
       password: string
       confirmPassword: string
     }) => {
@@ -64,11 +64,11 @@ const RegistrationPage: NextPage = () => {
           isActive: false
         }
       )
-      console.log(`Created new user for: ${data.mobileNumber}`)
+      console.log(`Created new user for: ${data.nicNumber}`)
       router.push(
         {
-          pathname: "/register/verify-account",
-          query: { "nic-number": data.nicNumber, "email": data.email }
+          pathname: "/register/activate-account",
+          query: { "mobile-number": data.mobileNumber, "email": data.email }
         }).then(r => console.log(r))
     }
     return errors

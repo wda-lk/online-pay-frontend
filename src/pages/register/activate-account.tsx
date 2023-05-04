@@ -6,7 +6,9 @@ import Form, {
   FormSection,
   HelperMessage
 } from "@atlaskit/form"
-import React, { useRef } from "react"
+import React, {
+  useRef
+} from "react"
 import Banner from "@atlaskit/banner"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
@@ -18,6 +20,7 @@ import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { N400A } from "@atlaskit/theme/colors"
 import { NextPage } from "next"
+import { RadioGroup } from "@atlaskit/radio"
 import SlotWrapper from "../../../components/slot-wrapper"
 import TextField from "@atlaskit/textfield"
 import openLetterImage from "../../../public/images/open-letter.svg"
@@ -28,23 +31,27 @@ import { useState } from "react"
 import { users } from "../../../lib/data"
 
 
-const VerifyAccountPage: NextPage = () => {
-  const router = useRouter()
-  const [hasSentVerification, sendVerification] = useState(false)
+const ActivateAccountPage: NextPage = () => {
+  /*Todo -
+     API - Query user account
+     Can we keep the account in context*/
   const [isBannerShown, showBanner] = useState(false)
-  // Todo - API - Query user account
-  // Todo - Can we keep the account in context
-  const existingUser = useRef(users.find(e => e.email === router.query.email))
+  // True if verification method is sms verification, otherwise False
+  const [hasDefaultActivationMethod, changeActivationMethod] = useState(true)
+  const [hasSentActivation, sendActivationCode] = useState(false)
+  const router = useRouter()
+  let email = router.query.email
+  let mobileNumber = router.query["mobile-number"]
+  let existingUser = useRef(users.find(e => e.mobileNumber === mobileNumber))
 
-  const handleEmailSubmit = (data: { email: string; }) => {
-    let user = existingUser.current
-    if (user) {
-      if (router.query.email !== data.email) {
-        // Todo - API - Update user's email
-        user.email = data.email
-      }
-      // Todo - API - Generate a recovery code
-      sendVerification(!hasSentVerification)
+  const handleCodeRequest = (data: { senderReference: string; }) => {
+    if (existingUser.current) {
+      /*Todo -
+         API - Update user's data
+         API - Generate a recovery code*/
+      hasDefaultActivationMethod ? (mobileNumber !== data.senderReference) && (mobileNumber = data.senderReference)
+                                 : (email !== data.senderReference) && (email = data.senderReference)
+      sendActivationCode(true)
       isBannerShown && showBanner(!isBannerShown)
     } else {
       console.log("User account unavailable. Please fill out the registration form.")
@@ -74,8 +81,8 @@ const VerifyAccountPage: NextPage = () => {
     }
   }
 
-  const emailForm =
-    <Form onSubmit={handleEmailSubmit}>
+  const requestForm =
+    <Form onSubmit={handleCodeRequest}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
@@ -84,30 +91,78 @@ const VerifyAccountPage: NextPage = () => {
           />
           <FormSection>
             <Field
-              name="email"
-              label="Email the verification to"
-              defaultValue={router.query.email || ""}
-              isRequired
-              validate={(value) =>
-                value && !value.includes("@") ? "INVALID" : undefined
-              }
+              name="verificationMethodField"
+              label="Pick a verification method"
             >
-              {({ fieldProps, error, valid }) => (
-                <>
-                  <TextField {...fieldProps} />
-                  {error && !valid && (
-                    <HelperMessage>
-                      Enter a valid Email which includes a `@` character
-                    </HelperMessage>
-                  )}
-                  {error && (
-                    <ErrorMessage>
-                      Your email is not valid.
-                    </ErrorMessage>
-                  )}
-                </>
+              {({ fieldProps: { value } }) => (
+                <RadioGroup
+                  name="verificationMethod"
+                  defaultValue={hasDefaultActivationMethod ? "sms" : "email"}
+                  onChange={e =>
+                    e.currentTarget.value == "sms" ? changeActivationMethod(true)
+                                                   : changeActivationMethod(false)
+                  }
+                  options={[
+                    {
+                      name: "verificationMethod",
+                      value: "sms",
+                      label: "SMS",
+                      isDisabled: router.query["mobile-number"] == undefined
+                    },
+                    {
+                      name: "verificationMethod",
+                      value: "email",
+                      label: "Email",
+                      isDisabled: router.query.email == undefined
+                    }
+                  ]}
+                  value={value}
+                  isRequired
+                />
               )}
             </Field>
+            {
+              hasDefaultActivationMethod
+              ?
+              <Field
+                name="mobileNumber"
+                label="Mobile Number"
+                defaultValue={router.query["mobile-number"] || ""}
+                isRequired
+              >
+                {({ fieldProps }: any) => (
+                  <TextField
+                    {...fieldProps}
+                    maxLength={10}
+                  />
+                )}
+              </Field>
+              :
+              <Field
+                name="email"
+                label="Email the verification to"
+                defaultValue={router.query.email || ""}
+                isRequired
+                validate={(value) =>
+                  value && !value.includes("@") ? "Your email is not valid." : undefined
+                }
+              >
+                {({ fieldProps, error, valid }) => (
+                  <>
+                    <TextField {...fieldProps} />
+                    {error && !valid && (
+                      <HelperMessage>
+                        Enter a valid Email which includes a `@` character
+                      </HelperMessage>
+                    )}
+                    {error && (
+                      <ErrorMessage>{error}</ErrorMessage>
+                    )}
+                  </>
+                )}
+              </Field>
+            }
+
           </FormSection>
           <FormFooter>
             <ButtonGroup>
@@ -127,12 +182,12 @@ const VerifyAccountPage: NextPage = () => {
       )}
     </Form>
 
-  const verifyForm =
+  const activationForm =
     <Form onSubmit={handleCodeSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
-            title="Verify Your Account"
+            title="Activate Your Account"
             description="* indicates a required field"
           />
           <FormSection>
@@ -193,16 +248,16 @@ const VerifyAccountPage: NextPage = () => {
                 />
                 <Button
                   appearance="link"
-                  onClick={() => sendVerification(!hasSentVerification)}
+                  onClick={() => sendActivationCode(false)}
                 >
-                  Resend code
+                  Retry sending a code
                 </Button>
                 <LoadingButton
                   type="submit"
                   appearance="primary"
                   isLoading={submitting}
                 >
-                  Verify
+                  Activate
                 </LoadingButton>
               </div>
             </ButtonGroup>
@@ -222,10 +277,10 @@ const VerifyAccountPage: NextPage = () => {
         </Banner>
       )}
       <Card>
-        {hasSentVerification ? verifyForm : emailForm}
+        {hasSentActivation ? activationForm : requestForm}
       </Card>
     </>
   )
 }
 
-export default VerifyAccountPage
+export default ActivateAccountPage
