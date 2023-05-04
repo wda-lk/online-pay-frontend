@@ -67,7 +67,7 @@ const RegistrationPage: NextPage = () => {
       console.log(`Created new user for: ${data.nicNumber}`)
       router.push(
         {
-          pathname: "/register/verify-account",
+          pathname: "/register/activate-account",
           query: { "mobile-number": data.mobileNumber, "email": data.email }
         }).then(r => console.log(r))
     }

@@ -34,25 +34,25 @@ import { useRouter } from "next/router"
 
 
 const ResetPasswordPage: NextPage = () => {
-  const router = useRouter()
-  const [hasSentRecovery, sendRecovery] = useState(false)
-  const [hasVerifiedCode, verifyCode] = useState(false)
   const [passwordVisible, setPasswordVisibility] = useState(false)
+  const [hasSentRecovery, sendRecovery] = useState(false)
+  const [hasRecovered, recoverAccount] = useState(false)
+  const router = useRouter()
   const existingUser: MutableRefObject<User | undefined> = useRef()
 
-  const handleEmailSubmit = (data: { email: string }) => {
+  const handleVerificationSubmit = (data: { nicNumber: string }) => {
     // Todo - API - Query user account
-    let user = users.find(e => e.email === data.email)
+    let user = users.find(e => e.email === data.nicNumber)
     if (!user) {
-      return { email: "Email address is not registered. Please try another one." }
+      return { email: "NIC number is not registered. Please try another one." }
     }
     existingUser.current = user
-    // Todo - API - Generate a recovery code
+    // Todo - API - Generate a recovery code and send it to user's email and mobile
     sendRecovery(true)
     return
   }
 
-  const handleCodeSubmit = (data: { code: string; }) => {
+  const handleRecoverySubmit = (data: { code: string; }) => {
     // Todo - Frontend - Verify the codes
     const errors = {
       code: data.code !== "123456"
@@ -60,7 +60,7 @@ const ResetPasswordPage: NextPage = () => {
             : undefined
     }
     if (!errors.code) {
-      verifyCode(true)
+      recoverAccount(true)
       return
     }
     return errors
@@ -82,8 +82,8 @@ const ResetPasswordPage: NextPage = () => {
     return errors
   }
 
-  const emailForm =
-    <Form onSubmit={handleEmailSubmit}>
+  const verificationForm =
+    <Form onSubmit={handleVerificationSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
@@ -92,21 +92,18 @@ const ResetPasswordPage: NextPage = () => {
           />
           <FormSection>
             <Field
-              label="We'll send a recovery code to"
-              name="email"
+              label="Please enter your NIC number"
+              name="nicNumber"
+              defaultValue=""
               isRequired
-              validate={(value) =>
-                value && !value.includes("@") ? "Your email is not valid." : undefined
-              }
             >
-              {({ fieldProps, error, valid }) => (
+              {({ fieldProps, error }) => (
                 <>
-                  <TextField {...fieldProps}/>
-                  {error && !valid && (
-                    <HelperMessage>
-                      Enter a valid Email which includes a `@` character
-                    </HelperMessage>
-                  )}
+                  <TextField
+                    {...fieldProps}
+                    style={{ textTransform: "uppercase" }}
+                    maxLength={12}
+                  />
                   {error && (
                     <ErrorMessage>
                       {error}
@@ -135,7 +132,7 @@ const ResetPasswordPage: NextPage = () => {
     </Form>
 
   const recoveryForm =
-    <Form onSubmit={handleCodeSubmit}>
+    <Form onSubmit={handleRecoverySubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
@@ -162,7 +159,7 @@ const ResetPasswordPage: NextPage = () => {
           <FormSection>
             <Field
               name="code"
-              label="Verification Code"
+              label="Recovery Code"
               defaultValue=""
               isRequired
             >
@@ -223,7 +220,7 @@ const ResetPasswordPage: NextPage = () => {
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
-            title="Enter your new password"
+            title="Enter your new Password"
             description="* indicates a required field"
           />
           <FormSection>
@@ -322,7 +319,7 @@ const ResetPasswordPage: NextPage = () => {
 
   return (
     <Card>
-      {hasSentRecovery ? hasVerifiedCode ? resetForm : recoveryForm : emailForm}
+      {hasSentRecovery ? hasRecovered ? resetForm : recoveryForm : verificationForm}
     </Card>
   )
 }
