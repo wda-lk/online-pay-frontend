@@ -31,26 +31,27 @@ import { useState } from "react"
 import { users } from "../../../lib/data"
 
 
-const VerifyAccountPage: NextPage = () => {
-  const router = useRouter()
-  const mobileNumber = router.query["mobile-number"]
-  console.log(router.query.email == undefined)
-  const [hasSentVerification, sendVerification] = useState(false)
+const ActivateAccountPage: NextPage = () => {
+  /*Todo -
+     API - Query user account
+     Can we keep the account in context*/
   const [isBannerShown, showBanner] = useState(false)
-  const [hasSetDefaultVerifyMethod, setVerifyMethod] = useState(true)
-  // Todo - API - Query user account
-  // Todo - Can we keep the account in context
-  const existingUser = useRef(users.find(e => e.email === router.query.email))
+  // True if verification method is sms verification, otherwise False
+  const [hasDefaultActivationMethod, changeActivationMethod] = useState(true)
+  const [hasSentActivation, sendActivationCode] = useState(false)
+  const router = useRouter()
+  let email = router.query.email
+  let mobileNumber = router.query["mobile-number"]
+  let existingUser = useRef(users.find(e => e.mobileNumber === mobileNumber))
 
-  const handleEmailSubmit = (data: { email: string; }) => {
-    let user = existingUser.current
-    if (user) {
-      if (router.query.email !== data.email) {
-        // Todo - API - Update user's email
-        user.email = data.email
-      }
-      // Todo - API - Generate a recovery code
-      sendVerification(!hasSentVerification)
+  const handleCodeRequest = (data: { senderReference: string; }) => {
+    if (existingUser.current) {
+      /*Todo -
+         API - Update user's data
+         API - Generate a recovery code*/
+      hasDefaultActivationMethod ? (mobileNumber !== data.senderReference) && (mobileNumber = data.senderReference)
+                                 : (email !== data.senderReference) && (email = data.senderReference)
+      sendActivationCode(true)
       isBannerShown && showBanner(!isBannerShown)
     } else {
       console.log("User account unavailable. Please fill out the registration form.")
@@ -80,8 +81,8 @@ const VerifyAccountPage: NextPage = () => {
     }
   }
 
-  const emailForm =
-    <Form onSubmit={handleEmailSubmit}>
+  const requestForm =
+    <Form onSubmit={handleCodeRequest}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
@@ -96,12 +97,11 @@ const VerifyAccountPage: NextPage = () => {
               {({ fieldProps: { value } }) => (
                 <RadioGroup
                   name="verificationMethod"
-                  defaultValue={hasSetDefaultVerifyMethod ? "sms" : "email"}
+                  defaultValue={hasDefaultActivationMethod ? "sms" : "email"}
                   onChange={e =>
-                    e.currentTarget.value == "sms" ? setVerifyMethod(true)
-                                                   : setVerifyMethod(false)
+                    e.currentTarget.value == "sms" ? changeActivationMethod(true)
+                                                   : changeActivationMethod(false)
                   }
-                  isRequired
                   options={[
                     {
                       name: "verificationMethod",
@@ -117,11 +117,12 @@ const VerifyAccountPage: NextPage = () => {
                     }
                   ]}
                   value={value}
+                  isRequired
                 />
               )}
             </Field>
             {
-              hasSetDefaultVerifyMethod
+              hasDefaultActivationMethod
               ?
               <Field
                 name="mobileNumber"
@@ -181,12 +182,12 @@ const VerifyAccountPage: NextPage = () => {
       )}
     </Form>
 
-  const verifyForm =
+  const activationForm =
     <Form onSubmit={handleCodeSubmit}>
       {({ formProps, submitting }) => (
         <form {...formProps}>
           <FormHeader
-            title="Verify Your Account"
+            title="Activate Your Account"
             description="* indicates a required field"
           />
           <FormSection>
@@ -247,16 +248,16 @@ const VerifyAccountPage: NextPage = () => {
                 />
                 <Button
                   appearance="link"
-                  onClick={() => sendVerification(!hasSentVerification)}
+                  onClick={() => sendActivationCode(false)}
                 >
-                  Resend code
+                  Retry sending a code
                 </Button>
                 <LoadingButton
                   type="submit"
                   appearance="primary"
                   isLoading={submitting}
                 >
-                  Verify
+                  Activate
                 </LoadingButton>
               </div>
             </ButtonGroup>
@@ -276,10 +277,10 @@ const VerifyAccountPage: NextPage = () => {
         </Banner>
       )}
       <Card>
-        {hasSentVerification ? verifyForm : emailForm}
+        {hasSentActivation ? activationForm : requestForm}
       </Card>
     </>
   )
 }
 
-export default VerifyAccountPage
+export default ActivateAccountPage
