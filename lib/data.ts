@@ -21,7 +21,7 @@ export const users: User[] = [
     address: "Address",
     district: "District",
     email: "adminkurunegala@cat20.lk",
-    mobileNumber: "Mobile",
+    mobileNumber: "077264678",
     password: "admin",
     isActive: true
   },
@@ -31,7 +31,7 @@ export const users: User[] = [
     address: "Address",
     district: "District",
     email: "malaka@cat20.lk",
-    mobileNumber: "Mobile",
+    mobileNumber: "0770000000",
     password: "admin",
     isActive: false
   },
@@ -41,7 +41,7 @@ export const users: User[] = [
     address: "Address",
     district: "District",
     email: "prasa.medawachchiya@gmail.com",
-    mobileNumber: "Mobile",
+    mobileNumber: "0771111111",
     password: "admin",
     isActive: false
   },
@@ -51,7 +51,7 @@ export const users: User[] = [
     address: "Address",
     district: "District",
     email: "rambewaps2015@gmail.com",
-    mobileNumber: "Mobile",
+    mobileNumber: "0772222222",
     password: "admin",
     isActive: false
   }
