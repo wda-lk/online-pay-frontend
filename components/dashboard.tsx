@@ -18,7 +18,6 @@ import {
   Footer,
   Header,
   HeadingItem,
-  LinkItem,
   NavigationContent,
   NavigationFooter,
   NavigationHeader,
@@ -160,7 +159,7 @@ const LeftSidebarContent = () => {
             Dashboard
           </CustomItem>
           <CustomItem
-            href="/dashboard"
+            href="/dashboard/trade-license"
             component={CustomLink}
             iconBefore={<CreditCardIcon label=""/>}
             iconAfter={<StarIcon label=""/>}
@@ -168,7 +167,7 @@ const LeftSidebarContent = () => {
             Trade license
           </CustomItem>
           <CustomItem
-            href="/dashboard"
+            href="/dashboard/settings"
             component={CustomLink}
             iconBefore={<SettingsIcon label=""/>}
             iconAfter={<StarIcon label=""/>}
