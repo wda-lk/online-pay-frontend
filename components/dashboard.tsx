@@ -13,6 +13,8 @@ import {
   TopNavigation
 } from "@atlaskit/page-layout"
 import {
+  CustomItem,
+  CustomItemComponentProps,
   Footer,
   Header,
   HeadingItem,
@@ -23,11 +25,14 @@ import {
   Section,
   SideNavigation
 } from "@atlaskit/side-navigation"
+import React, {
+  forwardRef
+} from "react"
 import Avatar from "@atlaskit/avatar"
 import CreditCardIcon from "@atlaskit/icon/glyph/creditcard"
 import Image from "next/future/image"
+import Link from "next/link"
 import { NotificationIndicator } from "@atlaskit/notification-indicator"
-import React from "react"
 import SettingsIcon from "@atlaskit/icon/glyph/settings"
 import StarIcon from "@atlaskit/icon/glyph/star"
 import icon from "../public/logo/icon=comp.svg"
@@ -93,70 +98,100 @@ const TopNavigationContent = () => {
   )
 }
 
-const LeftSidebarContent = () => (
-  <SideNavigation label="Cat2020 side navigation">
-    <NavigationHeader>
-      <Header
-        component={({ children, ...props }) => (
-          <a href="#" {...props}>
-            {children}
-          </a>
-        )}
-        iconBefore={<Image src={icon} alt=""/>}
-        description="Payment gateway"
+type CustomProps = CustomItemComponentProps & { href: string };
+
+const CustomLink = forwardRef<HTMLAnchorElement, CustomProps>(
+  (props: CustomProps, ref) => {
+    const { children, href, ...rest } = props
+    return (
+      <Link
+        ref={ref}
+        href={href}
       >
-        Automation System
-      </Header>
-    </NavigationHeader>
-    <NavigationContent>
-      <Section
-        aria-labelledby="starred-section"
-        hasSeparator
-      >
-        <HeadingItem id="starred-section">STARRED</HeadingItem>
-      </Section>
-      <Section
-        aria-labelledby="all-section"
-        hasSeparator
-      >
-        <HeadingItem id="all-section">ALL</HeadingItem>
-        <LinkItem
-          href="#"
-          iconBefore={<CreditCardIcon label=""/>}
-          iconAfter={<StarIcon label=""/>}
+        <a
+          style={{
+            padding: "8px 10px"
+          }}
+          onClick={(e) => e.preventDefault()}
+          {...rest}
         >
-          Assessment Tax
-        </LinkItem>
-        <LinkItem
-          href="#"
-          iconBefore={<CreditCardIcon label=""/>}
-          iconAfter={<StarIcon label=""/>}
-        >
-          Venue Booking
-        </LinkItem>
-        <LinkItem
-          href="#"
-          iconBefore={<SettingsIcon label=""/>}
-          iconAfter={<StarIcon label=""/>}
-        >
-          Settings
-        </LinkItem>
-      </Section>
-    </NavigationContent>
-    <NavigationFooter>
-      <Footer
-        description={
-          <div>
-            <a>Give feedback</a> {" ∙ "}
-            <a>Learn more</a>
-          </div>
-        }
-      >
-        © 2023 CAT2020 <br/> Wayamba Development Authority
-      </Footer>
-    </NavigationFooter>
-  </SideNavigation>
+          {children}
+        </a>
+      </Link>
+    )
+  }
 )
+CustomLink.displayName = "CustomLink"
+
+const LeftSidebarContent = () => {
+  return (
+    <SideNavigation label="Cat2020 side navigation">
+      <NavigationHeader>
+        <Header
+          component={({ children, ...props }) => (
+            <a href="#" {...props}>
+              {children}
+            </a>
+          )}
+          iconBefore={<Image src={icon} alt=""/>}
+          description="Payment gateway"
+        >
+          Automation System
+        </Header>
+      </NavigationHeader>
+      <NavigationContent>
+        <Section
+          aria-labelledby="starred-section"
+          hasSeparator
+        >
+          <HeadingItem id="starred-section">STARRED</HeadingItem>
+        </Section>
+        <Section
+          aria-labelledby="all-section"
+          hasSeparator
+        >
+          <HeadingItem id="all-section">ALL</HeadingItem>
+          <CustomItem
+            href="/dashboard"
+            component={CustomLink}
+            iconBefore={<CreditCardIcon label=""/>}
+            iconAfter={<StarIcon label=""/>}
+          >
+            Dashboard
+          </CustomItem>
+          <CustomItem
+            href="/dashboard"
+            component={CustomLink}
+            iconBefore={<CreditCardIcon label=""/>}
+            iconAfter={<StarIcon label=""/>}
+          >
+            Trade license
+          </CustomItem>
+          <CustomItem
+            href="/dashboard"
+            component={CustomLink}
+            iconBefore={<SettingsIcon label=""/>}
+            iconAfter={<StarIcon label=""/>}
+          >
+            Settings
+          </CustomItem>
+        </Section>
+      </NavigationContent>
+      <NavigationFooter>
+        <Footer
+          description={
+            <div>
+              <a>Give feedback</a> {" ∙ "}
+              <a>Learn more</a>
+            </div>
+          }
+        >
+          © 2023 CAT2020 <br/> Wayamba Development Authority
+        </Footer>
+      </NavigationFooter>
+    </SideNavigation>
+  )
+}
 
 type DashboardProps = {
   children: React.ReactNode
