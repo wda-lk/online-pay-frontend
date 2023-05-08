@@ -36,6 +36,7 @@ import SettingsIcon from "@atlaskit/icon/glyph/settings"
 import StarIcon from "@atlaskit/icon/glyph/star"
 import icon from "../public/logo/icon=comp.svg"
 import paymentLogo from "../public/logo/logo-payment=comp.svg"
+import { useRouter } from "next/router"
 
 
 const TopNavigationContent = () => {
@@ -123,6 +124,7 @@ const CustomLink = forwardRef<HTMLAnchorElement, CustomProps>(
 CustomLink.displayName = "CustomLink"
 
 const LeftSidebarContent = () => {
+  const router = useRouter()
   return (
     <SideNavigation label="Cat2020 side navigation">
       <NavigationHeader>
@@ -155,6 +157,7 @@ const LeftSidebarContent = () => {
             component={CustomLink}
             iconBefore={<CreditCardIcon label=""/>}
             iconAfter={<StarIcon label=""/>}
+            isSelected={router.pathname == "/dashboard"}
           >
             Dashboard
           </CustomItem>
@@ -163,6 +166,7 @@ const LeftSidebarContent = () => {
             component={CustomLink}
             iconBefore={<CreditCardIcon label=""/>}
             iconAfter={<StarIcon label=""/>}
+            isSelected={router.pathname == "/dashboard/trade-license"}
           >
             Trade license
           </CustomItem>
@@ -171,6 +175,7 @@ const LeftSidebarContent = () => {
             component={CustomLink}
             iconBefore={<SettingsIcon label=""/>}
             iconAfter={<StarIcon label=""/>}
+            isSelected={router.pathname == "/dashboard/settings"}
           >
             Settings
           </CustomItem>
@@ -180,7 +185,7 @@ const LeftSidebarContent = () => {
         <Footer
           description={
             <div>
-              <a>Give feedback</a> {" ∙ "}
+              <a>Give feedback</a>{" ∙ "}
               <a>Learn more</a>
             </div>
           }
