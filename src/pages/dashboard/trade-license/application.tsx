@@ -821,8 +821,8 @@ const TradeLicenseApplicationPage: NextPage = () => (
         flexDirection: "column",
         width: "600px",
         maxWidth: "100%",
-        minHeight: "60vh",
-        padding: "16px"
+        padding: "16px",
+        minHeight: "100%"
       }}
     >
       <Form onSubmit={console.log}>

@@ -249,11 +249,12 @@ const Dashboard = ({ activeMainNavKey, activeSubNavKey, children }: DashboardPro
           isFixed={false}
           width={272}
         >
-          <LeftSidebarContent activeItemKey={activeMainNavKey}
-          />
+          <div style={{ minHeight: "94vh" }}>
+            <LeftSidebarContent activeItemKey={activeMainNavKey}/>
+          </div>
         </LeftSidebar>
         <Main id="main-content">
-          <div style={{ minHeight: "90vh" }}>
+          <div>
             {children}
           </div>
         </Main>
