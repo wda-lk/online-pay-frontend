@@ -567,93 +567,96 @@ const BusinessSection = () => (
         )}
       </Field>
     </FormSection>
-    <FormSection>
-      <Field
-        id="lAnuualValue"
-        name="lAnuualValue"
-        label="Last Year Annual Value"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest }, error }) => (
-          <>
-            <TextField
-              id={`${id}TextField`}
-              {...rest}
-            />
-            {error && (
-              <ErrorMessage>
-                {error}
-              </ErrorMessage>
-            )}
-          </>
-        )}
-      </Field>
-      <Field
-        id="anuualValue"
-        name="anuualValue"
-        label="Annual Value"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest }, error }) => (
-          <>
-            <TextField
-              id={`${id}TextField`}
-              {...rest}
-            />
-            {error && (
-              <ErrorMessage>
-                {error}
-              </ErrorMessage>
-            )}
-          </>
-        )}
-      </Field>
-      <Field
-        id="taxAmount"
-        name="taxAmount"
-        label="Tax Amount"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest }, error }) => (
-          <>
-            <TextField
-              id={`${id}TextField`}
-              {...rest}
-            />
-            {error && (
-              <ErrorMessage>
-                {error}
-              </ErrorMessage>
-            )}
-          </>
-        )}
-      </Field>
-      <Field
-        id="otherCharges"
-        name="otherCharges"
-        label="Other Charges"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest }, error }) => (
-          <>
-            <TextField
-              id={`${id}TextField`}
-              {...rest}
-            />
-            {error && (
-              <ErrorMessage>
-                {error}
-              </ErrorMessage>
-            )}
-          </>
-        )}
-      </Field>
-    </FormSection>
   </>
+)
+
+const IncomeSection = () => (
+  <FormSection>
+    <Field
+      id="lAnuualValue"
+      name="lAnuualValue"
+      label="Last Year Annual Value"
+      defaultValue=""
+      isRequired
+    >
+      {({ fieldProps: { id, ...rest }, error }) => (
+        <>
+          <TextField
+            id={`${id}TextField`}
+            {...rest}
+          />
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+        </>
+      )}
+    </Field>
+    <Field
+      id="anuualValue"
+      name="anuualValue"
+      label="Annual Value"
+      defaultValue=""
+      isRequired
+    >
+      {({ fieldProps: { id, ...rest }, error }) => (
+        <>
+          <TextField
+            id={`${id}TextField`}
+            {...rest}
+          />
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+        </>
+      )}
+    </Field>
+    <Field
+      id="taxAmount"
+      name="taxAmount"
+      label="Tax Amount"
+      defaultValue=""
+      isRequired
+    >
+      {({ fieldProps: { id, ...rest }, error }) => (
+        <>
+          <TextField
+            id={`${id}TextField`}
+            {...rest}
+          />
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+        </>
+      )}
+    </Field>
+    <Field
+      id="otherCharges"
+      name="otherCharges"
+      label="Other Charges"
+      defaultValue=""
+      isRequired
+    >
+      {({ fieldProps: { id, ...rest }, error }) => (
+        <>
+          <TextField
+            id={`${id}TextField`}
+            {...rest}
+          />
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+        </>
+      )}
+    </Field>
+  </FormSection>
 )
 
 const SummarySection = () => (
@@ -709,7 +712,7 @@ const ApplicationProgressIndicator = (
 
 const ApplicationForm = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const steps = ["first", "second", "third", "fourth", "fifth"]
+  const steps = ["first", "second", "third", "fourth", "fifth", "six"]
 
   const handlePrev = () => {
     setSelectedIndex((prevState) => prevState - 1)
@@ -769,6 +772,18 @@ const ApplicationForm = () => {
         </>
       )
     case 4:
+      return (
+        <>
+          <IncomeSection/>
+          <ApplicationProgressIndicator
+            steps={steps}
+            selectedIndex={selectedIndex}
+            handlePrev={handlePrev}
+            handleNext={handleNext}
+          />
+        </>
+      )
+    case 5:
       return (
         <>
           <SummarySection/>
