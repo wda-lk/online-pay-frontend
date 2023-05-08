@@ -95,8 +95,7 @@ const LoginPage: NextPage = () => {
                   <>
                     <TextField
                       {...fieldProps}
-                      style={{ textTransform: "uppercase" }}
-                      maxLength={12}
+                      maxLength={10}
                     />
                     {error && (
                       <ErrorMessage>
