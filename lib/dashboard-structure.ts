@@ -1,40 +1,61 @@
 interface DashboardStructure {
+  key: string,
   label: string,
-  isDefault: boolean,
+  href: string,
+  icon: string,
   children: this[]
 }
 
 export const dashboardStructure: DashboardStructure[] = [
   {
+    key: "dashboardLinkItem",
     label: "Dashboard",
-    isDefault: true,
+    href: "/dashboard",
+    icon: "CreditCardIcon",
     children: []
   },
   {
+    key: "assessmentTaxLinkItem",
     label: "Assessment Tax",
-    isDefault: false,
+    href: "/dashboard/assessment-tax",
+    icon: "CreditCardIcon",
     children: [
       {
+        key: "assessmentTaxPaymentLinkItem",
         label: "Payment",
-        isDefault: true,
+        href: "dashboard/assessment-tax/payment",
+        icon: "CreditCardIcon",
         children: []
       },
       {
+        key: "assessmentTaxPropertyLinkItem",
         label: "Property",
-        isDefault: false,
+        href: "dashboard/assessment-tax/property",
+        icon: "CreditCardIcon",
         children: []
       }
     ]
   },
   {
+    key: "tradeLicenseLinkItem",
     label: "Trade License",
-    isDefault: true,
+    href: "/dashboard/trade-license",
+    icon: "CreditCardIcon",
     children: [
       {
+        key: "tradeLicenseApplicationLinkItem",
         label: "Application",
-        isDefault: true,
+        href: "trade-license/application",
+        icon: "CreditCardIcon",
         children: []
       }
     ]
+  },
+  {
+    key: "settingsLinkItem",
+    label: "Settings",
+    href: "/dashboard/settings",
+    icon: "SettingsIcon",
+    children: []
   }
 ]
