@@ -1,4 +1,4 @@
-import Dashboard from "../../../components/dashboard"
+import Dashboard from "@/components/dashboard"
 import EmptyState from "@atlaskit/empty-state"
 import React from "react"
 

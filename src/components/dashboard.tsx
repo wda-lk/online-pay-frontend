@@ -25,7 +25,7 @@ import {
   SideNavigation
 } from "@atlaskit/side-navigation"
 import React, {
-  forwardRef
+  forwardRef, useState
 } from "react"
 import Avatar from "@atlaskit/avatar"
 import CreditCardIcon from "@atlaskit/icon/glyph/creditcard"
@@ -34,10 +34,9 @@ import Link from "next/link"
 import { NotificationIndicator } from "@atlaskit/notification-indicator"
 import SettingsIcon from "@atlaskit/icon/glyph/settings"
 import StarIcon from "@atlaskit/icon/glyph/star"
-import { dashboardStructure } from "../lib/dashboard-structure"
-import icon from "../public/logo/icon=comp.svg"
-import paymentLogo from "../public/logo/logo-payment=comp.svg"
-import { useRouter } from "next/router"
+import { DashboardStructure, dashboardStructure } from "@/lib/dashboard-structure"
+import icon from "../../public/logo/icon=comp.svg"
+import paymentLogo from "../../public/logo/logo-payment=comp.svg"
 
 
 type CustomProps = CustomItemComponentProps & { href: string };
@@ -63,8 +62,10 @@ const CustomLink = forwardRef<HTMLAnchorElement, CustomProps>(
 )
 CustomLink.displayName = "CustomLink"
 
-const LeftSidebarContent = () => {
-  const router = useRouter()
+type SideNavigationItems = {
+  items: DashboardStructure[]
+}
+const LeftSidebarContent = ({ items }: SideNavigationItems) => {
   return (
     <SideNavigation label="Cat2020 side navigation">
       <NavigationHeader>
@@ -94,18 +95,19 @@ const LeftSidebarContent = () => {
           <HeadingItem id="all-section">ALL</HeadingItem>
           {
             // Generate all the items from a predefined structure
-            dashboardStructure.map((itemData, index) => {
+            items.map((data, index) => {
               return (
                 <CustomItem
-                  key={itemData.key}
-                  href={itemData.href}
+                  key={data.key}
+                  href={data.href}
                   component={CustomLink}
                   iconBefore={
-                    itemData.icon == "CreditCardIcon" ? <CreditCardIcon label=""/> : <SettingsIcon label=""/>
+                    data.icon == "CreditCardIcon" ? <CreditCardIcon label=""/> : <SettingsIcon label=""/>
                   }
                   iconAfter={<StarIcon label=""/>}
+                  isSelected={data.isSelected}
                 >
-                  {itemData.label}
+                  {data.label}
                 </CustomItem>
               )
             })
@@ -190,8 +192,9 @@ const TopNavigationContent = () => {
 type DashboardProps = {
   children: React.ReactNode
 }
-
 const Dashboard = ({ children }: DashboardProps) => {
+  const [sideNavigationItems, visitItem] = useState(dashboardStructure)
+
   return (
     <PageLayout>
       <TopNavigation
@@ -206,7 +209,7 @@ const Dashboard = ({ children }: DashboardProps) => {
           isFixed={false}
           width={272}
         >
-          <LeftSidebarContent/>
+          <LeftSidebarContent items={sideNavigationItems}/>
         </LeftSidebar>
         <Main id="main-content">
           <div style={{ minHeight: "90vh" }}>
