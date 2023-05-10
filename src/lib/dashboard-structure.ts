@@ -23,14 +23,14 @@ export const dashboardStructure: DashboardStructure[] = [
       {
         key: "assessmentTaxPaymentLinkItem",
         label: "Payment",
-        href: "dashboard/assessment-tax/payment",
+        href: "/dashboard/assessment-tax/payment",
         icon: "CreditCardIcon",
         children: []
       },
       {
         key: "assessmentTaxPropertyLinkItem",
         label: "Property",
-        href: "dashboard/assessment-tax/property",
+        href: "/dashboard/assessment-tax/property",
         icon: "CreditCardIcon",
         children: []
       }
@@ -45,7 +45,7 @@ export const dashboardStructure: DashboardStructure[] = [
       {
         key: "tradeLicenseApplicationLinkItem",
         label: "Application",
-        href: "trade-license/application",
+        href: "/dashboard/trade-license/application",
         icon: "CreditCardIcon",
         children: []
       }

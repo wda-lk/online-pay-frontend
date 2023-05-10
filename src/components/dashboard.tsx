@@ -199,14 +199,20 @@ const TopNavigationContent = ({ activeItemKey, topNavigationItems }: TopNavigati
         topNavigationItems.map(item => {
           if (item.children.length != 0) {
             return (
-              <PrimaryDropdownButton
-                key={item.key}
-                isSelected={item.key == activeItemKey}
-              >
+              <PrimaryDropdownButton key={item.key}>
                 {item.label}
-              </PrimaryDropdownButton>)
+              </PrimaryDropdownButton>
+            )
           }
-          return (<PrimaryButton key={item.key}>{item.label}</PrimaryButton>)
+          return (
+            <PrimaryButton
+              key={item.key}
+              href={item.href}
+              isSelected={item.key == activeItemKey}
+            >
+              {item.label}
+            </PrimaryButton>
+          )
         })
       }
       renderHelp={() => <Help tooltip="Get help"/>}

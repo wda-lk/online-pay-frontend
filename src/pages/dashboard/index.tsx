@@ -1,11 +1,12 @@
 import Dashboard from "@/components/dashboard"
 import EmptyState from "@atlaskit/empty-state"
+import { NextPage } from "next"
 import React from "react"
-import { dashboardStructure } from "@/lib/dashboard-structure"
 
-const Home = () => (
+
+const HomePage: NextPage = () => (
   <Dashboard
-    activeMainNavKey={dashboardStructure[0].key}
+    activeMainNavKey="dashboardLinkItem"
     activeSubNavKey=""
   >
     <EmptyState
@@ -16,4 +17,4 @@ const Home = () => (
   </Dashboard>
 )
 
-export default Home
+export default HomePage
