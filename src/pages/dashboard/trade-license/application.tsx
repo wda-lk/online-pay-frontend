@@ -14,17 +14,15 @@ import Select, {
 import {
   districts, natures, subNatures,
   taxTypes
-} from "../../../lib/data"
+} from "@/lib/data"
 import Button from "@atlaskit/button/standard-button"
-import { DatePicker } from "@atlaskit/datetime-picker"
 import Dashboard from "@/components/dashboard"
+import { DatePicker } from "@atlaskit/datetime-picker"
 import EmptyState from "@atlaskit/empty-state"
 import { NextPage } from "next"
 import { ProgressIndicator } from "@atlaskit/progress-indicator"
 import TextField from "@atlaskit/textfield"
 
-import { NextPage } from "next"
-import React from "react"
 
 const StartupSection = () => (
   <>

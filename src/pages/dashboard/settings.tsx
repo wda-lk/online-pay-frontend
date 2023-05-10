@@ -6,7 +6,7 @@ import React from "react"
 
 const SettingsPage: NextPage = () => (
   <Dashboard
-    activeMainNavKey="tradeLicenseLinkItem"
+    activeMainNavKey="settingsLinkItem"
     activeSubNavKey=""
   >
     <EmptyState
