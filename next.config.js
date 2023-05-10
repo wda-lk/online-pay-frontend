@@ -12,6 +12,16 @@ const nextConfig = {
         source: "/index",
         destination: "/login",
         permanent: true
+      },
+      {
+        source: "/dashboard/assessment-tax",
+        destination: "/dashboard/assessment-tax/payment",
+        permanent: true
+      },
+      {
+        source: "/dashboard/trade-license",
+        destination: "/dashboard/trade-license/application",
+        permanent: true
       }
     ]
   }

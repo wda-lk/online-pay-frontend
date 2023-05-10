@@ -11,7 +11,7 @@ import {
 } from "@atlaskit/theme/colors"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
-import Card from "../../../components/card"
+import Card from "@/components/card"
 import HipchatMediaAttachmentCountIcon from "@atlaskit/icon/glyph/hipchat/media-attachment-count"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
@@ -25,7 +25,7 @@ import { token } from "@atlaskit/tokens"
 import { useFlags } from "@atlaskit/flag"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { users } from "../../../lib/data"
+import { users } from "@/lib/data"
 
 
 const LoginPage: NextPage = () => {

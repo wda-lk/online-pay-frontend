@@ -4,13 +4,13 @@ import { NextPage } from "next"
 import React from "react"
 
 
-const SettingsPage: NextPage = () => (
+const TradeLicenseApplicationPage: NextPage = () => (
   <Dashboard
     activeMainNavKey="tradeLicenseLinkItem"
-    activeSubNavKey=""
+    activeSubNavKey="tradeLicenseApplicationLinkItem"
   >
     <EmptyState
-      header="Settings is still in implimentation"
+      header="You haven't requested for any licenses"
       description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
       et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
       commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
@@ -19,4 +19,4 @@ const SettingsPage: NextPage = () => (
   </Dashboard>
 )
 
-export default SettingsPage
+export default TradeLicenseApplicationPage

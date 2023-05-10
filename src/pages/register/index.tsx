@@ -12,10 +12,10 @@ import Select, {
 import {
   districts,
   users
-} from "../../../lib/data"
+} from "@/lib/data"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
-import Card from "../../../components/card"
+import Card from "@/components/card"
 import Link from "next/link"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { NextPage } from "next"
