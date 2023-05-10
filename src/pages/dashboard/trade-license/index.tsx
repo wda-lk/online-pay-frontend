@@ -810,8 +810,8 @@ const ApplicationForm = () => {
 
 const TradeLicenseApplicationPage: NextPage = () => (
   <Dashboard
-    activeMainNavKey="tradeLicenseLinkItem"
-    activeSubNavKey="tradeLicenseApplicationLinkItem"
+    navigationKey="tradeLicenseItem"
+    subNavigationKey="tradeLicenseApplicationItem"
   >
     <div
       style={{

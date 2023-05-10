@@ -6,8 +6,8 @@ import React from "react"
 
 const SettingsPage: NextPage = () => (
   <Dashboard
-    activeMainNavKey="settingsLinkItem"
-    activeSubNavKey=""
+    navigationKey="settingsItem"
+    subNavigationKey=""
   >
     <EmptyState
       header="Settings is still in implimentation"

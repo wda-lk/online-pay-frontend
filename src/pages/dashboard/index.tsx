@@ -6,8 +6,8 @@ import React from "react"
 
 const HomePage: NextPage = () => (
   <Dashboard
-    activeMainNavKey="dashboardLinkItem"
-    activeSubNavKey=""
+    navigationKey="dashboardItem"
+    subNavigationKey=""
   >
     <EmptyState
       header="You haven't added elements to the dashboard"

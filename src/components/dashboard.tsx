@@ -2,7 +2,9 @@ import {
   AppSwitcher,
   AtlassianNavigation,
   Help,
-  Notifications, PrimaryButton, PrimaryDropdownButton,
+  Notifications,
+  PrimaryButton,
+  PrimaryDropdownButton,
   ProductHome,
   Profile
 } from "@atlaskit/atlassian-navigation"
@@ -26,9 +28,10 @@ import {
   SideNavigation
 } from "@atlaskit/side-navigation"
 import {
-  DashboardStructure,
-  dashboardStructure
-} from "@/lib/dashboard-structure"
+  NavigationItem,
+  getNavigationItems,
+  navigationItems
+} from "@/lib/nav-item"
 import {
   ReactNode,
   forwardRef
@@ -38,34 +41,44 @@ import CreditCardIcon from "@atlaskit/icon/glyph/creditcard"
 import Image from "next/future/image"
 import Link from "next/link"
 import { NotificationIndicator } from "@atlaskit/notification-indicator"
+import PageHeader from "@atlaskit/page-header"
 import SettingsIcon from "@atlaskit/icon/glyph/settings"
 import StarIcon from "@atlaskit/icon/glyph/star"
+import dynamic from "next/dynamic"
 import icon from "../../public/logo/icon=comp.svg"
 import paymentLogo from "../../public/logo/logo-payment=comp.svg"
 
 
-type SideNavigationProps = { activeItemKey: string }
+type SideNavigationProps = { activeNavigationKey: string }
 type TopNavigationProps = {
-  activeItemKey: string,
-  topNavigationItems: DashboardStructure[]
+  activeNavigationKey: string,
+  activeNavigationItem: NavigationItem | null
 }
 type DashboardProps = {
-  activeMainNavKey: string,
-  activeSubNavKey: string
+  navigationKey: string
+  subNavigationKey: string
   children: ReactNode
 }
 
-const LeftSidebarContent = ({ activeItemKey }: SideNavigationProps) => {
+const Breadcrumbs = dynamic(
+  () => import("@atlaskit/breadcrumbs"),
+  { ssr: false }
+)
+const BreadcrumbsItem = dynamic(
+  () => import("@atlaskit/breadcrumbs").then((module) => module.BreadcrumbsItem),
+  { ssr: false }
+)
+
+const LeftSidebarContent = ({ activeNavigationKey }: SideNavigationProps) => {
   type CustomLinkProps = CustomItemComponentProps & { href: string };
+
   const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
     (props: CustomLinkProps, ref) => {
       const { children, href, ...rest } = props
       return (
-        <Link
-          ref={ref}
-          href={href}
-        >
+        <Link href={href}>
           <a
+            ref={ref}
             style={{ padding: "8px 10px" }}
             onClick={(e) => {
               e.preventDefault()
@@ -108,7 +121,7 @@ const LeftSidebarContent = ({ activeItemKey }: SideNavigationProps) => {
         >
           <HeadingItem id="all-section">ALL</HeadingItem>
           {
-            dashboardStructure.map((item) => {
+            navigationItems.map((item) => {
               return (
                 <CustomItem
                   key={item.key}
@@ -118,7 +131,7 @@ const LeftSidebarContent = ({ activeItemKey }: SideNavigationProps) => {
                     item.icon == "CreditCardIcon" ? <CreditCardIcon label=""/> : <SettingsIcon label=""/>
                   }
                   iconAfter={<StarIcon label=""/>}
-                  isSelected={item.key == activeItemKey}
+                  isSelected={item.key == activeNavigationKey}
                 >
                   {item.label}
                 </CustomItem>
@@ -143,7 +156,9 @@ const LeftSidebarContent = ({ activeItemKey }: SideNavigationProps) => {
   )
 }
 
-const TopNavigationContent = ({ activeItemKey, topNavigationItems }: TopNavigationProps) => {
+const TopNavigationContent = ({ activeNavigationKey, activeNavigationItem }: TopNavigationProps) => {
+  const navigationItems = activeNavigationItem?.navigationItems || []
+
   const DefaultAppSwitcher = () => <AppSwitcher tooltip="Switch to..."/>
 
   const DefaultHome = () => (
@@ -196,8 +211,8 @@ const TopNavigationContent = ({ activeItemKey, topNavigationItems }: TopNavigati
       renderAppSwitcher={DefaultAppSwitcher}
       renderProductHome={DefaultHome}
       primaryItems={
-        topNavigationItems.map(item => {
-          if (item.children.length != 0) {
+        navigationItems.map(item => {
+          if (item.navigationItems.length != 0) {
             return (
               <PrimaryDropdownButton key={item.key}>
                 {item.label}
@@ -208,7 +223,7 @@ const TopNavigationContent = ({ activeItemKey, topNavigationItems }: TopNavigati
             <PrimaryButton
               key={item.key}
               href={item.href}
-              isSelected={item.key == activeItemKey}
+              isHighlighted={item.key == activeNavigationKey}
             >
               {item.label}
             </PrimaryButton>
@@ -227,11 +242,30 @@ const TopNavigationContent = ({ activeItemKey, topNavigationItems }: TopNavigati
   )
 }
 
-const Dashboard = ({ activeMainNavKey, activeSubNavKey, children }: DashboardProps) => {
-  const mainNavItems = dashboardStructure.find(item => {
-    return item.key === activeMainNavKey
-  })
-  const subNavItems = mainNavItems ? mainNavItems.children : []
+const Dashboard = ({ navigationKey, subNavigationKey, children }: DashboardProps) => {
+  const [
+    navigationItem,
+    subNavigationItem
+  ] = getNavigationItems(navigationKey, subNavigationKey)
+  const breadcrumbs = (subNavigationItem || navigationItem)?.breadcrumbs || []
+
+  const BreadcrumbsWrapper = (
+    <Breadcrumbs>
+      {
+        breadcrumbs.map(breadcrumb => {
+          console.log(breadcrumb)
+          return (
+            <BreadcrumbsItem
+              key=""
+              href={breadcrumb.href}
+              text={breadcrumb.label}
+            />
+          )
+        })
+      }
+    </Breadcrumbs>
+  )
+
   return (
     <PageLayout>
       <TopNavigation
@@ -239,8 +273,8 @@ const Dashboard = ({ activeMainNavKey, activeSubNavKey, children }: DashboardPro
         isFixed
       >
         <TopNavigationContent
-          activeItemKey={activeSubNavKey}
-          topNavigationItems={subNavItems}
+          activeNavigationKey={subNavigationKey}
+          activeNavigationItem={navigationItem}
         />
       </TopNavigation>
       <Content>
@@ -250,11 +284,14 @@ const Dashboard = ({ activeMainNavKey, activeSubNavKey, children }: DashboardPro
           width={272}
         >
           <div style={{ minHeight: "94vh" }}>
-            <LeftSidebarContent activeItemKey={activeMainNavKey}/>
+            <LeftSidebarContent activeNavigationKey={navigationKey}/>
           </div>
         </LeftSidebar>
         <Main id="main-content">
-          <div style={{ padding: "18px" }}>
+          <div style={{ padding: "0 28px" }}>
+            <PageHeader breadcrumbs={BreadcrumbsWrapper}>
+              {(subNavigationItem || navigationItem)?.label || ""}
+            </PageHeader>
             {children}
           </div>
         </Main>
