@@ -254,7 +254,7 @@ const Dashboard = ({ activeMainNavKey, activeSubNavKey, children }: DashboardPro
           </div>
         </LeftSidebar>
         <Main id="main-content">
-          <div>
+          <div style={{ padding: "18px" }}>
             {children}
           </div>
         </Main>

@@ -819,7 +819,6 @@ const TradeLicenseApplicationPage: NextPage = () => (
         flexDirection: "column",
         width: "600px",
         maxWidth: "100%",
-        padding: "16px",
         minHeight: "100%"
       }}
     >
