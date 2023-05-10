@@ -1,9 +1,13 @@
 import Dashboard from "@/components/dashboard"
 import EmptyState from "@atlaskit/empty-state"
 import React from "react"
+import { dashboardStructure } from "@/lib/dashboard-structure"
 
 const TradeLicense = () => (
-  <Dashboard>
+  <Dashboard
+    activeMainNavKey={dashboardStructure[2].key}
+    activeSubNavKey={dashboardStructure[2].children[0].key}
+  >
     <EmptyState
       header="You haven't requested for any licenses"
       description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore

@@ -1,9 +1,13 @@
 import Dashboard from "@/components/dashboard"
 import EmptyState from "@atlaskit/empty-state"
 import React from "react"
+import { dashboardStructure } from "@/lib/dashboard-structure"
 
 const Settings = () => (
-  <Dashboard>
+  <Dashboard
+    activeMainNavKey={dashboardStructure[3].key}
+    activeSubNavKey=""
+  >
     <EmptyState
       header="Settings is still in implimentation"
       description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore

@@ -1,7 +1,8 @@
 import {
+  AppSwitcher,
   AtlassianNavigation,
   Help,
-  Notifications,
+  Notifications, PrimaryButton, PrimaryDropdownButton,
   ProductHome,
   Profile
 } from "@atlaskit/atlassian-navigation"
@@ -24,8 +25,13 @@ import {
   Section,
   SideNavigation
 } from "@atlaskit/side-navigation"
-import React, {
-  forwardRef, useState
+import {
+  DashboardStructure,
+  dashboardStructure
+} from "@/lib/dashboard-structure"
+import {
+  ReactNode,
+  forwardRef
 } from "react"
 import Avatar from "@atlaskit/avatar"
 import CreditCardIcon from "@atlaskit/icon/glyph/creditcard"
@@ -34,38 +40,46 @@ import Link from "next/link"
 import { NotificationIndicator } from "@atlaskit/notification-indicator"
 import SettingsIcon from "@atlaskit/icon/glyph/settings"
 import StarIcon from "@atlaskit/icon/glyph/star"
-import { DashboardStructure, dashboardStructure } from "@/lib/dashboard-structure"
 import icon from "../../public/logo/icon=comp.svg"
 import paymentLogo from "../../public/logo/logo-payment=comp.svg"
 
 
-type CustomProps = CustomItemComponentProps & { href: string };
-
-const CustomLink = forwardRef<HTMLAnchorElement, CustomProps>(
-  (props: CustomProps, ref) => {
-    const { children, href, ...rest } = props
-    return (
-      <Link
-        ref={ref}
-        href={href}
-      >
-        <a
-          style={{ padding: "8px 10px" }}
-          onClick={(e) => e.preventDefault()}
-          {...rest}
-        >
-          {children}
-        </a>
-      </Link>
-    )
-  }
-)
-CustomLink.displayName = "CustomLink"
-
-type SideNavigationItems = {
-  items: DashboardStructure[]
+type SideNavigationProps = { activeItemKey: string }
+type TopNavigationProps = {
+  activeItemKey: string,
+  topNavigationItems: DashboardStructure[]
 }
-const LeftSidebarContent = ({ items }: SideNavigationItems) => {
+type DashboardProps = {
+  activeMainNavKey: string,
+  activeSubNavKey: string
+  children: ReactNode
+}
+
+const LeftSidebarContent = ({ activeItemKey }: SideNavigationProps) => {
+  type CustomLinkProps = CustomItemComponentProps & { href: string };
+  const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
+    (props: CustomLinkProps, ref) => {
+      const { children, href, ...rest } = props
+      return (
+        <Link
+          ref={ref}
+          href={href}
+        >
+          <a
+            style={{ padding: "8px 10px" }}
+            onClick={(e) => {
+              e.preventDefault()
+            }}
+            {...rest}
+          >
+            {children}
+          </a>
+        </Link>
+      )
+    }
+  )
+  CustomLink.displayName = "CustomLink"
+
   return (
     <SideNavigation label="Cat2020 side navigation">
       <NavigationHeader>
@@ -94,20 +108,19 @@ const LeftSidebarContent = ({ items }: SideNavigationItems) => {
         >
           <HeadingItem id="all-section">ALL</HeadingItem>
           {
-            // Generate all the items from a predefined structure
-            items.map((data, index) => {
+            dashboardStructure.map((item) => {
               return (
                 <CustomItem
-                  key={data.key}
-                  href={data.href}
+                  key={item.key}
+                  href={item.href}
                   component={CustomLink}
                   iconBefore={
-                    data.icon == "CreditCardIcon" ? <CreditCardIcon label=""/> : <SettingsIcon label=""/>
+                    item.icon == "CreditCardIcon" ? <CreditCardIcon label=""/> : <SettingsIcon label=""/>
                   }
                   iconAfter={<StarIcon label=""/>}
-                  isSelected={data.isSelected}
+                  isSelected={item.key == activeItemKey}
                 >
-                  {data.label}
+                  {item.label}
                 </CustomItem>
               )
             })
@@ -130,7 +143,9 @@ const LeftSidebarContent = ({ items }: SideNavigationItems) => {
   )
 }
 
-const TopNavigationContent = () => {
+const TopNavigationContent = ({ activeItemKey, topNavigationItems }: TopNavigationProps) => {
+  const DefaultAppSwitcher = () => <AppSwitcher tooltip="Switch to..."/>
+
   const DefaultHome = () => (
     <ProductHome
       icon={() =>
@@ -178,30 +193,49 @@ const TopNavigationContent = () => {
   return (
     <AtlassianNavigation
       label="cat2020 top navigation"
+      renderAppSwitcher={DefaultAppSwitcher}
       renderProductHome={DefaultHome}
-      primaryItems={[]}
+      primaryItems={
+        topNavigationItems.map(item => {
+          if (item.children.length != 0) {
+            return (
+              <PrimaryDropdownButton
+                key={item.key}
+                isSelected={item.key == activeItemKey}
+              >
+                {item.label}
+              </PrimaryDropdownButton>)
+          }
+          return (<PrimaryButton key={item.key}>{item.label}</PrimaryButton>)
+        })
+      }
       renderHelp={() => <Help tooltip="Get help"/>}
       renderProfile={DefaultProfile}
       renderNotifications={() => (
-        <Notifications badge={NotificationsBadge} tooltip="Notifications"/>
+        <Notifications
+          badge={NotificationsBadge}
+          tooltip="Notifications"
+        />
       )}
     />
   )
 }
 
-type DashboardProps = {
-  children: React.ReactNode
-}
-const Dashboard = ({ children }: DashboardProps) => {
-  const [sideNavigationItems, visitItem] = useState(dashboardStructure)
-
+const Dashboard = ({ activeMainNavKey, activeSubNavKey, children }: DashboardProps) => {
+  const mainNavItems = dashboardStructure.find(item => {
+    return item.key === activeMainNavKey
+  })
+  const subNavItems = mainNavItems ? mainNavItems.children : []
   return (
     <PageLayout>
       <TopNavigation
         id="top-navigation"
         isFixed
       >
-        <TopNavigationContent/>
+        <TopNavigationContent
+          activeItemKey={activeSubNavKey}
+          topNavigationItems={subNavItems}
+        />
       </TopNavigation>
       <Content>
         <LeftSidebar
@@ -209,7 +243,8 @@ const Dashboard = ({ children }: DashboardProps) => {
           isFixed={false}
           width={272}
         >
-          <LeftSidebarContent items={sideNavigationItems}/>
+          <LeftSidebarContent activeItemKey={activeMainNavKey}
+          />
         </LeftSidebar>
         <Main id="main-content">
           <div style={{ minHeight: "90vh" }}>
