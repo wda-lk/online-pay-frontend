@@ -14,6 +14,21 @@ interface District {
   value: string
 }
 
+interface TaxType {
+  label: string,
+  value: string
+}
+
+interface Nature {
+  label: string,
+  value: string
+}
+
+interface SubNature {
+  label: string,
+  value: string,
+}
+
 export const users: User[] = [
   {
     nicNumber: "912000000V",
@@ -85,3 +100,31 @@ export const districts: District[] = [
   { label: "Vavuniya", value: "vavuniya" }
 ]
 
+export const taxTypes: TaxType[] = [
+  { label: "Business Tax", value: "business-tax" },
+  { label: "Industrial Tax", value: "industrial-tax" },
+  { label: "Trade License Tax", value: "trade-tax" }
+]
+
+export const natures: Nature[] = [
+  {
+    label: "Animal Husbandry",
+    value: "animal-husbandry"
+  },
+  {
+    label: "Fish Farming",
+    value: "fish-farming"
+  }
+]
+
+export const subNatures: SubNature[] = [
+  { label: "Raising of silk worms and production of silk", value: "000" },
+  { label: "Raising of bees and production of honey", value: "001" },
+  { label: "Raising of poultry and production of eggs", value: "002" },
+  { label: "Rearing of sheep and production of wool", value: "003" },
+  { label: "Rearing of animals and production of animal products", value: "004" },
+  { label: "Fishing on commercial basis in inland waters", value: "02002" },
+  { label: "Fishing on commercial basis in ocean and coastal areas", value: "02003" },
+  { label: "Gathering of marine materials such as natural pearls, sponges, coral", value: "02004" },
+  { label: "Services related to marine and fresh water fisheries, fish hatcheries and fish farms", value: "02005" }
+]
