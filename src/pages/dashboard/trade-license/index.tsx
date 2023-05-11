@@ -1,5 +1,6 @@
 import Form, {
-  FormHeader
+  FormFooter,
+  FormHeader, FormSection
 } from "@atlaskit/form"
 import React, {
   useState
@@ -17,7 +18,6 @@ import Dashboard from "@/components/dashboard/dashboard"
 import { DatePicker } from "@atlaskit/datetime-picker"
 import EmptyState from "@atlaskit/empty-state"
 import BusinessSection from "@/components/trade-license/BusinessSection"
-import Dashboard from "@/components/dashboard"
 import IncomeSection from "@/components/trade-license/IncomeSection"
 import { NextPage } from "next"
 import ProgressFormIndicator from "@/components/trade-license/ProgressFormIndicator"
@@ -25,6 +25,7 @@ import PropertyLocationSection from "@/components/trade-license/PropertyLocation
 import PropertyOwnerSection from "@/components/trade-license/PropertyOwnerSection"
 import StartupSection from "@/components/trade-license/StartupSection"
 import SummarySection from "@/components/trade-license/SummarySection"
+import FormProgressTracker from "@/components/trade-license/FormProgressTracker"
 
 
 const ApplicationForm = () => {
@@ -146,18 +147,27 @@ const ApplicationPage: NextPage = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          width: "600px",
-          maxWidth: "100%",
-          minHeight: "100%"
-        }}
-      >
-        <Form onSubmit={console.log}>
-          {({ formProps }) => (
-            <form{...formProps}>
-              <FormHeader
-                description="* indicates a required field"
-              />
-              <ApplicationForm/>
+          maxWidth: 624,
+        height: "624px",
+          minHeight: "100%",
+        borderStyle: "dashed"
+      }}
+    >
+      <Form onSubmit={console.log}>
+        {({ formProps }) => (
+          <form{...formProps}>
+            <FormSection>
+                <FormProgressTracker/>
+              </FormSection>
+              <FormSection>
+              Form
+            </FormSection>
+            <FormFooter>
+              Navigation Buttons
+            </FormFooter>
+            <FormSection>
+              <FormProgressTracker/>
+            </FormSection>
             </form>
           )}
         </Form>
