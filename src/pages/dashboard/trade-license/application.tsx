@@ -14,7 +14,7 @@ import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import BusinessSection from "@/components/trade-license/BusinessSection"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
-import Dashboard from "@/components/dashboard"
+import Dashboard from "@/components/dashboard/dashboard"
 import { NextPage } from "next"
 import OwnerSection from "@/components/trade-license/OwnerSection"
 import PropertySection from "@/components/trade-license/PropertySection"
@@ -40,7 +40,20 @@ interface Step {
   }
 }
 
-const ApplicationPage: NextPage = () => {
+const TradeLicenseApplicationPage: NextPage = () => {
+  const navItems = [
+    {
+      key: "tradeLicenseListNavItem",
+      href: "/dashboard/trade-license",
+      label: "Licenses"
+    },
+    {
+      key: "tradeLicenseApplicationNavItem",
+      href: "/dashboard/trade-license/application",
+      label: "Application"
+    }
+  ]
+
   const [currentStepIndex, changeStep] = useState(0)
 
   const goToNextStep = () => {
@@ -124,8 +137,9 @@ const ApplicationPage: NextPage = () => {
 
   return (
     <Dashboard
-      navigationKey="tradeLicenseItem"
-      subNavigationKey="tradeLicenseApplicationItem"
+      activeNavigationKey="tradeLicenseNavItem"
+      activeSubNavigationKey="tradeLicenseApplicationNavItem"
+      subNavigationItems={navItems}
     >
       <div
         style={{
@@ -171,4 +185,4 @@ const ApplicationPage: NextPage = () => {
   )
 }
 
-export default ApplicationPage
+export default TradeLicenseApplicationPage

@@ -4,7 +4,12 @@ import { NextPage } from "next"
 
 
 const TradeLicensePage: NextPage = () => {
-    const navItems = [
+  const navItems = [
+    {
+      key: "tradeLicenseListNavItem",
+      href: "/dashboard/trade-license",
+      label: "Licenses"
+    },
     {
       key: "tradeLicenseApplicationNavItem",
       href: "/dashboard/trade-license",
@@ -15,7 +20,7 @@ const TradeLicensePage: NextPage = () => {
   return (
     <Dashboard
       activeNavigationKey="tradeLicenseNavItem"
-      activeSubNavigationKey="tradeLicenseApplicationNavItem"
+      activeSubNavigationKey="tradeLicenseListNavItem"
       subNavigationItems={navItems}
     >
       <DynamicTable
