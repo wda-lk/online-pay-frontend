@@ -11,12 +11,14 @@ import React, {
   useState
 } from "react"
 import ApplicantSection from "@/components/trade-license/ApplicantSection"
+import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import BusinessSection from "@/components/trade-license/BusinessSection"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Dashboard from "@/components/dashboard/dashboard"
 import { NextPage } from "next"
 import OwnerSection from "@/components/trade-license/OwnerSection"
+import PageHeader from "@atlaskit/page-header"
 import PropertySection from "@/components/trade-license/PropertySection"
 import { Status } from "@atlaskit/progress-tracker/types"
 import SummarySection from "@/components/trade-license/SummarySection"
@@ -52,6 +54,11 @@ const TradeLicenseApplicationPage: NextPage = () => {
       href: "/dashboard/trade-license/application",
       label: "Application"
     }
+  ]
+
+  const breadcrumbs = [
+    { label: "Trade License", href: "/dashboard/trade-license" },
+    { label: "Application", href: "/dashboard/trade-license/application" }
   ]
 
   const [currentStepIndex, changeStep] = useState(0)
@@ -141,6 +148,9 @@ const TradeLicenseApplicationPage: NextPage = () => {
       activeSubNavigationKey="tradeLicenseApplicationNavItem"
       subNavigationItems={navItems}
     >
+      <PageHeader breadcrumbs={<BreadcrumbsWrapper breadcrumbs={breadcrumbs}/>}>
+        Application
+      </PageHeader>
       <div
         style={{
           display: "flex",

@@ -1,17 +1,27 @@
+import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import Dashboard from "@/components/dashboard/dashboard"
 import EmptyState from "@atlaskit/empty-state"
 import { NextPage } from "next"
-import React from "react"
+import PageHeader from "@atlaskit/page-header"
 
 
-const HomePage: NextPage = () => (
-  <Dashboard activeNavigationKey="dashboardNavItem">
-    <EmptyState
-      header="You haven't added elements to the dashboard"
-      description="Make sure the elements are added to the dashboard. These elements can then be easily
+const HomePage: NextPage = () => {
+  const breadcrumbs = [
+    { label: "Dashboard", href: "/dashboard" }
+  ]
+
+  return (
+    <Dashboard activeNavigationKey="dashboardNavItem">
+      <PageHeader breadcrumbs={<BreadcrumbsWrapper breadcrumbs={breadcrumbs}/>}>
+        Dashboard
+      </PageHeader>
+      <EmptyState
+        header="You haven't added elements to the dashboard"
+        description="Make sure the elements are added to the dashboard. These elements can then be easily
             accessible for your future usages."
-    />
-  </Dashboard>
-)
+      />
+    </Dashboard>
+  )
+}
 
 export default HomePage
