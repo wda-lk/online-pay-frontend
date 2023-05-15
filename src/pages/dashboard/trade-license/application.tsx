@@ -54,7 +54,7 @@ const ApplicationPage: NextPage = () => {
   const steps: Step[] = [
     {
       id: "applicant-step",
-      label: "Applicant",
+      label: "Applicant Information",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -65,7 +65,7 @@ const ApplicationPage: NextPage = () => {
     },
     {
       id: "property-step",
-      label: "Property",
+      label: "Property Information",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -76,7 +76,7 @@ const ApplicationPage: NextPage = () => {
     },
     {
       id: "owner-step",
-      label: "Owner",
+      label: "Owner Information",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -87,7 +87,7 @@ const ApplicationPage: NextPage = () => {
     },
     {
       id: "business-step",
-      label: "Business",
+      label: "Business Information",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -137,7 +137,10 @@ const ApplicationPage: NextPage = () => {
         <Form onSubmit={console.log}>
           {({ formProps }) => (
             <form{...formProps}>
-              <FormHeader description="* indicates a required field"/>
+              <FormHeader
+                title={currentStep.label}
+                description="* indicates a required field"
+              />
               <FormSection>
                 {currentStep.content || "No Content Available"}
               </FormSection>
