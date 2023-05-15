@@ -66,13 +66,24 @@ export const navigationItems: NavigationItem[] = [
     ],
     navigationItems: [
       {
-        key: "tradeLicenseApplicationItem",
-        label: "Application",
+        key: "tradeLicenseListItem",
+        label: "Licenses",
         href: "/dashboard/trade-license",
         icon: "CreditCardIcon",
         breadcrumbs: [
           { label: "Trade License", href: "/dashboard/trade-license" },
-          { label: "Application", href: "/dashboard/trade-license" }
+          { label: "Licenses", href: "/dashboard/trade-license" }
+        ],
+        navigationItems: []
+      },
+      {
+        key: "tradeLicenseApplicationItem",
+        label: "Application",
+        href: "/dashboard/trade-license/application",
+        icon: "CreditCardIcon",
+        breadcrumbs: [
+          { label: "Trade License", href: "/dashboard/trade-license" },
+          { label: "Application", href: "/dashboard/trade-license/application" }
         ],
         navigationItems: []
       }
