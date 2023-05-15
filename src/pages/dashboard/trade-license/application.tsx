@@ -24,25 +24,9 @@ import { Status } from "@atlaskit/progress-tracker/types"
 import SummarySection from "@/components/trade-license/SummarySection"
 
 
-interface Step {
-  id: string
-  label: string
-  percentageComplete: number
-  status: Status
-  href: string
-  formTitle: string
-  content?: ReactNode
-  secondaryButton: {
-    label: string
-    onClick?: () => void
-  }
-  primaryButton: {
-    label: string
-    onClick?: () => void
-  }
-}
-
 const TradeLicenseApplicationPage: NextPage = () => {
+  const [currentStepIndex, changeStep] = useState(0)
+
   const navItems = [
     {
       key: "tradeLicenseListNavItem",
@@ -61,14 +45,30 @@ const TradeLicenseApplicationPage: NextPage = () => {
     { label: "Application", href: "/dashboard/trade-license/application" }
   ]
 
-  const [currentStepIndex, changeStep] = useState(0)
-
   const goToNextStep = () => {
     changeStep(currentStepIndex + 1)
   }
 
   const goToPreviousStep = () => {
     changeStep(currentStepIndex - 1)
+  }
+
+  type Step = {
+    id: string
+    label: string
+    percentageComplete: number
+    status: Status
+    href: string
+    formTitle: string
+    content?: ReactNode
+    secondaryButton: {
+      label: string
+      onClick?: () => void
+    }
+    primaryButton: {
+      label: string
+      onClick?: () => void
+    }
   }
 
   const steps: Step[] = [
@@ -128,6 +128,7 @@ const TradeLicenseApplicationPage: NextPage = () => {
       primaryButton: { label: "Complete" }
     }
   ]
+
   const currentStep = steps[currentStepIndex]
 
   const getProgressSteps = (): Stages => {
