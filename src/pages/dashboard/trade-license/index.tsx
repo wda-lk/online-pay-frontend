@@ -16,7 +16,7 @@ import {
   taxTypes
 } from "@/lib/data"
 import Button from "@atlaskit/button/standard-button"
-import Dashboard from "@/components/dashboard"
+import Dashboard from "@/components/dashboard/dashboard"
 import { DatePicker } from "@atlaskit/datetime-picker"
 import EmptyState from "@atlaskit/empty-state"
 import { NextPage } from "next"
@@ -808,32 +808,43 @@ const ApplicationForm = () => {
   }
 }
 
-const TradeLicenseApplicationPage: NextPage = () => (
-  <Dashboard
-    navigationKey="tradeLicenseItem"
-    subNavigationKey="tradeLicenseApplicationItem"
-  >
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "600px",
-        maxWidth: "100%",
-        minHeight: "100%"
-      }}
+const TradeLicenseApplicationPage: NextPage = () => {
+  const navItems = [
+    {
+      key: "tradeLicenseApplicationNavItem",
+      href: "/dashboard/trade-license",
+      label: "Application"
+    }
+  ]
+
+  return (
+    <Dashboard
+      activeNavigationKey="tradeLicenseNavItem"
+      activeSubNavigationKey="tradeLicenseApplicationNavItem"
+      subNavigationItems={navItems}
     >
-      <Form onSubmit={console.log}>
-        {({ formProps }) => (
-          <form{...formProps}>
-            <FormHeader
-              description="* indicates a required field"
-            />
-            <ApplicationForm/>
-          </form>
-        )}
-      </Form>
-    </div>
-  </Dashboard>
-)
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          width: "600px",
+          maxWidth: "100%",
+          minHeight: "100%"
+        }}
+      >
+        <Form onSubmit={console.log}>
+          {({ formProps }) => (
+            <form{...formProps}>
+              <FormHeader
+                description="* indicates a required field"
+              />
+              <ApplicationForm/>
+            </form>
+          )}
+        </Form>
+      </div>
+    </Dashboard>
+  )
+}
 
 export default TradeLicenseApplicationPage

@@ -31,8 +31,8 @@ const Dashboard = (
       isFixed
     >
       <TopNavigationContent
-        activeKey={activeSubNavigationKey && ""}
-        items={subNavigationItems && []}
+        activeKey={activeSubNavigationKey || ""}
+        items={subNavigationItems || []}
       />
     </TopNavigation>
     <Content>

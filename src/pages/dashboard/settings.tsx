@@ -1,14 +1,11 @@
-import Dashboard from "@/components/dashboard"
+import Dashboard from "@/components/dashboard/dashboard"
 import EmptyState from "@atlaskit/empty-state"
 import { NextPage } from "next"
 import React from "react"
 
 
 const SettingsPage: NextPage = () => (
-  <Dashboard
-    navigationKey="settingsItem"
-    subNavigationKey=""
-  >
+  <Dashboard activeNavigationKey="settingsNavItem">
     <EmptyState
       header="Settings is still in implimentation"
       description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore

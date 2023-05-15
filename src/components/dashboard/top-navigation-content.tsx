@@ -12,7 +12,7 @@ import Avatar from "@atlaskit/avatar"
 import Image from "next/future/image"
 import { NotificationIndicator } from "@atlaskit/notification-indicator"
 import { SubNavigationItem } from "@/lib/sub-navigation-item"
-import paymentLogo from "*.svg"
+import paymentLogo from "../../../public/logo/logo-payment=comp.svg"
 
 
 type TopNavigationContentProps = {

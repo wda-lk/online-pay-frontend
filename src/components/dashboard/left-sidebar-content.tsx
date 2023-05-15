@@ -12,7 +12,7 @@ import Link from "next/link"
 import SettingsIcon from "@atlaskit/icon/glyph/settings"
 import StarIcon from "@atlaskit/icon/glyph/star"
 import { forwardRef } from "react"
-import icon from "*.svg"
+import icon from "../../../public/logo/icon=comp.svg"
 
 
 type LeftSidebarContentProps = { activeKey: string }
