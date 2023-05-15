@@ -3,14 +3,14 @@ import Form, {
   FormSection
 } from "@atlaskit/form"
 import {
-  ProgressTracker, Stage,
+  ProgressTracker,
   Stages
 } from "@atlaskit/progress-tracker"
 import React, {
-  PureComponent,
   ReactNode,
   useState
 } from "react"
+import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import BusinessSection from "@/components/trade-license/BusinessSection"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
@@ -29,14 +29,10 @@ import EmptyState from "@atlaskit/empty-state"
 import BusinessSection from "@/components/trade-license/BusinessSection"
 import IncomeSection from "@/components/trade-license/IncomeSection"
 import { NextPage } from "next"
-import PropertySection from "@/components/trade-license/PropertySection"
 import OwnerSection from "@/components/trade-license/OwnerSection"
-import ApplicantSection from "@/components/trade-license/ApplicantSection"
+import PropertySection from "@/components/trade-license/PropertySection"
 import { Status } from "@atlaskit/progress-tracker/types"
 import SummarySection from "@/components/trade-license/SummarySection"
-import Link from "next/link"
-import { N200, N800 } from "@atlaskit/theme/colors"
-import { token } from "@atlaskit/tokens"
 
 
 interface Step {
