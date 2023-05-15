@@ -6,12 +6,34 @@ import {
 import TextField from "@atlaskit/textfield"
 
 
-const IncomeSection = () => (
-  <FormSection>
+const OwnerSection = () => (
+  <FormSection description="Plesase fill the Business Owner's personal information">
     <Field
-      id="lAnuualValue"
-      name="lAnuualValue"
-      label="Last Year Annual Value"
+      id="mobileNumber"
+      name="mobileNumber"
+      label="Mobile Number"
+      defaultValue=""
+      isRequired
+    >
+      {({ fieldProps: { id, ...rest }, error }) => (
+        <>
+          <TextField
+            id={`${id}TextField`}
+            maxLength={10}
+            {...rest}
+          />
+          {error && (
+            <ErrorMessage>
+              {error}
+            </ErrorMessage>
+          )}
+        </>
+      )}
+    </Field>
+    <Field
+      id="ownerName"
+      name="ownerName"
+      label="Owner Name (with initials)"
       defaultValue=""
       isRequired
     >
@@ -30,9 +52,9 @@ const IncomeSection = () => (
       )}
     </Field>
     <Field
-      id="anuualValue"
-      name="anuualValue"
-      label="Annual Value"
+      id="nicNumber"
+      name="nicNumber"
+      label="NIC Number"
       defaultValue=""
       isRequired
     >
@@ -40,6 +62,8 @@ const IncomeSection = () => (
         <>
           <TextField
             id={`${id}TextField`}
+            style={{ textTransform: "uppercase" }}
+            maxLength={12}
             {...rest}
           />
           {error && (
@@ -51,30 +75,9 @@ const IncomeSection = () => (
       )}
     </Field>
     <Field
-      id="taxAmount"
-      name="taxAmount"
-      label="Tax Amount"
-      defaultValue=""
-      isRequired
-    >
-      {({ fieldProps: { id, ...rest }, error }) => (
-        <>
-          <TextField
-            id={`${id}TextField`}
-            {...rest}
-          />
-          {error && (
-            <ErrorMessage>
-              {error}
-            </ErrorMessage>
-          )}
-        </>
-      )}
-    </Field>
-    <Field
-      id="otherCharges"
-      name="otherCharges"
-      label="Other Charges"
+      id="address"
+      name="address"
+      label="Address"
       defaultValue=""
       isRequired
     >
@@ -95,4 +98,4 @@ const IncomeSection = () => (
   </FormSection>
 )
 
-export default IncomeSection
+export default OwnerSection

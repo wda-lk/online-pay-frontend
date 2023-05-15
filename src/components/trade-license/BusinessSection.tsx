@@ -18,28 +18,7 @@ import TextField from "@atlaskit/textfield"
 
 const BusinessSection = () => (
   <>
-    <FormSection>
-      <Field
-        id="businessName"
-        name="businessName"
-        label="Business Name"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest }, error }) => (
-          <>
-            <TextField
-              id={`${id}TextField`}
-              {...rest}
-            />
-            {error && (
-              <ErrorMessage>
-                {error}
-              </ErrorMessage>
-            )}
-          </>
-        )}
-      </Field>
+    <FormSection description="Nature informaiton">
       <Field<ValueType<OptionType>>
         id="nature"
         name="nature"
@@ -73,7 +52,28 @@ const BusinessSection = () => (
         )}
       </Field>
     </FormSection>
-    <FormSection>
+    <FormSection description="Registration information">
+      <Field
+        id="businessName"
+        name="businessName"
+        label="Business Name"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest }, error }) => (
+          <>
+            <TextField
+              id={`${id}TextField`}
+              {...rest}
+            />
+            {error && (
+              <ErrorMessage>
+                {error}
+              </ErrorMessage>
+            )}
+          </>
+        )}
+      </Field>
       <Field
         id="regDate"
         name="regDate"
@@ -136,7 +136,7 @@ const BusinessSection = () => (
         )}
       </Field>
     </FormSection>
-    <FormSection>
+    <FormSection description="Contact information">
       <Field
         id="telNumber"
         name="telNumber"
@@ -192,6 +192,92 @@ const BusinessSection = () => (
         id="website"
         name="website"
         label="Website"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest }, error }) => (
+          <>
+            <TextField
+              id={`${id}TextField`}
+              {...rest}
+            />
+            {error && (
+              <ErrorMessage>
+                {error}
+              </ErrorMessage>
+            )}
+          </>
+        )}
+      </Field>
+    </FormSection>
+    <FormSection description="Income infomraion">
+      <Field
+        id="lAnuualValue"
+        name="lAnuualValue"
+        label="Last Year Annual Value"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest }, error }) => (
+          <>
+            <TextField
+              id={`${id}TextField`}
+              {...rest}
+            />
+            {error && (
+              <ErrorMessage>
+                {error}
+              </ErrorMessage>
+            )}
+          </>
+        )}
+      </Field>
+      <Field
+        id="anuualValue"
+        name="anuualValue"
+        label="Annual Value"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest }, error }) => (
+          <>
+            <TextField
+              id={`${id}TextField`}
+              {...rest}
+            />
+            {error && (
+              <ErrorMessage>
+                {error}
+              </ErrorMessage>
+            )}
+          </>
+        )}
+      </Field>
+      <Field
+        id="taxAmount"
+        name="taxAmount"
+        label="Tax Amount"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest }, error }) => (
+          <>
+            <TextField
+              id={`${id}TextField`}
+              {...rest}
+            />
+            {error && (
+              <ErrorMessage>
+                {error}
+              </ErrorMessage>
+            )}
+          </>
+        )}
+      </Field>
+      <Field
+        id="otherCharges"
+        name="otherCharges"
+        label="Other Charges"
         defaultValue=""
         isRequired
       >

@@ -14,9 +14,9 @@ import {
 import TextField from "@atlaskit/textfield"
 
 
-const StartupSection = () => (
+const ApplicantSection = () => (
   <>
-    <FormSection>
+    <FormSection description="Please select the Tax type, for which you're submitting this Application">
       <Field<ValueType<OptionType>>
         id="taxType"
         name="taxType"
@@ -34,7 +34,45 @@ const StartupSection = () => (
         )}
       </Field>
     </FormSection>
-    <FormSection>
+    <FormSection description="Personal information">
+      <Field
+        id="nicNumber"
+        name="nicNumber"
+        label="NIC Number"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest }, error }) => (
+          <>
+            <TextField
+              id={`${id}TextField`}
+              style={{ textTransform: "uppercase" }}
+              maxLength={12}
+              {...rest}
+            />
+            {error && (
+              <ErrorMessage>
+                {error}
+              </ErrorMessage>
+            )}
+          </>
+        )}
+      </Field>
+      <Field
+        name="name"
+        label="Name (with initials)"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest } }: any) => (
+          <TextField
+            id={`${id}TextField`}
+            {...rest}
+          />
+        )}
+      </Field>
+    </FormSection>
+    <FormSection description="Home Address information">
       <Field<ValueType<OptionType>>
         id="district"
         name="district"
@@ -83,8 +121,21 @@ const StartupSection = () => (
           />
         )}
       </Field>
+      <Field
+        name="address"
+        label="Address"
+        defaultValue=""
+        isRequired
+      >
+        {({ fieldProps: { id, ...rest } }: any) => (
+          <TextField
+            id={`${id}TextField`}
+            {...rest}
+          />
+        )}
+      </Field>
     </FormSection>
-    <FormSection>
+    <FormSection description="Contact information">
       <Field
         id="mobileNumber"
         name="mobileNumber"
@@ -107,57 +158,8 @@ const StartupSection = () => (
           </>
         )}
       </Field>
-      <Field
-        id="nicNumber"
-        name="nicNumber"
-        label="NIC Number"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest }, error }) => (
-          <>
-            <TextField
-              id={`${id}TextField`}
-              style={{ textTransform: "uppercase" }}
-              maxLength={12}
-              {...rest}
-            />
-            {error && (
-              <ErrorMessage>
-                {error}
-              </ErrorMessage>
-            )}
-          </>
-        )}
-      </Field>
-      <Field
-        name="name"
-        label="Name (with initials)"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest } }: any) => (
-          <TextField
-            id={`${id}TextField`}
-            {...rest}
-          />
-        )}
-      </Field>
-      <Field
-        name="address"
-        label="Address"
-        defaultValue=""
-        isRequired
-      >
-        {({ fieldProps: { id, ...rest } }: any) => (
-          <TextField
-            id={`${id}TextField`}
-            {...rest}
-          />
-        )}
-      </Field>
     </FormSection>
   </>
 )
 
-export default StartupSection
+export default ApplicantSection

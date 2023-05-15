@@ -1,15 +1,17 @@
 import Form, {
-  FormFooter,
+  FormFooter, FormHeader,
   FormSection
 } from "@atlaskit/form"
 import {
-  ProgressTracker,
+  ProgressTracker, Stage,
   Stages
 } from "@atlaskit/progress-tracker"
 import React, {
+  PureComponent,
   ReactNode,
   useState
 } from "react"
+import BusinessSection from "@/components/trade-license/BusinessSection"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Select, {
@@ -27,7 +29,14 @@ import EmptyState from "@atlaskit/empty-state"
 import BusinessSection from "@/components/trade-license/BusinessSection"
 import IncomeSection from "@/components/trade-license/IncomeSection"
 import { NextPage } from "next"
+import PropertySection from "@/components/trade-license/PropertySection"
+import OwnerSection from "@/components/trade-license/OwnerSection"
+import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import { Status } from "@atlaskit/progress-tracker/types"
+import SummarySection from "@/components/trade-license/SummarySection"
+import Link from "next/link"
+import { N200, N800 } from "@atlaskit/theme/colors"
+import { token } from "@atlaskit/tokens"
 
 
 interface Step {
@@ -36,6 +45,7 @@ interface Step {
   percentageComplete: number
   status: Status
   href: string
+  formTitle: string
   content?: ReactNode
   secondaryButton: {
     label: string
@@ -60,11 +70,13 @@ const ApplicationPage: NextPage = () => {
 
   const steps: Step[] = [
     {
-      id: "user-step",
-      label: "User",
+      id: "applicant-step",
+      label: "Applicant",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
+      formTitle: "Applicant Information Section",
+      content: <ApplicantSection/>,
       secondaryButton: { label: "Cancel" },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
@@ -74,6 +86,8 @@ const ApplicationPage: NextPage = () => {
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
+      formTitle: "Property Information Section",
+      content: <PropertySection/>,
       secondaryButton: { label: "Prev", onClick: goToPreviousStep },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
@@ -83,6 +97,8 @@ const ApplicationPage: NextPage = () => {
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
+      formTitle: "Owner Information Section",
+      content: <OwnerSection/>,
       secondaryButton: { label: "Prev", onClick: goToPreviousStep },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
@@ -92,6 +108,8 @@ const ApplicationPage: NextPage = () => {
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
+      formTitle: "Business Information Section",
+      content: <BusinessSection/>,
       secondaryButton: { label: "Prev", onClick: goToPreviousStep },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
@@ -101,6 +119,8 @@ const ApplicationPage: NextPage = () => {
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
+      formTitle: "Preview Section",
+      content: <SummarySection/>,
       secondaryButton: { label: "Prev", onClick: goToPreviousStep },
       primaryButton: { label: "Complete" }
     }
@@ -137,19 +157,18 @@ const ApplicationPage: NextPage = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          maxWidth: 624,
-          minHeight: 624,
-          borderStyle: "dashed"
+          maxWidth: 624
         }}
       >
         <Form onSubmit={console.log}>
           {({ formProps }) => (
             <form{...formProps}>
+              <FormHeader description="* indicates a required field"/>
               <FormSection>
-                <ProgressTracker items={getProgressSteps()}/>
+                {currentStep.content || "No Content Available"}
               </FormSection>
               <FormSection>
-                Form
+                <ProgressTracker items={getProgressSteps()}/>
               </FormSection>
               <FormFooter>
                 <ButtonGroup>
@@ -167,9 +186,6 @@ const ApplicationPage: NextPage = () => {
                   </Button>
                 </ButtonGroup>
               </FormFooter>
-              <FormSection>
-                <ProgressTracker items={getProgressSteps()}/>
-              </FormSection>
             </form>
           )}
         </Form>

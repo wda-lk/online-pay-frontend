@@ -3,15 +3,36 @@ import {
   Field,
   FormSection
 } from "@atlaskit/form"
+import Select, {
+  OptionType,
+  ValueType
+} from "@atlaskit/select"
 import TextField from "@atlaskit/textfield"
+import { districts } from "@/lib/data"
 
 
-const PropertyOwnerSection = () => (
-  <FormSection>
+const PropertySection = () => (
+  <FormSection description="Please fill the Business Location information">
+    <Field<ValueType<OptionType>>
+      id="gnDivision"
+      name="gnDivision"
+      label="GN Division"
+      isRequired
+    >
+      {({ fieldProps: { id, ...rest } }) => (
+        <Select
+          id={`${id}Select`}
+          options={districts}
+          isSearchable
+          isClearable
+          {...rest}
+        />
+      )}
+    </Field>
     <Field
-      id="mobileNumber"
-      name="mobileNumber"
-      label="Mobile Number"
+      id="ward"
+      name="ward"
+      label="Ward"
       defaultValue=""
       isRequired
     >
@@ -19,7 +40,6 @@ const PropertyOwnerSection = () => (
         <>
           <TextField
             id={`${id}TextField`}
-            maxLength={10}
             {...rest}
           />
           {error && (
@@ -31,9 +51,9 @@ const PropertyOwnerSection = () => (
       )}
     </Field>
     <Field
-      id="ownerName"
-      name="ownerName"
-      label="Owner Name (with initials)"
+      id="street"
+      name="street"
+      label="Street"
       defaultValue=""
       isRequired
     >
@@ -52,9 +72,9 @@ const PropertyOwnerSection = () => (
       )}
     </Field>
     <Field
-      id="nicNumber"
-      name="nicNumber"
-      label="NIC Number"
+      id="assessmentNumber"
+      name="assessmentNumber"
+      label="Assessment Number"
       defaultValue=""
       isRequired
     >
@@ -62,8 +82,6 @@ const PropertyOwnerSection = () => (
         <>
           <TextField
             id={`${id}TextField`}
-            style={{ textTransform: "uppercase" }}
-            maxLength={12}
             {...rest}
           />
           {error && (
@@ -98,4 +116,4 @@ const PropertyOwnerSection = () => (
   </FormSection>
 )
 
-export default PropertyOwnerSection
+export default PropertySection
