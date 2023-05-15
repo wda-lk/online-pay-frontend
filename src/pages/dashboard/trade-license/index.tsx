@@ -1,10 +1,17 @@
 import Form, {
   FormFooter,
-  FormHeader, FormSection
+  FormSection
 } from "@atlaskit/form"
+import {
+  ProgressTracker,
+  Stages
+} from "@atlaskit/progress-tracker"
 import React, {
+  ReactNode,
   useState
 } from "react"
+import Button from "@atlaskit/button/standard-button"
+import ButtonGroup from "@atlaskit/button/button-group"
 import Select, {
   OptionType,
   ValueType
@@ -20,115 +27,98 @@ import EmptyState from "@atlaskit/empty-state"
 import BusinessSection from "@/components/trade-license/BusinessSection"
 import IncomeSection from "@/components/trade-license/IncomeSection"
 import { NextPage } from "next"
-import ProgressFormIndicator from "@/components/trade-license/ProgressFormIndicator"
-import PropertyLocationSection from "@/components/trade-license/PropertyLocationSection"
-import PropertyOwnerSection from "@/components/trade-license/PropertyOwnerSection"
-import StartupSection from "@/components/trade-license/StartupSection"
-import SummarySection from "@/components/trade-license/SummarySection"
-import FormProgressTracker from "@/components/trade-license/FormProgressTracker"
+import { Status } from "@atlaskit/progress-tracker/types"
 
 
-const ApplicationForm = () => {
-  const [selectedIndex, setSelectedIndex] = useState(0)
-  const steps = ["first", "second", "third", "fourth", "fifth", "six"]
-
-  const handlePrev = () => {
-    setSelectedIndex((prevState) => prevState - 1)
+interface Step {
+  id: string
+  label: string
+  percentageComplete: number
+  status: Status
+  href: string
+  content?: ReactNode
+  secondaryButton: {
+    label: string
+    onClick?: () => void
   }
-
-  const handleNext = () => {
-    setSelectedIndex((prevState) => prevState + 1)
-  }
-
-  switch (selectedIndex) {
-    case 0:
-      return (
-        <>
-          <StartupSection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
-    case 1:
-      return (
-        <>
-          <PropertyLocationSection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
-    case 2:
-      return (
-        <>
-          <PropertyOwnerSection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
-    case 3:
-      return (
-        <>
-          <BusinessSection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
-    case 4:
-      return (
-        <>
-          <IncomeSection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
-    case 5:
-      return (
-        <>
-          <SummarySection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
-    default:
-      return (
-        <>
-          <StartupSection/>
-          <ProgressFormIndicator
-            steps={steps}
-            selectedIndex={selectedIndex}
-            handlePrev={handlePrev}
-            handleNext={handleNext}
-          />
-        </>
-      )
+  primaryButton: {
+    label: string
+    onClick?: () => void
   }
 }
 
 const ApplicationPage: NextPage = () => {
+  const [currentStepIndex, changeStep] = useState(0)
+
+  const goToNextStep = () => {
+    changeStep(currentStepIndex + 1)
+  }
+
+  const goToPreviousStep = () => {
+    changeStep(currentStepIndex - 1)
+  }
+
+  const steps: Step[] = [
+    {
+      id: "user-step",
+      label: "User",
+      percentageComplete: 0,
+      status: "visited" as Status,
+      href: "#",
+      secondaryButton: { label: "Cancel" },
+      primaryButton: { label: "Next", onClick: goToNextStep }
+    },
+    {
+      id: "property-step",
+      label: "Property",
+      percentageComplete: 0,
+      status: "visited" as Status,
+      href: "#",
+      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      primaryButton: { label: "Next", onClick: goToNextStep }
+    },
+    {
+      id: "owner-step",
+      label: "Owner",
+      percentageComplete: 0,
+      status: "visited" as Status,
+      href: "#",
+      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      primaryButton: { label: "Next", onClick: goToNextStep }
+    },
+    {
+      id: "business-step",
+      label: "Business",
+      percentageComplete: 0,
+      status: "visited" as Status,
+      href: "#",
+      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      primaryButton: { label: "Next", onClick: goToNextStep }
+    },
+    {
+      id: "preview-step",
+      label: "Preview",
+      percentageComplete: 0,
+      status: "visited" as Status,
+      href: "#",
+      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      primaryButton: { label: "Complete" }
+    }
+  ]
+  const currentStep = steps[currentStepIndex]
+
+  const getProgressSteps = (): Stages => {
+    return steps.map((step, index) => {
+      return {
+        id: step.id,
+        label: step.label,
+        percentageComplete: currentStepIndex > index ? 100 : 0,
+        status: currentStepIndex === index ? "current" as Status : step.status,
+        href: step.href
+      }
+    })
+  }
+
   const navItems = [
     {
       key: "tradeLicenseApplicationNavItem",
@@ -148,26 +138,38 @@ const ApplicationPage: NextPage = () => {
           display: "flex",
           flexDirection: "column",
           maxWidth: 624,
-        height: "624px",
-          minHeight: "100%",
-        borderStyle: "dashed"
-      }}
-    >
-      <Form onSubmit={console.log}>
-        {({ formProps }) => (
-          <form{...formProps}>
-            <FormSection>
-                <FormProgressTracker/>
+          minHeight: 624,
+          borderStyle: "dashed"
+        }}
+      >
+        <Form onSubmit={console.log}>
+          {({ formProps }) => (
+            <form{...formProps}>
+              <FormSection>
+                <ProgressTracker items={getProgressSteps()}/>
               </FormSection>
               <FormSection>
-              Form
-            </FormSection>
-            <FormFooter>
-              Navigation Buttons
-            </FormFooter>
-            <FormSection>
-              <FormProgressTracker/>
-            </FormSection>
+                Form
+              </FormSection>
+              <FormFooter>
+                <ButtonGroup>
+                  <Button
+                    appearance="subtle"
+                    onClick={currentStep.secondaryButton.onClick}
+                  >
+                    {currentStep.secondaryButton.label}
+                  </Button>
+                  <Button
+                    appearance="primary"
+                    onClick={currentStep.primaryButton.onClick}
+                  >
+                    {currentStep.primaryButton.label}
+                  </Button>
+                </ButtonGroup>
+              </FormFooter>
+              <FormSection>
+                <ProgressTracker items={getProgressSteps()}/>
+              </FormSection>
             </form>
           )}
         </Form>
