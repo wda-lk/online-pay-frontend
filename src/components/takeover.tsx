@@ -1,4 +1,7 @@
 import { ReactNode } from "react"
+import styles from "./takeover.module.css"
+import { token } from "@atlaskit/tokens"
+
 
 type TakeoverProps = {
   children: ReactNode
@@ -6,24 +9,41 @@ type TakeoverProps = {
   navigationButtons: ReactNode
 }
 
-const Takeover = ({ children, progressTracker, navigationButtons }: TakeoverProps) => (
-  <div style={{ display: "flex", flexDirection: "column" }}>
-    <div style={{ height: 100, display: "flex", flexDirection: "column" }}>
-      <div style={{ height: 40, display: "flex", alignItems: "center" }}>
-        <h1>Trade License Application</h1>
+const Takeover = (
+  {
+    children,
+    progressTracker,
+    navigationButtons
+  }: TakeoverProps) => (
+  <div className={styles.container}>
+    <div
+      className={styles.headerContainer}
+      style={{
+        boxShadow: token(
+          "elevation.shadow.overflow",
+          "0px 2px 4px rgba(9, 30, 66, 0.1)"
+        )
+      }}
+    >
+      <div>
+        <h3>Trade License Application</h3>
       </div>
-      <div style={{
-        height: 60,
-        display: "flex",
-        alignItems: "center"
-      }}>
+      <div>
         {progressTracker}
       </div>
     </div>
-    <div style={{ height: "82vh", overflowY: "scroll" }}>
+    <div className={styles.contentContainer}>
       {children}
     </div>
-    <div style={{ height: 60, display: "flex", alignItems: "center" }}>
+    <div
+      className={styles.footerContainer}
+      style={{
+        boxShadow: token(
+          "elevation.shadow.overflow",
+          "0px -2px 4px rgba(9, 30, 66, 0.1)"
+        )
+      }}
+    >
       {navigationButtons}
     </div>
   </div>

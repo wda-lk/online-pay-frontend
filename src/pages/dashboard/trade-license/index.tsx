@@ -29,6 +29,19 @@ const TradeLicensePage: NextPage = () => {
   const [applicationOpen, openApplication] = useState(false)
   const [currentStepIndex, changeStep] = useState(0)
 
+  const navItems = [
+    {
+      key: "tradeLicenseListNavItem",
+      href: "/dashboard/trade-license",
+      label: "Licenses"
+    }
+  ]
+
+  const breadcrumbs = [
+    { label: "Trade License", href: "/dashboard/trade-license" },
+    { label: "Licenses", href: "/dashboard/trade-license" }
+  ]
+
   const goToNextStep = () => {
     changeStep(currentStepIndex + 1)
   }
@@ -57,7 +70,7 @@ const TradeLicensePage: NextPage = () => {
       href: "#",
       formTitle: "Property Information Section",
       content: <PropertySection/>,
-      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
@@ -68,7 +81,7 @@ const TradeLicensePage: NextPage = () => {
       href: "#",
       formTitle: "Owner Information Section",
       content: <OwnerSection/>,
-      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
@@ -79,7 +92,7 @@ const TradeLicensePage: NextPage = () => {
       href: "#",
       formTitle: "Business Information Section",
       content: <BusinessSection/>,
-      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
@@ -90,7 +103,7 @@ const TradeLicensePage: NextPage = () => {
       href: "#",
       formTitle: "Preview Section",
       content: <SummarySection/>,
-      secondaryButton: { label: "Prev", onClick: goToPreviousStep },
+      secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Complete" }
     }
   ]
@@ -109,23 +122,10 @@ const TradeLicensePage: NextPage = () => {
     })
   }
 
-  const navItems = [
-    {
-      key: "tradeLicenseListNavItem",
-      href: "/dashboard/trade-license",
-      label: "Licenses"
-    }
-  ]
-
-  const breadcrumbs = [
-    { label: "Trade License", href: "/dashboard/trade-license" },
-    { label: "Licenses", href: "/dashboard/trade-license" }
-  ]
-
   return (
     <>
       <Drawer
-        width="full"
+        width="extended"
         onClose={() => openApplication(false)}
         isOpen={applicationOpen}
       >
