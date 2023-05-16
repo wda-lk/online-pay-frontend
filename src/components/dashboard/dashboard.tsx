@@ -46,7 +46,9 @@ const Dashboard = (
         </div>
       </LeftSidebar>
       <Main id="main-content">
-        {children}
+        <div style={{ padding: "0 24px" }}>
+          {children}
+        </div>
       </Main>
     </Content>
   </PageLayout>
