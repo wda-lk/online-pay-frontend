@@ -3,7 +3,7 @@ import { Status } from "@atlaskit/progress-tracker/types"
 
 
 export type Step = {
-  id: string
+  id: number
   label: string
   percentageComplete: number
   status: Status

@@ -1,5 +1,5 @@
 import Form, { FormHeader, FormSection } from "@atlaskit/form"
-import { ProgressTracker, Stages } from "@atlaskit/progress-tracker"
+import React, { useState } from "react"
 import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import BusinessSection from "@/components/trade-license/BusinessSection"
@@ -14,24 +14,24 @@ import { Status } from "@atlaskit/progress-tracker/types"
 import { Step } from "@/lib/step"
 import SummarySection from "@/components/trade-license/SummarySection"
 import Takeover from "@/components/takeover"
-import { useState } from "react"
+import styles from "./application.module.css"
 
 
 const ApplicationForm = () => {
-  const [currentStepIndex, changeStep] = useState(0)
+  const [activeStepIndex, changeStep] = useState(1)
 
   const goToNextStep = () => {
-    changeStep(currentStepIndex + 1)
+    changeStep(activeStepIndex + 1)
   }
 
   const goToPreviousStep = () => {
-    changeStep(currentStepIndex - 1)
+    changeStep(activeStepIndex - 1)
   }
 
   const steps: Step[] = [
     {
-      id: "applicant-step",
-      label: "Applicant Information",
+      id: 1,
+      label: "Applicant",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -41,8 +41,8 @@ const ApplicationForm = () => {
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
-      id: "property-step",
-      label: "Property Information",
+      id: 2,
+      label: "Property",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -52,8 +52,8 @@ const ApplicationForm = () => {
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
-      id: "owner-step",
-      label: "Owner Information",
+      id: 3,
+      label: "Owner",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -63,8 +63,8 @@ const ApplicationForm = () => {
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
-      id: "business-step",
-      label: "Business Information",
+      id: 4,
+      label: "Business",
       percentageComplete: 0,
       status: "visited" as Status,
       href: "#",
@@ -74,7 +74,7 @@ const ApplicationForm = () => {
       primaryButton: { label: "Next", onClick: goToNextStep }
     },
     {
-      id: "preview-step",
+      id: 5,
       label: "Preview",
       percentageComplete: 0,
       status: "visited" as Status,
@@ -86,24 +86,38 @@ const ApplicationForm = () => {
     }
   ]
 
-  const currentStep = steps[currentStepIndex]
-
-  const getProgressSteps = (): Stages => {
-    return steps.map((step, index) => {
-      return {
-        id: step.id,
-        label: step.label,
-        percentageComplete: currentStepIndex > index ? 100 : 0,
-        status: currentStepIndex === index ? "current" as Status : step.status,
-        href: step.href
-      }
-    })
-  }
+  const currentStep = steps[activeStepIndex - 1]
 
   return (
     <Takeover
       progressTracker={
-        <ProgressTracker items={getProgressSteps()}/>
+        <div className={styles.mainContainer}>
+          <div className={`${styles.stepContainer} ${styles["width-" + activeStepIndex]}`}>
+            {steps.map((step) => (
+              <div
+                className={styles.stepWrapper}
+                key={step.id}
+              >
+                <div
+                  className={
+                    `${styles.stepStyle} ${activeStepIndex >= step.id ? styles.completed : styles.incomplete}`
+                  }
+                >
+                  {
+                    activeStepIndex > step.id
+                    ? (<div className={styles.checkMark}>L</div>)
+                    : (<span className={styles.stepCount}>{step.id}</span>)
+                  }
+                </div>
+                <div className={styles.stepsLabelContainer}>
+                  <span className={styles.stepLabel}>
+                    {step.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       }
       footer={
         <ButtonGroup>

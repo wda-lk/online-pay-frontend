@@ -1,0 +1,107 @@
+.mainContainer {
+	width: 100%;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 0 16px;
+}
+
+.stepContainer {
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	margin-top: 20px;
+}
+
+.width-1 {
+	--width: 0%;
+}
+
+.width-2 {
+	--width: 25%;
+}
+
+.width-3 {
+	--width: 50%;
+}
+
+.width-4 {
+	--width: 75%;
+}
+
+.width-5 {
+	--width: 100%;
+}
+
+.stepContainer:before {
+	content: '';
+	position: absolute;
+	background: #B3D4FF;
+	height: 4px;
+	width: 100%;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 0;
+}
+
+.stepContainer:after {
+	content: '';
+	position: absolute;
+	background: #0052cc;
+	height: 4px;
+	width: var(--width);
+	top: 50%;
+	transition: 0.4s ease;
+	transform: translateY(-50%);
+	left: 0;
+}
+
+.stepWrapper {
+	position: relative;
+	z-index: 1;
+}
+
+.stepStyle {
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background-color: #ffffff;
+	border: 3px solid #B3D4FF;
+	transition: 0.4s ease;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.stepStyle.completed {
+	border-color: #0052cc;
+}
+
+.stepCount {
+	color: #B3D4FF;
+}
+
+.stepsLabelContainer {
+	position: absolute;
+	top: 55px;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.stepLabel {
+	font-weight: 500;
+}
+
+@media (max-width: 600px) {
+	.stepLabel {
+		font-size: 16px;
+	}
+}
+
+.checkMark {
+	font-size: 16px;
+	font-weight: 600;
+	color: #0052cc;
+	-ms-transform: scaleX(-1) rotate(-46deg); /* IE 9 */
+	-webkit-transform: scaleX(-1) rotate(-46deg); /* Chrome, Safari, Opera */
+	transform: scaleX(-1) rotate(-46deg);
+}
