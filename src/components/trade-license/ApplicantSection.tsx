@@ -1,22 +1,12 @@
-import { AllInputProps, ApplicantInputProps, InputSelect } from "@/lib/trade-license/InputProps"
 import Form, { ErrorMessage, Field, FormHeader, FormSection } from "@atlaskit/form"
 import Select, { OptionType, ValueType } from "@atlaskit/select"
 import { districts, taxTypes } from "@/lib/data"
+import { ApplicantSectionProps } from "@/lib/trade-license/section"
+import { InputSelect } from "@/lib/trade-license/input"
 import TextField from "@atlaskit/textfield"
 
-type FormProps = {
-  formId: string
-  formTitle: string
-  handleSubmitSuccess: (data: AllInputProps) => void
-}
 
-type SectionProps = {
-  formProps: FormProps,
-  inputProps: ApplicantInputProps
-}
-
-const ApplicantSection = ({ formProps, inputProps }: SectionProps) => {
-  const { formId, formTitle, handleSubmitSuccess } = formProps
+const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: ApplicantSectionProps) => {
   const {
     taxType,
     nicNumber,

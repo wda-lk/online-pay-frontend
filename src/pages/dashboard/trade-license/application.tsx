@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { AllInputProps } from "@/lib/trade-license/InputProps"
+import { AllInputProps } from "@/lib/trade-license/input"
 import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import BusinessSection from "@/components/trade-license/BusinessSection"
@@ -16,24 +16,85 @@ import Takeover from "@/components/takeover"
 import styles from "./application.module.css"
 
 
+const defaultApplicantInputProps = {
+  taxType: undefined,
+  nicNumber: "",
+  name: "",
+  district: undefined,
+  localAuthority: undefined,
+  gnDivision: undefined,
+  address: "",
+  mobileNumber: ""
+}
+
+const defaultPropertyInputProps = {
+  gnDivision: undefined,
+  ward: "",
+  street: "",
+  assessmentNumber: "",
+  address: ""
+}
+
+const defaultOwnerInputProps = {
+  mobileNumber: "",
+  ownerName: "",
+  nicNumber: "",
+  address: ""
+}
+
+const defaultBusinessInputProps = {
+  nature: undefined,
+  subNature: undefined,
+  businessName: "",
+  regDate: "",
+  regNumber: "",
+  employeeCount: "",
+  telNumber: "",
+  email: "",
+  website: "",
+  lAnnualValue: "",
+  annualValue: "",
+  taxAmount: "",
+  otherCharges: ""
+}
+
 const ApplicationForm = () => {
   const [activeStepIndex, changeStep] = useState(1)
-  const [allInputProps, changeInputProps] = useState<AllInputProps>
-  ({
-     applicantInputProps: {
-       taxType: undefined,
-       nicNumber: "",
-       name: "",
-       district: undefined,
-       localAuthority: undefined,
-       gnDivision: undefined,
-       address: "",
-       mobileNumber: ""
-     }
-   })
+  const [allInputProps, changeInputProps] =
+    useState<AllInputProps>(
+      {
+        applicantInputProps: defaultApplicantInputProps,
+        propertyInputProps: defaultPropertyInputProps,
+        ownerInputProps: defaultOwnerInputProps,
+        businessInputProps: defaultBusinessInputProps
+      })
 
   const goToNextStep = (data: AllInputProps) => {
-    changeInputProps(data)
+    if (data.applicantInputProps) {
+      changeInputProps(
+        {
+          ...allInputProps,
+          applicantInputProps: data.applicantInputProps
+        })
+    } else if (data.propertyInputProps) {
+      changeInputProps(
+        {
+          ...allInputProps,
+          propertyInputProps: data.propertyInputProps
+        })
+    } else if (data.ownerInputProps) {
+      changeInputProps(
+        {
+          ...allInputProps,
+          ownerInputProps: data.ownerInputProps
+        })
+    } else if (data.businessInputProps) {
+      changeInputProps(
+        {
+          ...allInputProps,
+          businessInputProps: data.businessInputProps
+        })
+    }
     changeStep(activeStepIndex + 1)
   }
 
@@ -49,12 +110,10 @@ const ApplicationForm = () => {
       formTitle: "Applicant Information Section",
       content:
         <ApplicantSection
-          formProps={{
-            formId: "applicantSection",
-            formTitle: "Applicant Information Section",
-            handleSubmitSuccess: goToNextStep
-          }}
-          inputProps={allInputProps.applicantInputProps}
+          formId="applicantSection"
+          formTitle="Applicant Information Section"
+          handleSubmitSuccess={goToNextStep}
+          inputProps={allInputProps.applicantInputProps || defaultApplicantInputProps}
         />,
       secondaryButton: { label: "Cancel" },
       primaryButton: { label: "Next" }
@@ -62,24 +121,45 @@ const ApplicationForm = () => {
     {
       number: 2,
       label: "Property",
+      formId: "propertySection",
       formTitle: "Property Information Section",
-      content: <PropertySection/>,
+      content:
+        <PropertySection
+          formId="propertySection"
+          formTitle="Property Information Section"
+          handleSubmitSuccess={goToNextStep}
+          inputProps={allInputProps.propertyInputProps || defaultPropertyInputProps}
+        />,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Next" }
     },
     {
       number: 3,
       label: "Owner",
+      formId: "OwnerSection",
       formTitle: "Owner Information Section",
-      content: <OwnerSection/>,
+      content:
+        <OwnerSection
+          formId="OwnerSection"
+          formTitle="Owner Information Section"
+          handleSubmitSuccess={goToNextStep}
+          inputProps={allInputProps.ownerInputProps || defaultOwnerInputProps}
+        />,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Next" }
     },
     {
       number: 4,
       label: "Business",
+      formId: "BusinessSection",
       formTitle: "Business Information Section",
-      content: <BusinessSection/>,
+      content:
+        <BusinessSection
+          formId="BusinessSection"
+          formTitle="Business Information Section"
+          handleSubmitSuccess={goToNextStep}
+          inputProps={allInputProps.businessInputProps || defaultBusinessInputProps}
+        />,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
       primaryButton: { label: "Next" }
     },
