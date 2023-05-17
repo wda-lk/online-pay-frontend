@@ -1,6 +1,5 @@
 import Form, { FormHeader, FormSection } from "@atlaskit/form"
 import { ProgressTracker, Stages } from "@atlaskit/progress-tracker"
-import { ReactNode, useState } from "react"
 import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import BusinessSection from "@/components/trade-license/BusinessSection"
@@ -14,27 +13,9 @@ import PropertySection from "@/components/trade-license/PropertySection"
 import { Status } from "@atlaskit/progress-tracker/types"
 import { Step } from "@/lib/step"
 import SummarySection from "@/components/trade-license/SummarySection"
+import Takeover from "@/components/takeover"
+import { useState } from "react"
 
-
-type TakeoverProps = {
-  progressTracker?: ReactNode
-  children?: ReactNode
-  footer?: ReactNode
-}
-
-const Takeover = ({ progressTracker, children, footer }: TakeoverProps) => (
-  <div style={{ display: "flex", flexDirection: "column", height: "84vh", borderStyle: "solid" }}>
-    <div style={{ height: "10vh", borderStyle: "dashed", padding: "0 12px" }}>
-      {progressTracker}
-    </div>
-    <div style={{ height: "69vh", borderStyle: "dashed", overflowY: "scroll", padding: "0 12px" }}>
-      {children}
-    </div>
-    <div style={{ display: "flex", alignItems: "center", height: "5vh", borderStyle: "dashed", padding: "0 12px" }}>
-      {footer}
-    </div>
-  </div>
-)
 
 const ApplicationForm = () => {
   const [currentStepIndex, changeStep] = useState(0)
