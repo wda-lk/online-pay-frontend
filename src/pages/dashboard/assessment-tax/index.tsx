@@ -1,7 +1,8 @@
+import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import Dashboard from "@/components/dashboard/dashboard"
 import EmptyState from "@atlaskit/empty-state"
 import { NextPage } from "next"
-import React from "react"
+import PageHeader from "@atlaskit/page-header"
 
 
 const AssessmentTaxPaymentPage: NextPage = () => {
@@ -10,12 +11,12 @@ const AssessmentTaxPaymentPage: NextPage = () => {
       key: "assessmentTaxPaymentNavItem",
       href: "/dashboard/assessment-tax",
       label: "Payment"
-    },
-    {
-      key: "assessmentTaxPropertyNavItem",
-      href: "/dashboard/assessment-tax/property",
-      label: "Property"
     }
+  ]
+
+  const breadcrumbs = [
+    { label: "Assessment Tax", href: "/dashboard/assessment-tax" },
+    { label: "Payment", href: "/dashboard/assessment-tax" }
   ]
 
   return (
@@ -24,6 +25,9 @@ const AssessmentTaxPaymentPage: NextPage = () => {
       activeSubNavigationKey="assessmentTaxPaymentNavItem"
       subNavigationItems={navItems}
     >
+      <PageHeader breadcrumbs={<BreadcrumbsWrapper breadcrumbs={breadcrumbs}/>}>
+        Payment
+      </PageHeader>
       <EmptyState
         header="Assessment Tax module is still in development"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore

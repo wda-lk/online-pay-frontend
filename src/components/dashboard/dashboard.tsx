@@ -1,14 +1,10 @@
-import {
-  Content,
-  LeftSidebar,
-  Main,
-  PageLayout,
-  TopNavigation
-} from "@atlaskit/page-layout"
+import { Content, LeftSidebar, Main, PageLayout, TopNavigation } from "@atlaskit/page-layout"
 import LeftSidebarContent from "@/components/dashboard/left-sidebar-content"
+import { N10 } from "@atlaskit/theme/colors"
 import { ReactNode } from "react"
 import { SubNavigationItem } from "@/lib/sub-navigation-item"
 import TopNavigationContent from "@/components/dashboard/top-navigation-content"
+import { token } from "@atlaskit/tokens"
 
 
 type DashboardProps = {
@@ -41,12 +37,14 @@ const Dashboard = (
         isFixed={false}
         width={272}
       >
-        <div style={{ minHeight: "94vh" }}>
+        <div style={{ minHeight: "94vh", backgroundColor: token("elevation.surface", N10) }}>
           <LeftSidebarContent activeKey={activeNavigationKey}/>
         </div>
       </LeftSidebar>
       <Main id="main-content">
-        {children}
+        <div style={{ padding: "0 24px" }}>
+          {children}
+        </div>
       </Main>
     </Content>
   </PageLayout>

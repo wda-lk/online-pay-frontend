@@ -1,9 +1,13 @@
 import {
   CustomItem,
-  CustomItemComponentProps, Footer,
-  Header, HeadingItem,
-  NavigationContent, NavigationFooter,
-  NavigationHeader, Section,
+  CustomItemComponentProps,
+  Footer,
+  Header,
+  HeadingItem,
+  NavigationContent,
+  NavigationFooter,
+  NavigationHeader,
+  Section,
   SideNavigation
 } from "@atlaskit/side-navigation"
 import CreditCardIcon from "@atlaskit/icon/glyph/creditcard"

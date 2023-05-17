@@ -1,0 +1,27 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	height: 84vh;
+}
+
+.progressTrackerContainer {
+	height: 10vh;
+	border: 2px solid rgba(9, 30, 66, 0.08);
+	padding: 0 12px;
+	background-color: #FAFBFC;
+}
+
+.contentContainer {
+	height: 69vh;
+	overflow-y: scroll;
+	padding: 12px 12px;
+}
+
+.footerContainer {
+	display: flex;
+	align-items: center;
+	height: 5vh;
+	border: 2px solid rgba(9, 30, 66, 0.08);
+	padding: 0 12px;
+	background-color: #FAFBFC;
+}
