@@ -209,7 +209,7 @@ const ApplicationForm = () => {
       footer={
         <ButtonGroup>
           <Button
-            appearance="primary"
+            appearance="subtle"
             onClick={currentStep.secondaryButton.onClick}
           >
             {currentStep.secondaryButton.label}

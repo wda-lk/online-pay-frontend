@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import styles from "./takeover.module.css"
 
 
 type TakeoverProps = {
@@ -8,14 +9,14 @@ type TakeoverProps = {
 }
 
 const Takeover = ({ progressTracker, children, footer }: TakeoverProps) => (
-  <div style={{ display: "flex", flexDirection: "column", height: "84vh", borderStyle: "solid" }}>
-    <div style={{ height: "10vh", borderStyle: "dashed", padding: "0 12px" }}>
+  <div className={styles.container}>
+    <div className={styles.progressTrackerContainer}>
       {progressTracker}
     </div>
-    <div style={{ height: "69vh", borderStyle: "dashed", overflowY: "scroll", padding: "0 12px" }}>
+    <div className={styles.contentContainer}>
       {children}
     </div>
-    <div style={{ display: "flex", alignItems: "center", height: "5vh", borderStyle: "dashed", padding: "0 12px" }}>
+    <div className={styles.footerContainer}>
       {footer}
     </div>
   </div>

@@ -9,6 +9,8 @@ import LeftSidebarContent from "@/components/dashboard/left-sidebar-content"
 import { ReactNode } from "react"
 import { SubNavigationItem } from "@/lib/sub-navigation-item"
 import TopNavigationContent from "@/components/dashboard/top-navigation-content"
+import { token } from "@atlaskit/tokens"
+import { N10 } from "@atlaskit/theme/colors"
 
 
 type DashboardProps = {
@@ -41,7 +43,7 @@ const Dashboard = (
         isFixed={false}
         width={272}
       >
-        <div style={{ minHeight: "94vh" }}>
+        <div style={{ minHeight: "94vh", backgroundColor: token("elevation.surface", N10) }}>
           <LeftSidebarContent activeKey={activeNavigationKey}/>
         </div>
       </LeftSidebar>
