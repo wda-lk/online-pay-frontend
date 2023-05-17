@@ -1,16 +1,10 @@
-import {
-  Content,
-  LeftSidebar,
-  Main,
-  PageLayout,
-  TopNavigation
-} from "@atlaskit/page-layout"
+import { Content, LeftSidebar, Main, PageLayout, TopNavigation } from "@atlaskit/page-layout"
 import LeftSidebarContent from "@/components/dashboard/left-sidebar-content"
+import { N10 } from "@atlaskit/theme/colors"
 import { ReactNode } from "react"
 import { SubNavigationItem } from "@/lib/sub-navigation-item"
 import TopNavigationContent from "@/components/dashboard/top-navigation-content"
 import { token } from "@atlaskit/tokens"
-import { N10 } from "@atlaskit/theme/colors"
 
 
 type DashboardProps = {

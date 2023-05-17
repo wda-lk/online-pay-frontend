@@ -1,18 +1,6 @@
-import Form, {
-  ErrorMessage,
-  Field,
-  FormFooter,
-  FormHeader,
-  FormSection,
-  HelperMessage
-} from "@atlaskit/form"
-import Select, {
-  ValueType
-} from "@atlaskit/select"
-import {
-  districts,
-  users
-} from "@/lib/data"
+import Form, { ErrorMessage, Field, FormFooter, FormHeader, FormSection, HelperMessage } from "@atlaskit/form"
+import Select, { ValueType } from "@atlaskit/select"
+import { districts, users } from "@/lib/data"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "@/components/card"
