@@ -12,7 +12,6 @@ import BusinessSection from "@/components/trade-license/BusinessSection"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Dashboard from "@/components/dashboard/dashboard"
-import Drawer from "@atlaskit/drawer"
 import DynamicTable from "@atlaskit/dynamic-table"
 import { NextPage } from "next"
 import OwnerSection from "@/components/trade-license/OwnerSection"
@@ -26,7 +25,7 @@ import { useState } from "react"
 
 
 const TradeLicensePage: NextPage = () => {
-  const [applicationOpen, openApplication] = useState(false)
+  const [isEditingApplication, editApplication] = useState(false)
   const [currentStepIndex, changeStep] = useState(0)
 
   const navItems = [
@@ -124,56 +123,54 @@ const TradeLicensePage: NextPage = () => {
 
   return (
     <>
-      <Drawer
-        width="extended"
-        onClose={() => openApplication(false)}
-        isOpen={applicationOpen}
+      <Takeover
+        drawerControls={{
+          isOpen: isEditingApplication,
+          openDrawer: editApplication
+        }}
+        progressTracker={(
+          <ProgressTracker items={getProgressSteps()}/>
+        )}
+        navigationButtons={(
+          <ButtonGroup>
+            <Button
+              appearance="primary"
+              onClick={currentStep.secondaryButton.onClick}
+            >
+              {currentStep.secondaryButton.label}
+            </Button>
+            <Button
+              appearance="primary"
+              onClick={currentStep.primaryButton.onClick}
+            >
+              {currentStep.primaryButton.label}
+            </Button>
+          </ButtonGroup>
+        )}
       >
-        <Takeover
-          progressTracker={(
-            <ProgressTracker items={getProgressSteps()}/>
-          )}
-          navigationButtons={(
-            <ButtonGroup>
-              <Button
-                appearance="subtle"
-                onClick={currentStep.secondaryButton.onClick}
-              >
-                {currentStep.secondaryButton.label}
-              </Button>
-              <Button
-                appearance="primary"
-                onClick={currentStep.primaryButton.onClick}
-              >
-                {currentStep.primaryButton.label}
-              </Button>
-            </ButtonGroup>
-          )}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            maxWidth: 624,
+            overflow: "auto"
+          }}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              maxWidth: 624,
-              overflow: "auto"
-            }}
-          >
-            <Form onSubmit={console.log}>
-              {({ formProps }) => (
-                <form{...formProps}>
-                  <FormHeader
-                    title={currentStep.label}
-                    description="* indicates a required field"
-                  />
-                  <FormSection>
-                    {currentStep.content || "No Content Available"}
-                  </FormSection>
-                </form>
-              )}
-            </Form>
-          </div>
-        </Takeover>
-      </Drawer>
+          <Form onSubmit={console.log}>
+            {({ formProps }) => (
+              <form{...formProps}>
+                <FormHeader
+                  title={currentStep.label}
+                  description="* indicates a required field"
+                />
+                <FormSection>
+                  {currentStep.content || "No Content Available"}
+                </FormSection>
+              </form>
+            )}
+          </Form>
+        </div>
+      </Takeover>
       <Dashboard
         activeNavigationKey="tradeLicenseNavItem"
         activeSubNavigationKey="tradeLicenseListNavItem"
@@ -186,7 +183,7 @@ const TradeLicensePage: NextPage = () => {
               <ButtonGroup>
                 <Button
                   appearance="primary"
-                  onClick={() => openApplication(true)}
+                  onClick={() => editApplication(true)}
                 >
                   Apply for Trade License
                 </Button>

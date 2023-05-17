@@ -3,37 +3,32 @@
 	flex-direction: column;
 }
 
-.headerContainer {
-	height: 100px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	padding-bottom: 12px;
-	padding-right: 64px;
-}
-
-.headerContainer > div:first-child {
-	height: 40px;
+.titleContainer {
 	display: flex;
 	align-items: center;
+	height: 5vh;
+	background-color: #494949;
+	padding: 0 8px;
 }
 
-.headerContainer > div:nth-child(2) {
-	height: 60px;
-	display: flex;
-	align-items: flex-end;
+.titleContainer > h3 {
+	color: white;
+}
+
+.progressTrackerContainer {
+	height: 10vh;
 }
 
 .contentContainer {
-	height: 77.7vh;
+	height: 80vh;
 	overflow-y: scroll;
-	margin: 12px 0;
 }
 
 .footerContainer {
-	height: 60px;
+	height: 5vh;
 	display: flex;
+	justify-content: flex-end;
 	align-items: center;
-	padding-top: 12px;
-	padding-right: 64px;
+	background-color: #494949;
+	padding: 0 8px;
 }
