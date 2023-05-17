@@ -1,5 +1,5 @@
-import Form, { FormHeader, FormSection } from "@atlaskit/form"
 import React, { useState } from "react"
+import { AllInputProps } from "@/lib/trade-license/InputProps"
 import ApplicantSection from "@/components/trade-license/ApplicantSection"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import BusinessSection from "@/components/trade-license/BusinessSection"
@@ -10,7 +10,6 @@ import { NextPage } from "next"
 import OwnerSection from "@/components/trade-license/OwnerSection"
 import PageHeader from "@atlaskit/page-header"
 import PropertySection from "@/components/trade-license/PropertySection"
-import { Status } from "@atlaskit/progress-tracker/types"
 import { Step } from "@/lib/step"
 import SummarySection from "@/components/trade-license/SummarySection"
 import Takeover from "@/components/takeover"
@@ -19,8 +18,22 @@ import styles from "./application.module.css"
 
 const ApplicationForm = () => {
   const [activeStepIndex, changeStep] = useState(1)
+  const [allInputProps, changeInputProps] = useState<AllInputProps>
+  ({
+     applicantInputProps: {
+       taxType: undefined,
+       nicNumber: "",
+       name: "",
+       district: undefined,
+       localAuthority: undefined,
+       gnDivision: undefined,
+       address: "",
+       mobileNumber: ""
+     }
+   })
 
-  const goToNextStep = () => {
+  const goToNextStep = (data: AllInputProps) => {
+    changeInputProps(data)
     changeStep(activeStepIndex + 1)
   }
 
@@ -30,55 +43,49 @@ const ApplicationForm = () => {
 
   const steps: Step[] = [
     {
-      id: 1,
+      number: 1,
       label: "Applicant",
-      percentageComplete: 0,
-      status: "visited" as Status,
-      href: "#",
+      formId: "applicantSection",
       formTitle: "Applicant Information Section",
-      content: <ApplicantSection/>,
+      content:
+        <ApplicantSection
+          formProps={{
+            formId: "applicantSection",
+            formTitle: "Applicant Information Section",
+            handleSubmitSuccess: goToNextStep
+          }}
+          inputProps={allInputProps.applicantInputProps}
+        />,
       secondaryButton: { label: "Cancel" },
-      primaryButton: { label: "Next", onClick: goToNextStep }
+      primaryButton: { label: "Next" }
     },
     {
-      id: 2,
+      number: 2,
       label: "Property",
-      percentageComplete: 0,
-      status: "visited" as Status,
-      href: "#",
       formTitle: "Property Information Section",
       content: <PropertySection/>,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
-      primaryButton: { label: "Next", onClick: goToNextStep }
+      primaryButton: { label: "Next" }
     },
     {
-      id: 3,
+      number: 3,
       label: "Owner",
-      percentageComplete: 0,
-      status: "visited" as Status,
-      href: "#",
       formTitle: "Owner Information Section",
       content: <OwnerSection/>,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
-      primaryButton: { label: "Next", onClick: goToNextStep }
+      primaryButton: { label: "Next" }
     },
     {
-      id: 4,
+      number: 4,
       label: "Business",
-      percentageComplete: 0,
-      status: "visited" as Status,
-      href: "#",
       formTitle: "Business Information Section",
       content: <BusinessSection/>,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
-      primaryButton: { label: "Next", onClick: goToNextStep }
+      primaryButton: { label: "Next" }
     },
     {
-      id: 5,
+      number: 5,
       label: "Preview",
-      percentageComplete: 0,
-      status: "visited" as Status,
-      href: "#",
       formTitle: "Preview Section",
       content: <SummarySection/>,
       secondaryButton: { label: "Back", onClick: goToPreviousStep },
@@ -96,17 +103,17 @@ const ApplicationForm = () => {
             {steps.map((step) => (
               <div
                 className={styles.stepWrapper}
-                key={step.id}
+                key={step.number}
               >
                 <div
                   className={
-                    `${styles.stepStyle} ${activeStepIndex >= step.id ? styles.completed : styles.incomplete}`
+                    `${styles.stepStyle} ${activeStepIndex >= step.number ? styles.completed : styles.incomplete}`
                   }
                 >
                   {
-                    activeStepIndex > step.id
+                    activeStepIndex > step.number
                     ? (<div className={styles.checkMark}>L</div>)
-                    : (<span className={styles.stepCount}>{step.id}</span>)
+                    : (<span className={styles.stepCount}>{step.number}</span>)
                   }
                 </div>
                 <div className={styles.stepsLabelContainer}>
@@ -129,6 +136,8 @@ const ApplicationForm = () => {
           </Button>
           <Button
             appearance="primary"
+            type="submit"
+            form={currentStep.formId}
             onClick={currentStep.primaryButton.onClick}
           >
             {currentStep.primaryButton.label}
@@ -144,19 +153,7 @@ const ApplicationForm = () => {
           overflow: "auto"
         }}
       >
-        <Form onSubmit={console.log}>
-          {({ formProps }) => (
-            <form{...formProps}>
-              <FormHeader
-                title={currentStep.label}
-                description="* indicates a required field"
-              />
-              <FormSection>
-                {currentStep.content || "No Content Available"}
-              </FormSection>
-            </form>
-          )}
-        </Form>
+        {currentStep.content || "No Content Available"}
       </div>
     </Takeover>
   )

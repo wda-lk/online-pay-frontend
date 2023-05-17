@@ -1,13 +1,10 @@
 import { ReactNode } from "react"
-import { Status } from "@atlaskit/progress-tracker/types"
 
 
 export type Step = {
-  id: number
+  number: number
   label: string
-  percentageComplete: number
-  status: Status
-  href: string
+  formId?: string
   formTitle: string
   content?: ReactNode
   secondaryButton: {
