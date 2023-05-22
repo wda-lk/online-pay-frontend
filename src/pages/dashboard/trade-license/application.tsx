@@ -1,19 +1,20 @@
 import React, { useState } from "react"
 import { AllInputProps } from "@/lib/trade-license/input"
-import ApplicantSection from "@/components/trade-license/ApplicantSection"
+import ApplicantSection from "@/components/trade-license/applicant-section"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
-import BusinessSection from "@/components/trade-license/BusinessSection"
+import BusinessSection from "@/components/trade-license/business-section"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Dashboard from "@/components/dashboard/dashboard"
 import { NextPage } from "next"
-import OwnerSection from "@/components/trade-license/OwnerSection"
+import OwnerSection from "@/components/trade-license/owner-section"
 import PageHeader from "@atlaskit/page-header"
-import PropertySection from "@/components/trade-license/PropertySection"
+import PreviewSection from "@/components/trade-license/preview-section"
+import PropertySection from "@/components/trade-license/property-section"
 import { Step } from "@/lib/step"
-import SummarySection from "@/components/trade-license/SummarySection"
 import Takeover from "@/components/takeover"
 import styles from "./application.module.css"
+import { useRouter } from "next/router"
 
 
 const defaultApplicantInputProps = {
@@ -59,7 +60,10 @@ const defaultBusinessInputProps = {
 }
 
 const ApplicationForm = () => {
+  const router = useRouter()
+
   const [activeStepIndex, changeStep] = useState(1)
+
   const [allInputProps, changeInputProps] =
     useState<AllInputProps>(
       {
@@ -69,7 +73,7 @@ const ApplicationForm = () => {
         businessInputProps: defaultBusinessInputProps
       })
 
-  const goToNextStep = (data: AllInputProps) => {
+  const nextStep = (data: AllInputProps) => {
     if (data.applicantInputProps) {
       changeInputProps(
         {
@@ -98,8 +102,13 @@ const ApplicationForm = () => {
     changeStep(activeStepIndex + 1)
   }
 
-  const goToPreviousStep = () => {
+  const previousStep = () => {
     changeStep(activeStepIndex - 1)
+  }
+
+  const submitForm = () => {
+    // Todo - API -  Create an Application record
+    router.push("/dashboard/trade-license").then(console.log)
   }
 
   const steps: Step[] = [
@@ -112,7 +121,7 @@ const ApplicationForm = () => {
         <ApplicantSection
           formId="applicantSection"
           formTitle="Applicant Information Section"
-          handleSubmitSuccess={goToNextStep}
+          handleSubmitSuccess={nextStep}
           inputProps={allInputProps.applicantInputProps || defaultApplicantInputProps}
         />,
       secondaryButton: { label: "Cancel" },
@@ -127,10 +136,10 @@ const ApplicationForm = () => {
         <PropertySection
           formId="propertySection"
           formTitle="Property Information Section"
-          handleSubmitSuccess={goToNextStep}
+          handleSubmitSuccess={nextStep}
           inputProps={allInputProps.propertyInputProps || defaultPropertyInputProps}
         />,
-      secondaryButton: { label: "Back", onClick: goToPreviousStep },
+      secondaryButton: { label: "Back", onClick: previousStep },
       primaryButton: { label: "Next" }
     },
     {
@@ -142,10 +151,10 @@ const ApplicationForm = () => {
         <OwnerSection
           formId="OwnerSection"
           formTitle="Owner Information Section"
-          handleSubmitSuccess={goToNextStep}
+          handleSubmitSuccess={nextStep}
           inputProps={allInputProps.ownerInputProps || defaultOwnerInputProps}
         />,
-      secondaryButton: { label: "Back", onClick: goToPreviousStep },
+      secondaryButton: { label: "Back", onClick: previousStep },
       primaryButton: { label: "Next" }
     },
     {
@@ -157,19 +166,19 @@ const ApplicationForm = () => {
         <BusinessSection
           formId="BusinessSection"
           formTitle="Business Information Section"
-          handleSubmitSuccess={goToNextStep}
+          handleSubmitSuccess={nextStep}
           inputProps={allInputProps.businessInputProps || defaultBusinessInputProps}
         />,
-      secondaryButton: { label: "Back", onClick: goToPreviousStep },
-      primaryButton: { label: "Next" }
+      secondaryButton: { label: "Back", onClick: previousStep },
+      primaryButton: { label: "Preview" }
     },
     {
       number: 5,
       label: "Preview",
       formTitle: "Preview Section",
-      content: <SummarySection/>,
-      secondaryButton: { label: "Back", onClick: goToPreviousStep },
-      primaryButton: { label: "Complete" }
+      content: <PreviewSection inputProps={allInputProps}/>,
+      secondaryButton: { label: "Back", onClick: previousStep },
+      primaryButton: { label: "Submit", onClick: submitForm }
     }
   ]
 
@@ -229,7 +238,6 @@ const ApplicationForm = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          maxWidth: 624,
           overflow: "auto"
         }}
       >

@@ -23,7 +23,7 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
       assessmentNumber: string
       address: string
     }) => {
-        console.log("hi")
+    console.log("hi")
 
     handleSubmitSuccess({ propertyInputProps: data })
   }
@@ -31,7 +31,7 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
   return (
     <Form onSubmit={handleSubmit}>
       {({ formProps }) => (
-        <form id={formId} {...formProps}>
+        <form id={formId} {...formProps} style={{ maxWidth: 624 }}>
           <FormHeader
             title={formTitle}
             description="* indicates a required field"
