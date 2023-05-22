@@ -24,7 +24,7 @@ const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: Ow
   return (
     <Form onSubmit={handleSubmit}>
       {({ formProps }) => (
-        <form id={formId} {...formProps}>
+        <form id={formId} {...formProps} style={{ maxWidth: 624 }}>
           <FormHeader
             title={formTitle}
             description="* indicates a required field"

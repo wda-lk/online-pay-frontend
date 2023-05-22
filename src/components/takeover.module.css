@@ -14,7 +14,9 @@
 .contentContainer {
 	height: 69vh;
 	overflow-y: scroll;
-	padding: 12px 12px;
+	border-left: 2px solid rgba(9, 30, 66, 0.08);
+	border-right: 2px solid rgba(9, 30, 66, 0.08);
+	padding: 12px 12px 24px 12px;
 }
 
 .footerContainer {
