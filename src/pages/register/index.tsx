@@ -1,6 +1,6 @@
 import Form, { ErrorMessage, Field, FormFooter, FormHeader, FormSection, HelperMessage } from "@atlaskit/form"
 import Select, { ValueType } from "@atlaskit/select"
-import { districts, users } from "@/lib/data"
+import { gnDivisions, users } from "@/lib/data"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "@/components/card"
@@ -23,7 +23,7 @@ const RegistrationPage: NextPage = () => {
       nicNumber: string
       name: string
       address: string
-      district: string
+      gnDivision: string
       mobileNumber: string
       email?: string
       password: string
@@ -45,7 +45,7 @@ const RegistrationPage: NextPage = () => {
           nicNumber: data.nicNumber,
           name: data.name,
           address: data.address,
-          district: data.district,
+          gnDivision: data.gnDivision,
           mobileNumber: data.mobileNumber,
           email: data.email,
           password: data.password,
@@ -114,15 +114,15 @@ const RegistrationPage: NextPage = () => {
                 )}
               </Field>
               <Field<ValueType<{}>>
-                name="district"
-                label="District"
+                name="gnDivision"
+                label="GN Division"
                 defaultValue={null}
                 isRequired
                 validate={(value) => {
                   if (value) {
                     return
                   }
-                  return "Please select a district."
+                  return "Please select a GN Division."
                 }}
               >
                 {({ fieldProps: { id, ...rest }, error }) => (
@@ -130,7 +130,7 @@ const RegistrationPage: NextPage = () => {
                     <Select<{}>
                       inputId={id}
                       {...rest}
-                      options={districts}
+                      options={gnDivisions}
                       isClearable
                     />
                     {error && <ErrorMessage>{error}</ErrorMessage>}

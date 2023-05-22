@@ -2,14 +2,14 @@ export interface User {
   nicNumber: string,
   name: string,
   address: string,
-  district: string,
+  gnDivision: string,
   email?: string,
   mobileNumber: string,
   password: string,
   isActive: boolean
 }
 
-interface District {
+interface gnDivision {
   label: string,
   value: string
 }
@@ -34,7 +34,7 @@ export const users: User[] = [
     nicNumber: "912000000V",
     name: "Name",
     address: "Address",
-    district: "District",
+    gnDivision: "Division",
     email: "adminkurunegala@cat20.lk",
     mobileNumber: "077264678",
     password: "admin",
@@ -44,7 +44,7 @@ export const users: User[] = [
     nicNumber: "951200042V",
     name: "Name",
     address: "Address",
-    district: "District",
+    gnDivision: "Division",
     email: "malaka@cat20.lk",
     mobileNumber: "0770000000",
     password: "admin",
@@ -54,7 +54,7 @@ export const users: User[] = [
     nicNumber: "770653312V",
     name: "Name",
     address: "Address",
-    district: "District",
+    gnDivision: "Division",
     email: "prasa.medawachchiya@gmail.com",
     mobileNumber: "0771111111",
     password: "admin",
@@ -64,7 +64,7 @@ export const users: User[] = [
     nicNumber: "927571811V",
     name: "Name",
     address: "Address",
-    district: "District",
+    gnDivision: "Division",
     email: "rambewaps2015@gmail.com",
     mobileNumber: "0772222222",
     password: "admin",
@@ -72,7 +72,7 @@ export const users: User[] = [
   }
 ]
 
-export const districts: District[] = [
+export const gnDivisions: gnDivision[] = [
   { label: "Ampara", value: "ampara" },
   { label: "Anuradhapura", value: "anuradhapura" },
   { label: "Badulla", value: "badulla" },
