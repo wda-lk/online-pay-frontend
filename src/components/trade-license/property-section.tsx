@@ -3,7 +3,7 @@ import Select, { OptionType, ValueType } from "@atlaskit/select"
 import { InputSelect } from "@/lib/trade-license/input"
 import { PropertySectionProps } from "@/lib/trade-license/section"
 import TextField from "@atlaskit/textfield"
-import { districts } from "@/lib/data"
+import { gnDivisions } from "@/lib/data"
 
 
 const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: PropertySectionProps) => {
@@ -54,7 +54,7 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
                 <>
                   <Select
                     id={`${id}Select`}
-                    options={districts}
+                    options={gnDivisions}
                     isSearchable
                     isClearable
                     {...rest}

@@ -1,6 +1,6 @@
 import Form, { ErrorMessage, Field, FormHeader, FormSection } from "@atlaskit/form"
 import Select, { OptionType, ValueType } from "@atlaskit/select"
-import { districts, taxTypes } from "@/lib/data"
+import { gnDivisions, taxTypes } from "@/lib/data"
 import { ApplicantSectionProps } from "@/lib/trade-license/section"
 import { InputSelect } from "@/lib/trade-license/input"
 import TextField from "@atlaskit/textfield"
@@ -124,7 +124,7 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
                 <>
                   <Select
                     id={`${id}Select`}
-                    options={districts}
+                    options={gnDivisions}
                     isSearchable
                     isClearable
                     {...rest}
@@ -150,7 +150,7 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
                 <>
                   <Select
                     id={`${id}Select`}
-                    options={districts}
+                    options={gnDivisions}
                     isSearchable
                     isClearable
                     {...rest}
@@ -176,7 +176,7 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
                 <>
                   <Select
                     id={`${id}Select`}
-                    options={districts}
+                    options={gnDivisions}
                     isSearchable
                     isClearable
                     {...rest}
