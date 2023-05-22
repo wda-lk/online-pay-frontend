@@ -1,7 +1,8 @@
 import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
 import { AllInputProps } from "@/lib/trade-license/input"
+import { N100 } from "@atlaskit/theme/colors"
 import dynamic from "next/dynamic"
-import { fontSize } from "@atlaskit/theme"
+import { token } from "@atlaskit/tokens"
 
 
 const PDFViewer = dynamic(
@@ -16,7 +17,9 @@ const styles = StyleSheet.create(
     },
     horizontalLine: {
       width: "100%",
-      borderBottom: "0.8px solid black",
+      borderBottomStyle: "solid",
+      borderBottomWidth: "0.8px",
+      borderBottomColor: token("color.text", N100),
       margin: "15px 0"
     },
     paragraph: {
@@ -38,7 +41,9 @@ const styles = StyleSheet.create(
     inputFiller: {
       display: "flex",
       flexWrap: "wrap",
-      borderBottom: "1px dotted black",
+      borderBottomStyle: "dotted",
+      borderBottomWidth: "1px",
+      borderBottomColor: token("color.text", N100),
       width: 270
     },
     sectionContainer: {
@@ -46,7 +51,7 @@ const styles = StyleSheet.create(
     },
     filler: {
       textDecoration: "underline",
-      textDecorationColor: "black",
+      textDecorationColor: token("color.text", N100),
       textDecorationStyle: "dashed"
     },
     headerContainer: {
@@ -72,6 +77,7 @@ const styles = StyleSheet.create(
     },
     signatureFiller: {
       width: 100,
+      // eslint-disable-next-line @atlaskit/design-system/ensure-design-token-usage
       borderBottom: "1px dotted black",
       marginBottom: 2
     }
