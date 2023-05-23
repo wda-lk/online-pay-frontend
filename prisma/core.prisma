@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-core/client"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("CORE_DATABASE_URL")
+}
+
+model cd_gn_divisions {
+  id          Int       @id @default(autoincrement())
+  description String    @db.VarChar(255)
+  code        String    @db.VarChar(100)
+  office_id   Int?
+  created_at  DateTime? @db.DateTime(0)
+  updated_at  DateTime? @db.DateTime(0)
+  active      Boolean   @default(true)
+
+  @@index([office_id], map: "cd_gn_divisions_FK")
+}
