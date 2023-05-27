@@ -5,11 +5,7 @@ import { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 
 
-const App = (
-  {
-    Component,
-    pageProps: { session, ...pageProps }
-  }: AppProps<{ session: Session }>) => (
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps<{ session: Session }>) => (
   <SessionProvider session={session}>
     <FlagsProvider>
       <Component {...pageProps} />

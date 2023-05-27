@@ -1,12 +1,11 @@
+import NextAuth, { SessionStrategy } from "next-auth"
 import EmailProvider from "next-auth/providers/email"
-import NextAuth from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prismaOnlinePay } from "@/lib/prisma"
 
 
 export const authOptions = {
   adapter: PrismaAdapter(prismaOnlinePay),
-  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     EmailProvider(
       {
@@ -26,8 +25,10 @@ export const authOptions = {
       }
     )
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account, profile, email }: any) {
+      console.log(`sign-in callback - ${JSON.stringify(user)}`)
       if (!email) {
         if (user.isActive) {
           return true
