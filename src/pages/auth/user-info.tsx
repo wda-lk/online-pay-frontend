@@ -14,7 +14,7 @@ import { useRouter } from "next/router"
 import { useState } from "react"
 
 
-const RegistrationPage: NextPage = () => {
+const UserInfoPage: NextPage = () => {
   const [passwordVisible, setPasswordVisibility] = useState(false)
   const router = useRouter()
 
@@ -252,7 +252,7 @@ const RegistrationPage: NextPage = () => {
             <FormFooter>
               <ButtonGroup>
                 <Button appearance="link">
-                  <Link href="/login"><a>Already have an account? Log in</a></Link>
+                  <Link href="/auth/sign-in"><a>Already have an account? Log in</a></Link>
                 </Button>
                 <LoadingButton
                   type="submit"
@@ -270,4 +270,4 @@ const RegistrationPage: NextPage = () => {
   )
 }
 
-export default RegistrationPage
+export default UserInfoPage
