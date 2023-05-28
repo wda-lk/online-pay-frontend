@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 
 
-export type Step = {
+type Step = {
   number: number
   label: string
   formId?: string
@@ -15,4 +15,21 @@ export type Step = {
     label: string
     onClick?: () => void
   }
+}
+
+type DropDown = {
+  key: string,
+  label: string,
+  href?: string
+}
+
+type SubNavigationItem = {
+  key: string,
+  href: string,
+  label: string,
+  dropdownItems?: DropDown[]
+}
+
+export {
+  Step, SubNavigationItem
 }
