@@ -11,7 +11,7 @@ import {
 import Avatar from "@atlaskit/avatar"
 import Image from "next/future/image"
 import { NotificationIndicator } from "@atlaskit/notification-indicator"
-import { SubNavigationItem } from "@/lib/sub-navigation-item"
+import { SubNavigationItem } from "@/../types/global"
 import paymentLogo from "../../../public/logo/logo-payment=comp.svg"
 
 

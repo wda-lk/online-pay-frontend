@@ -1,9 +1,8 @@
+import { BusinessSectionProps, InputSelect } from "@/../types/trade-license"
 import Form, { ErrorMessage, Field, FormHeader, FormSection, HelperMessage } from "@atlaskit/form"
 import Select, { OptionType, ValueType } from "@atlaskit/select"
 import { natures, subNatures } from "@/lib/data"
-import { BusinessSectionProps } from "@/lib/trade-license/section"
 import { DatePicker } from "@atlaskit/datetime-picker"
-import { InputSelect } from "@/lib/trade-license/input"
 import TextField from "@atlaskit/textfield"
 
 

@@ -1,5 +1,5 @@
 import Form, { ErrorMessage, Field, FormHeader, FormSection } from "@atlaskit/form"
-import { OwnerSectionProps } from "@/lib/trade-license/section"
+import { OwnerSectionProps } from "@/../types/trade-license"
 import TextField from "@atlaskit/textfield"
 
 

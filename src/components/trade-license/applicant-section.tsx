@@ -1,8 +1,7 @@
+import { ApplicantSectionProps, InputSelect } from "@/../types/trade-license"
 import Form, { ErrorMessage, Field, FormHeader, FormSection } from "@atlaskit/form"
 import Select, { OptionType, ValueType } from "@atlaskit/select"
 import { gnDivisions, taxTypes } from "@/lib/data"
-import { ApplicantSectionProps } from "@/lib/trade-license/section"
-import { InputSelect } from "@/lib/trade-license/input"
 import TextField from "@atlaskit/textfield"
 
 

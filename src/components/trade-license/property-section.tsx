@@ -1,7 +1,6 @@
 import Form, { ErrorMessage, Field, FormHeader, FormSection } from "@atlaskit/form"
+import { InputSelect, PropertySectionProps } from "@/../types/trade-license"
 import Select, { OptionType, ValueType } from "@atlaskit/select"
-import { InputSelect } from "@/lib/trade-license/input"
-import { PropertySectionProps } from "@/lib/trade-license/section"
 import TextField from "@atlaskit/textfield"
 import { gnDivisions } from "@/lib/data"
 

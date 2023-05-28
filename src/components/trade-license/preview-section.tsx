@@ -1,5 +1,5 @@
 import { Document, Image, Page, StyleSheet, Text, View } from "@react-pdf/renderer"
-import { AllInputProps } from "@/lib/trade-license/input"
+import { AllInputProps } from "@/../types/trade-license"
 import { N100 } from "@atlaskit/theme/colors"
 import dynamic from "next/dynamic"
 import { token } from "@atlaskit/tokens"

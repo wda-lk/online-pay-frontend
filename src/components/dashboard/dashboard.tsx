@@ -2,7 +2,7 @@ import { Content, LeftSidebar, Main, PageLayout, TopNavigation } from "@atlaskit
 import LeftSidebarContent from "@/components/dashboard/left-sidebar-content"
 import { N10 } from "@atlaskit/theme/colors"
 import { ReactNode } from "react"
-import { SubNavigationItem } from "@/lib/sub-navigation-item"
+import { SubNavigationItem } from "@/../types/global"
 import TopNavigationContent from "@/components/dashboard/top-navigation-content"
 import { token } from "@atlaskit/tokens"
 
