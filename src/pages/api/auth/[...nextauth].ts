@@ -1,5 +1,5 @@
-import NextAuth, { SessionStrategy } from "next-auth"
 import EmailProvider from "next-auth/providers/email"
+import NextAuth from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prismaOnlinePay } from "@/lib/prisma"
 

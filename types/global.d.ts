@@ -30,6 +30,11 @@ type SubNavigationItem = {
   dropdownItems?: DropDown[]
 }
 
+type SelectOption = {
+  label: string;
+  value: string;
+}
+
 export {
-  Step, SubNavigationItem
+  SelectOption, Step, SubNavigationItem
 }

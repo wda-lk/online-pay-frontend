@@ -1,22 +1,52 @@
-import Form, { ErrorMessage, Field, FormFooter, FormHeader, FormSection, HelperMessage } from "@atlaskit/form"
+import Form, { ErrorMessage, Field, FormFooter, FormHeader, FormSection } from "@atlaskit/form"
 import Select, { ValueType } from "@atlaskit/select"
-import { gnDivisions, users } from "@/lib/data"
-import Button from "@atlaskit/button/standard-button"
-import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "@/components/card"
-import Link from "next/link"
+import { GetStaticProps } from "next"
 import LoadingButton from "@atlaskit/button/loading-button"
-import { NextPage } from "next"
+import { SelectOption } from "@/../types/global"
 import TextField from "@atlaskit/textfield"
-import WatchFilledIcon from "@atlaskit/icon/glyph/watch-filled"
-import WatchIcon from "@atlaskit/icon/glyph/watch"
-import { useRouter } from "next/router"
+import { prismaCore } from "@/lib/prisma"
 import { useState } from "react"
 
 
-const UserInfoPage: NextPage = () => {
-  const [passwordVisible, setPasswordVisibility] = useState(false)
-  const router = useRouter()
+const getStaticProps: GetStaticProps = async () => {
+  const districts = await prismaCore
+    .district
+    .findMany(
+      {
+        where: { status: 1 },
+        select: { id: true, nameEnglish: true },
+        orderBy: { nameEnglish: "asc" }
+      })
+  const gnDivisions = await prismaCore
+    .gNDivisionLocation
+    .findMany(
+      {
+        where: { isActive: true },
+        select: { gnId: true, gnName: true, districtId: true, districtName: true }
+      })
+  return { props: { districts, gnDivisions } }
+}
+
+type District = {
+  id: number
+  nameEnglish?: string
+}
+
+type GNDivision = {
+  gnId: number
+  gnName: string
+  districtId?: number
+  districtName?: string
+}
+
+type UserInfoPageProps = {
+  districts: District[]
+  gnDivisions: GNDivision[]
+}
+
+const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
+  const [districtId, setDistrictId] = useState<number | null>(null)
 
   const handleSubmit = (
     data: {
@@ -25,50 +55,35 @@ const UserInfoPage: NextPage = () => {
       address: string
       gnDivision: string
       mobileNumber: string
-      email?: string
-      password: string
-      confirmPassword: string
     }) => {
-    const errors = {
-      // Todo - Frontend - NIC and email should be unique
-      mobileNumber: users.some(e => e.mobileNumber === data.mobileNumber)
-                    ? "Mobile number is already taken. Please try another one."
-                    : undefined,
-      confirmPassword: data.password !== data.confirmPassword
-                       ? "Passwords doesn't match. Please double check."
-                       : undefined
-    }
-    if (!errors.mobileNumber && !errors.confirmPassword) {
-      // Todo - API - Create an inactive user
-      users.push(
-        {
-          nicNumber: data.nicNumber,
-          name: data.name,
-          address: data.address,
-          gnDivision: data.gnDivision,
-          mobileNumber: data.mobileNumber,
-          email: data.email,
-          password: data.password,
-          isActive: false
-        }
-      )
-      console.log(`Created new user for: ${data.nicNumber}`)
-      router.push(
-        {
-          pathname: "/register/activate-account",
-          query: { "mobile-number": data.mobileNumber, "email": data.email }
-        }).then(r => console.log(r))
-    }
-    return errors
+    /*users.push(
+      {
+        nicNumber: data.nicNumber,
+        name: data.name,
+        address: data.address,
+        gnDivision: data.gnDivision,
+        mobileNumber: data.mobileNumber,
+        email: data.email,
+        password: data.password,
+        isActive: false
+      }
+    )
+    console.log(`Created new user for: ${data.nicNumber}`)
+    router.push(
+      {
+        pathname: "/register/activate-account",
+        query: { "mobile-number": data.mobileNumber, "email": data.email }
+      }).then(r => console.log(r))*/
+    return
   }
 
   return (
     <Card>
       <Form onSubmit={handleSubmit}>
-        {({ formProps, submitting }) => (
+        {({ formProps, submitting, setFieldValue, getValues }) => (
           <form {...formProps}>
             <FormHeader
-              title="Create an Account"
+              title="Complete your Profile"
               description="* indicates a required field"
             />
             <FormSection>
@@ -103,6 +118,79 @@ const UserInfoPage: NextPage = () => {
                   <TextField {...fieldProps}/>
                 )}
               </Field>
+            </FormSection>
+            <FormSection>
+              <Field<ValueType<SelectOption>>
+                name="district"
+                label="District"
+                defaultValue={null}
+                isRequired
+                validate={(value) => {
+                  if (value) {
+                    return
+                  }
+                  return "Please select your District."
+                }}
+              >
+                {({ fieldProps: { id, onChange, ...rest }, error }) => (
+                  <>
+                    <Select<SelectOption>
+                      inputId={id}
+                      {...rest}
+                      options={
+                        districts.map(district => {
+                          return {
+                            value: district.id.toString(),
+                            label: district.nameEnglish || "undefined"
+                          }
+                        })
+                      }
+                      isClearable
+                      onChange={(e) => {
+                        setDistrictId(e && parseInt(e.value))
+                        setFieldValue("gnDivision", null)
+                        onChange(e)
+                      }}
+                    />
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                  </>
+                )}
+              </Field>
+              <Field<ValueType<SelectOption>>
+                name="gnDivision"
+                label="Grama Niladari(GN) Division"
+                defaultValue={null}
+                isRequired
+                validate={(value) => {
+                  if (value) {
+                    return
+                  }
+                  return "Please select your Grama Niladari(GN) Division."
+                }}
+              >
+                {({ fieldProps: { id, ...rest }, error }) => (
+                  <>
+                    <Select<SelectOption>
+                      inputId={id}
+                      {...rest}
+                      options={
+                        districtId ? gnDivisions
+                                     .filter(gn => gn.districtId == districtId)
+                                     .map(gn => {
+                                       return {
+                                         value: gn.gnId.toString(),
+                                         label: gn.gnName
+                                       }
+                                     })
+                                   : []
+                      }
+                      isClearable
+                      isDisabled={!districtId}
+                    />
+                    {error && <ErrorMessage>{error}</ErrorMessage>}
+                  </>
+                )}
+              </Field>
               <Field
                 name="address"
                 label="Address"
@@ -113,155 +201,15 @@ const UserInfoPage: NextPage = () => {
                   <TextField {...fieldProps}/>
                 )}
               </Field>
-              <Field<ValueType<{}>>
-                name="gnDivision"
-                label="GN Division"
-                defaultValue={null}
-                isRequired
-                validate={(value) => {
-                  if (value) {
-                    return
-                  }
-                  return "Please select a GN Division."
-                }}
-              >
-                {({ fieldProps: { id, ...rest }, error }) => (
-                  <>
-                    <Select<{}>
-                      inputId={id}
-                      {...rest}
-                      options={gnDivisions}
-                      isClearable
-                    />
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
-                  </>
-                )}
-              </Field>
-            </FormSection>
-            <FormSection>
-              <Field
-                name="mobileNumber"
-                label="Mobile Number"
-                defaultValue=""
-                isRequired
-              >
-                {({ fieldProps }: any) => (
-                  <TextField
-                    {...fieldProps}
-                    maxLength={10}
-                  />
-                )}
-              </Field>
-              <Field
-                name="email"
-                label="Email"
-                defaultValue=""
-                validate={(value) =>
-                  value && !value.includes("@") ? "INVALID" : undefined
-                }
-              >
-                {({ fieldProps, error, valid }) => (
-                  <>
-                    <TextField {...fieldProps}/>
-                    {error && !valid && (
-                      <HelperMessage>
-                        Enter a valid Email which includes a `@` character
-                      </HelperMessage>
-                    )}
-                    {error && (
-                      <ErrorMessage>
-                        Your email is not valid.
-                      </ErrorMessage>
-                    )}
-                  </>
-                )}
-              </Field>
-              <Field
-                name="password"
-                label="Password"
-                defaultValue=""
-                isRequired
-                validate={(value) =>
-                  value && value.length < 6 ? "INVALID" : undefined
-                }
-              >
-                {({ fieldProps, error, valid }) => (
-                  <>
-                    <TextField
-                      {...fieldProps}
-                      elemAfterInput={
-                        <Button
-                          iconBefore={
-                            passwordVisible
-                            ? <WatchFilledIcon label="Toggle Password" size="medium"/>
-                            : <WatchIcon label="Toggle Password" size="medium"/>
-                          }
-                          appearance="subtle-link"
-                          spacing="compact"
-                          onClick={() => setPasswordVisibility(!passwordVisible)}
-                        />
-                      }
-                      type={passwordVisible ? "text" : "password"}
-                    />
-                    {error && !valid && (
-                      <HelperMessage>
-                        Use 6 or more characters with a mix of letters, numbers and symbols.
-                      </HelperMessage>
-                    )}
-                    {error && (
-                      <ErrorMessage>
-                        Password needs to have more than 6 characters.
-                      </ErrorMessage>
-                    )}
-                  </>
-                )}
-              </Field>
-              <Field
-                name="confirmPassword"
-                label="Confirm Password"
-                defaultValue=""
-                isRequired
-              >
-                {({ fieldProps, error }) => (
-                  <>
-                    <TextField
-                      {...fieldProps}
-                      elemAfterInput={
-                        <Button
-                          iconBefore={
-                            passwordVisible
-                            ? <WatchFilledIcon label="Toggle Password" size="medium"/>
-                            : <WatchIcon label="Toggle Password" size="medium"/>
-                          }
-                          appearance="subtle-link"
-                          spacing="compact"
-                          onClick={() => setPasswordVisibility(!passwordVisible)}
-                        />
-                      }
-                      type={passwordVisible ? "text" : "password"}
-                    />
-                    {error && (
-                      <ErrorMessage>
-                        {error}
-                      </ErrorMessage>
-                    )}
-                  </>
-                )}
-              </Field>
             </FormSection>
             <FormFooter>
-              <ButtonGroup>
-                <Button appearance="link">
-                  <Link href="/auth/sign-in"><a>Already have an account? Log in</a></Link>
-                </Button>
-                <LoadingButton
-                  type="submit"
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Create
-                </LoadingButton>
-              </ButtonGroup>
+              <LoadingButton
+                type="submit"
+                appearance="primary"
+                isLoading={submitting}
+              >
+                Create
+              </LoadingButton>
             </FormFooter>
           </form>
         )}
@@ -271,3 +219,4 @@ const UserInfoPage: NextPage = () => {
 }
 
 export default UserInfoPage
+export { getStaticProps }

@@ -1,7 +1,7 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["views"]
   output          = "../node_modules/@prisma-core/client"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -149,8 +149,9 @@ model GNDivisions {
 }
 
 view GNDivisionLocation {
-  gnId          Int     @unique
+  gnId          Int     @unique @default(0)
   gnName        String  @db.VarChar(255)
+  isActive      Boolean @default(true)
   subOfficeId   Int?    @default(0)
   subOfficeName String? @db.VarChar(255)
   officeId      Int?    @default(0)
