@@ -1,15 +1,51 @@
 import "@atlaskit/css-reset/dist/bundle.css"
+import { SessionProvider, useSession } from "next-auth/react"
 import type { AppProps } from "next/app"
 import { FlagsProvider } from "@atlaskit/flag"
+import { NextComponentType } from "next"
+import React from "react"
 import { Session } from "next-auth"
-import { SessionProvider } from "next-auth/react"
+import { useRouter } from "next/router"
 
 
-const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps<{ session: Session }>) => (
+type AuthProps = {
+  children: React.ReactElement
+}
+
+const Auth = ({ children }: AuthProps) => {
+  const router = useRouter()
+
+  const { status } = useSession(
+    {
+      required: true,
+      onUnauthenticated() {
+        router.push("/auth/sign-in").then(console.log)
+      }
+    })
+
+  if (status === "loading") {
+    return <div>Loading...</div>
+  }
+  return children
+}
+
+type CustomAppProps = AppProps<{ session: Session }> & {
+  Component: NextComponentType & { auth?: boolean }
+}
+
+const App = ({ Component, pageProps: { session, ...pageProps } }: CustomAppProps) => (
   <SessionProvider session={session}>
-    <FlagsProvider>
-      <Component {...pageProps} />
-    </FlagsProvider>
+    {
+      Component.auth
+      ? (
+        <Auth>
+          <FlagsProvider>
+            <Component {...pageProps} />
+          </FlagsProvider>
+        </Auth>
+      )
+      : (<Component {...pageProps} />)
+    }
   </SessionProvider>
 )
 
