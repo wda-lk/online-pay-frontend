@@ -1,30 +1,38 @@
 import Form, { ErrorMessage, Field, FormFooter, FormHeader, FormSection } from "@atlaskit/form"
 import Select, { ValueType } from "@atlaskit/select"
 import Card from "@/components/card"
+import ErrorIcon from "@atlaskit/icon/glyph/error"
 import { GetStaticProps } from "next"
+import { InputSelect } from "@/../types/trade-license"
 import LoadingButton from "@atlaskit/button/loading-button"
+import { R500 } from "@atlaskit/theme/colors"
 import { SelectOption } from "@/../types/global"
 import TextField from "@atlaskit/textfield"
 import { prismaCore } from "@/lib/prisma"
+import { token } from "@atlaskit/tokens"
+import { useFlags } from "@atlaskit/flag"
 import { useState } from "react"
+import { useSession } from "next-auth/react"
 
 
 const getStaticProps: GetStaticProps = async () => {
-  const districts = await prismaCore
-    .district
-    .findMany(
-      {
-        where: { status: 1 },
-        select: { id: true, nameEnglish: true },
-        orderBy: { nameEnglish: "asc" }
-      })
-  const gnDivisions = await prismaCore
-    .gNDivisionLocation
-    .findMany(
-      {
-        where: { isActive: true },
-        select: { gnId: true, gnName: true, districtId: true, districtName: true }
-      })
+  const districts = await
+    prismaCore
+      .district
+      .findMany(
+        {
+          where: { status: 1 },
+          select: { id: true, nameEnglish: true },
+          orderBy: { nameEnglish: "asc" }
+        })
+  const gnDivisions = await
+    prismaCore
+      .gNDivisionLocation
+      .findMany(
+        {
+          where: { isActive: true },
+          select: { gnId: true, gnName: true, districtId: true, districtName: true }
+        })
   return { props: { districts, gnDivisions } }
 }
 
@@ -46,41 +54,76 @@ type UserInfoPageProps = {
 }
 
 const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
+  const { showFlag } = useFlags()
   const [districtId, setDistrictId] = useState<number | null>(null)
+  const { data: session, status } = useSession()
+  console.log(session)
 
-  const handleSubmit = (
-    data: {
-      nicNumber: string
-      name: string
-      address: string
-      gnDivision: string
-      mobileNumber: string
-    }) => {
-    /*users.push(
-      {
+  const handleSubmit = async (data: {
+    nicNumber: string,
+    name: string,
+    mobileNumber: string,
+    district: InputSelect,
+    gnDivision: InputSelect,
+    address: string
+  }) => {
+    // GET /api/users/[nicNumber]
+    let res = await fetch(`${window.location.origin}/api/users/${data.nicNumber}`)
+    let status = res.status
+    let body = await res.json()
+    // If a critical error occurred
+    if (status !== 200 && status !== 404) {
+      showFlag(
+        {
+          isAutoDismiss: true,
+          icon: (<ErrorIcon label="Error" primaryColor={token("color.icon.danger", R500)}/>),
+          title: "Failed to Sign you in",
+          description: `Error occurred while validating the information you entered. Status: ${status}, Error: ${body}`
+        })
+      return
+    }
+    // User with NIC already exists
+    const errors = {
+      nicNumber: status === 200
+                 ? "NIC number is already taken. Please try another one."
+                 : undefined
+    }
+    if (!errors.nicNumber) {
+      // Update user record
+      const reqData = {
         nicNumber: data.nicNumber,
         name: data.name,
-        address: data.address,
-        gnDivision: data.gnDivision,
         mobileNumber: data.mobileNumber,
-        email: data.email,
-        password: data.password,
-        isActive: false
+        gnDivisionId: parseInt(data.gnDivision.value),
+        address: data.address
       }
-    )
-    console.log(`Created new user for: ${data.nicNumber}`)
-    router.push(
-      {
-        pathname: "/register/activate-account",
-        query: { "mobile-number": data.mobileNumber, "email": data.email }
-      }).then(r => console.log(r))*/
-    return
+      // POST /api/users
+      const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reqData)
+      }
+      res = await fetch(`${window.location.origin}/api/users`, options)
+      // status = res.status
+      // body = await res.json()
+      // // User updating failed
+      // if (status !== 201) {
+      //   showFlag(
+      //     {
+      //       isAutoDismiss: true,
+      //       icon: (<ErrorIcon label="Error" primaryColor={token("color.icon.danger", R500)}/>),
+      //       title: "Failed to Sign you in",
+      //       description: `Error occurred while completing your profile. Status: ${status}, Error: ${body}`
+      //     })
+      // }
+    }
+    return errors
   }
 
   return (
     <Card>
       <Form onSubmit={handleSubmit}>
-        {({ formProps, submitting, setFieldValue, getValues }) => (
+        {({ formProps, submitting, setFieldValue }) => (
           <form {...formProps}>
             <FormHeader
               title="Complete your Profile"
@@ -116,6 +159,28 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
               >
                 {({ fieldProps }: any) => (
                   <TextField {...fieldProps}/>
+                )}
+              </Field>
+              <Field
+                id="mobileNumber"
+                name="mobileNumber"
+                label="Mobile Number"
+                defaultValue=""
+                isRequired
+              >
+                {({ fieldProps: { id, ...rest }, error }) => (
+                  <>
+                    <TextField
+                      id={`${id}TextField`}
+                      maxLength={10}
+                      {...rest}
+                    />
+                    {error && (
+                      <ErrorMessage>
+                        {error}
+                      </ErrorMessage>
+                    )}
+                  </>
                 )}
               </Field>
             </FormSection>

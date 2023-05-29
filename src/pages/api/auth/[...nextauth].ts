@@ -28,7 +28,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async signIn({ user, account, profile, email }: any) {
-      console.log(`sign-in callback - ${JSON.stringify(user)}`)
       if (!email) {
         if (user.isActive) {
           return true
@@ -36,10 +35,14 @@ export const authOptions = {
         return "/auth/user-info"
       }
       return true
+    },
+    async session({ session, user }: any) {
+      console.log(`Session callback: session - ${session}, user - ${user}`)
+      return session
     }
   },
   pages: {
-    signIn: "/auth/sign-in"
+    signIn: "/auth/sign-in",
   }
 }
 

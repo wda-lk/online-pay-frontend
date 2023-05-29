@@ -37,7 +37,6 @@ const SignInPage: NextPage = () => {
       .then((res) => {
         let error = res?.error
         if (error) {
-          console.log(error)
           showFlag(
             {
               isAutoDismiss: true,
