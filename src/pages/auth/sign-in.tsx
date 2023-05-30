@@ -1,5 +1,4 @@
 import Form, { Field, FormFooter, FormHeader, FormSection } from "@atlaskit/form"
-import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "@/components/card"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { NextPage } from "next"
@@ -9,7 +8,7 @@ import { signIn } from "next-auth/react"
 
 const SignInPage: NextPage = () => {
   const handleSubmit = async (data: { email: string }) => {
-    await signIn("email", { email: data.email})
+    await signIn("email", { email: data.email })
     return
   }
 
@@ -19,9 +18,10 @@ const SignInPage: NextPage = () => {
         {({ formProps, submitting }) => (
           <form {...formProps}>
             <FormHeader
-              title="Sign In to your Account"
+              title="Sign in to Continue"
               description="* indicates a required field"
-            />
+            >
+            </FormHeader>
             <FormSection>
               <Field
                 name="email"
@@ -33,15 +33,15 @@ const SignInPage: NextPage = () => {
               </Field>
             </FormSection>
             <FormFooter>
-              <ButtonGroup>
-                <LoadingButton
-                  type="submit"
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Sign In
-                </LoadingButton>
-              </ButtonGroup>
+              <LoadingButton
+                type="submit"
+                appearance="primary"
+                isLoading={submitting}
+                style={{ height: 40, alignItems: "center" }}
+                shouldFitContainer
+              >
+                Continue
+              </LoadingButton>
             </FormFooter>
           </form>
         )}
