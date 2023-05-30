@@ -35,6 +35,12 @@ type SelectOption = {
   value: string;
 }
 
+type ResponseData = {
+  error?: string
+  message?: string
+  data?: any
+}
+
 export {
-  SelectOption, Step, SubNavigationItem
+  ResponseData, SelectOption, Step, SubNavigationItem
 }

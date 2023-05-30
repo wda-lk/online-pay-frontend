@@ -1,38 +1,46 @@
 import Form, { ErrorMessage, Field, FormFooter, FormHeader, FormSection } from "@atlaskit/form"
 import Select, { ValueType } from "@atlaskit/select"
+import Button from "@atlaskit/button/standard-button"
+import ButtonGroup from "@atlaskit/button/button-group"
 import Card from "@/components/card"
 import ErrorIcon from "@atlaskit/icon/glyph/error"
 import { GetStaticProps } from "next"
 import { InputSelect } from "@/../types/trade-license"
 import LoadingButton from "@atlaskit/button/loading-button"
 import { R500 } from "@atlaskit/theme/colors"
+import { ResponseData } from "@/../types/global";
 import { SelectOption } from "@/../types/global"
 import TextField from "@atlaskit/textfield"
 import { prismaCore } from "@/lib/prisma"
+import { signOut } from "next-auth/react"
 import { token } from "@atlaskit/tokens"
 import { useFlags } from "@atlaskit/flag"
+import { useRouter } from "next/router";
 import { useState } from "react"
-import { useSession } from "next-auth/react"
 
 
 const getStaticProps: GetStaticProps = async () => {
-  const districts = await
-    prismaCore
-      .district
-      .findMany(
-        {
-          where: { status: 1 },
-          select: { id: true, nameEnglish: true },
-          orderBy: { nameEnglish: "asc" }
-        })
-  const gnDivisions = await
-    prismaCore
-      .gNDivisionLocation
-      .findMany(
-        {
-          where: { isActive: true },
-          select: { gnId: true, gnName: true, districtId: true, districtName: true }
-        })
+  // Query all Districts and GN divisions through static rendering since these are not frequently
+  // changed
+  const districts
+    = await prismaCore.district
+                      .findMany({
+                        where: { status: 1 },
+                        select: { id: true, nameEnglish: true },
+                        orderBy: { nameEnglish: "asc" }
+                      })
+  const gnDivisions
+    = await prismaCore.gNDivisionLocation
+                      .findMany({
+                        where: { isActive: true },
+                        select: {
+                          gnId: true,
+                          gnName: true,
+                          districtId: true,
+                          districtName: true
+                        },
+                        orderBy: { gnName: "asc" }
+                      })
   return { props: { districts, gnDivisions } }
 }
 
@@ -48,16 +56,18 @@ type GNDivision = {
   districtName?: string
 }
 
-type UserInfoPageProps = {
+type NewUserPageProps = {
   districts: District[]
   gnDivisions: GNDivision[]
 }
 
-const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
+const NewUserPage = ({ districts, gnDivisions }: NewUserPageProps) => {
+  const router = useRouter()
   const { showFlag } = useFlags()
-  const [districtId, setDistrictId] = useState<number | null>(null)
-  const { data: session, status } = useSession()
-  console.log(session)
+  const [
+    districtId,
+    setDistrictId
+  ] = useState<number | null>(null)
 
   const handleSubmit = async (data: {
     nicNumber: string,
@@ -67,57 +77,52 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
     gnDivision: InputSelect,
     address: string
   }) => {
-    // GET /api/users/[nicNumber]
-    let res = await fetch(`${window.location.origin}/api/users/${data.nicNumber}`)
+    const nicNumber = data.nicNumber.toUpperCase()
+    // GET /api/users?nicNumber=[nicNumber]
+    let res = await fetch(
+      `${window.location.origin}/api/users?nicNumber=${nicNumber}`
+    )
     let status = res.status
-    let body = await res.json()
-    // If a critical error occurred
+    let body: ResponseData = await res.json()
     if (status !== 200 && status !== 404) {
-      showFlag(
-        {
-          isAutoDismiss: true,
-          icon: (<ErrorIcon label="Error" primaryColor={token("color.icon.danger", R500)}/>),
-          title: "Failed to Sign you in",
-          description: `Error occurred while validating the information you entered. Status: ${status}, Error: ${body}`
-        })
+      showFlag({
+        isAutoDismiss: true,
+        icon: <ErrorIcon label="Error" primaryColor={token("color.icon.danger", R500)}/>,
+        title: body.error || "Failed to Sign you in",
+        description: body.message
+      })
       return
     }
-    // User with NIC already exists
-    const errors = {
-      nicNumber: status === 200
-                 ? "NIC number is already taken. Please try another one."
-                 : undefined
-    }
-    if (!errors.nicNumber) {
-      // Update user record
-      const reqData = {
-        nicNumber: data.nicNumber,
-        name: data.name,
-        mobileNumber: data.mobileNumber,
-        gnDivisionId: parseInt(data.gnDivision.value),
-        address: data.address
+    // If NIC number is already taken show an error near the input
+    if (status === 200) {
+      return {
+        nicNumber: "NIC number is already taken. Please try another one."
       }
-      // POST /api/users
-      const options = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(reqData)
-      }
-      res = await fetch(`${window.location.origin}/api/users`, options)
-      // status = res.status
-      // body = await res.json()
-      // // User updating failed
-      // if (status !== 201) {
-      //   showFlag(
-      //     {
-      //       isAutoDismiss: true,
-      //       icon: (<ErrorIcon label="Error" primaryColor={token("color.icon.danger", R500)}/>),
-      //       title: "Failed to Sign you in",
-      //       description: `Error occurred while completing your profile. Status: ${status}, Error: ${body}`
-      //     })
-      // }
     }
-    return errors
+    // PUT /api/users
+    res = await fetch(`${window.location.origin}/api/users`,
+      {
+        method: "PUT",
+        body: JSON.stringify({
+          nicNumber: nicNumber,
+          name: data.name,
+          mobileNumber: data.mobileNumber,
+          gnDivisionId: parseInt(data.gnDivision.value),
+          address: data.address
+        })
+      })
+    status = res.status
+    body = await res.json()
+    if (status !== 201) {
+      showFlag({
+        isAutoDismiss: true,
+        icon: <ErrorIcon label="Error" primaryColor={token("color.icon.danger", R500)}/>,
+        title: body.error || "Failed to Sign you in",
+        description: body.message
+      })
+      return
+    }
+    router.push("/dashboard").then(console.log)
   }
 
   return (
@@ -168,7 +173,10 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
                 defaultValue=""
                 isRequired
               >
-                {({ fieldProps: { id, ...rest }, error }) => (
+                {({
+                  fieldProps: { id, ...rest },
+                  error
+                }) => (
                   <>
                     <TextField
                       id={`${id}TextField`}
@@ -197,7 +205,10 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
                   return "Please select your District."
                 }}
               >
-                {({ fieldProps: { id, onChange, ...rest }, error }) => (
+                {({
+                  fieldProps: { id, onChange, ...rest },
+                  error
+                }) => (
                   <>
                     <Select<SelectOption>
                       inputId={id}
@@ -233,21 +244,25 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
                   return "Please select your Grama Niladari(GN) Division."
                 }}
               >
-                {({ fieldProps: { id, ...rest }, error }) => (
+                {({
+                  fieldProps: { id, ...rest },
+                  error
+                }) => (
                   <>
                     <Select<SelectOption>
                       inputId={id}
                       {...rest}
                       options={
-                        districtId ? gnDivisions
-                                     .filter(gn => gn.districtId == districtId)
-                                     .map(gn => {
-                                       return {
-                                         value: gn.gnId.toString(),
-                                         label: gn.gnName
-                                       }
-                                     })
-                                   : []
+                        districtId
+                        ? gnDivisions
+                          .filter(gn => gn.districtId == districtId)
+                          .map(gn => {
+                            return {
+                              value: gn.gnId.toString(),
+                              label: gn.gnName
+                            }
+                          })
+                        : []
                       }
                       isClearable
                       isDisabled={!districtId}
@@ -268,13 +283,18 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
               </Field>
             </FormSection>
             <FormFooter>
-              <LoadingButton
-                type="submit"
-                appearance="primary"
-                isLoading={submitting}
-              >
-                Create
-              </LoadingButton>
+              <ButtonGroup>
+                <Button appearance="link" onClick={() => signOut()}>
+                  Return to sign in
+                </Button>
+                <LoadingButton
+                  type="submit"
+                  appearance="primary"
+                  isLoading={submitting}
+                >
+                  Submit
+                </LoadingButton>
+              </ButtonGroup>
             </FormFooter>
           </form>
         )}
@@ -283,5 +303,6 @@ const UserInfoPage = ({ districts, gnDivisions }: UserInfoPageProps) => {
   )
 }
 
-export default UserInfoPage
+NewUserPage.isAuth = true
+export default NewUserPage
 export { getStaticProps }

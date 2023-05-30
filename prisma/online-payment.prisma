@@ -44,14 +44,13 @@ model User {
   emailVerified DateTime?
   image         String?
   address       String?
-  createdAt     DateTime?
+  createdAt     DateTime? @default(now()) @db.Timestamp(0)
   gnDivisionId  Int?
   mobileNumber  String?
   nicNumber     String?   @unique
   tmpAddress    String?
   tmpName       String?
-  tmpNicNumber  String?   @unique
-  updatedAt     DateTime?
+  updatedAt     DateTime? @updatedAt @db.Timestamp(0)
   isActive      Boolean?
   accounts      Account[]
   sessions      Session[]

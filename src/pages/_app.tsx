@@ -14,14 +14,12 @@ type AuthProps = {
 
 const Auth = ({ children }: AuthProps) => {
   const router = useRouter()
-
-  const { status } = useSession(
-    {
-      required: true,
-      onUnauthenticated() {
-        router.push("/auth/sign-in").then(console.log)
-      }
-    })
+  const { data: session, status } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.push("/auth/sign-in").then(console.log) // Always redirect if unauthenticated
+    }
+  })
 
   if (status === "loading") {
     return <div>Loading...</div>
@@ -30,21 +28,21 @@ const Auth = ({ children }: AuthProps) => {
 }
 
 type CustomAppProps = AppProps<{ session: Session }> & {
-  Component: NextComponentType & { auth?: boolean }
+  Component: NextComponentType & { isAuth?: boolean }
 }
 
 const App = ({ Component, pageProps: { session, ...pageProps } }: CustomAppProps) => (
   <SessionProvider session={session}>
     {
-      Component.auth
-      ? (
-        <Auth>
-          <FlagsProvider>
-            <Component {...pageProps} />
-          </FlagsProvider>
-        </Auth>
-      )
-      : (<Component {...pageProps} />)
+      Component.isAuth
+      ? <Auth>
+        <FlagsProvider>
+          <Component {...pageProps} />
+        </FlagsProvider>
+      </Auth>
+      : <FlagsProvider>
+        <Component {...pageProps} />
+      </FlagsProvider>
     }
   </SessionProvider>
 )
