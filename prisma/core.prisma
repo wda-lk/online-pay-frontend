@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../node_modules/@prisma-core/client"
+  provider        = "prisma-client-js"
+  output          = "../node_modules/@prisma-core/client"
+  previewFeatures = ["views"]
 }
 
 datasource db {
@@ -8,14 +9,155 @@ datasource db {
   url      = env("CORE_DATABASE_URL")
 }
 
-model cd_gn_divisions {
-  id          Int       @id @default(autoincrement())
-  description String    @db.VarChar(255)
-  code        String    @db.VarChar(100)
-  office_id   Int?
-  created_at  DateTime? @db.DateTime(0)
-  updated_at  DateTime? @db.DateTime(0)
-  active      Boolean   @default(true)
+model Province {
+  id          Int        @id @default(autoincrement()) @map("cd_p_id")
+  nameSinhala String?    @map("cd_p_name_sinhala") @db.VarChar(255)
+  nameEnglish String?    @map("cd_p_name_english") @db.VarChar(255)
+  nameTamil   String?    @map("cd_p_name_tamil") @db.VarChar(255)
+  status      Int?       @map("cd_p_status")
+  districts   District[]
 
-  @@index([office_id], map: "cd_gn_divisions_FK")
+  @@map("cd_province")
+}
+
+model District {
+  id          Int      @id @default(autoincrement()) @map("cd_d_id")
+  province_id Int      @map("cd_d_cd_p_id")
+  nameSinhala String?  @map("cd_d_name_sinhala") @db.VarChar(255)
+  nameEnglish String?  @map("cd_d_name_english") @db.VarChar(255)
+  nameTamil   String?  @map("cd_d_name_tamil") @db.VarChar(255)
+  status      Int?     @map("cd_d_status")
+  province    Province @relation(fields: [province_id], references: [id], onUpdate: Restrict, map: "fk_cd_d_cd_p_id")
+  sabhas      Sabha[]
+
+  @@index([province_id], map: "fk_cd_d_cd_p_id")
+  @@map("cd_district")
+}
+
+model Sabha {
+  id             Int       @id @default(autoincrement()) @map("cd_s_id")
+  districtId     Int?      @map("cd_s_cd_d_id")
+  nameSinhala    String?   @map("cd_s_name_sinhala") @db.VarChar(255)
+  nameEnglish    String?   @map("cd_s_name_english") @db.VarChar(255)
+  nameTamil      String?   @map("cd_s_name_tamil") @db.VarChar(255)
+  code           String?   @map("cd_s_code") @db.VarChar(255)
+  logoPath       String?   @map("cd_s_logo_path") @db.VarChar(255)
+  status         Int?      @map("cd_s_status")
+  createDate     DateTime? @map("cd_s_create_date") @db.DateTime(6)
+  telephoneNo1   String?   @map("cd_s_tp_no1") @db.VarChar(255)
+  telephoneNo2   String?   @map("cd_s_tp_no2") @db.VarChar(255)
+  addressSinhala String?   @map("cd_s_address_sinhala") @db.VarChar(255)
+  addressEnglish String?   @map("cd_s_address_english") @db.VarChar(255)
+  addressTamil   String?   @map("cd_s_address_tamil") @db.VarChar(255)
+  recieptCode    String?   @map("cd_s_code_reciept") @db.VarChar(100)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt      DateTime? @map("updated_at") @db.DateTime(0)
+  offices        Office[]
+  district       District? @relation(fields: [districtId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_cd_s_cd_d_id")
+  wards          Ward[]
+
+  @@index([districtId], map: "fk_cd_s_cd_d_id")
+  @@map("cd_sabha")
+}
+
+model OfficeType {
+  id      Int      @id @default(autoincrement()) @map("cd_ot_id")
+  name    String?  @map("cd_ot_name") @db.VarChar(255)
+  status  Int?     @map("cd_ot_status")
+  offices Office[]
+
+  @@map("cd_office_type")
+}
+
+model Office {
+  id           Int         @id @default(autoincrement()) @map("cd_o_id")
+  sabhaId      Int?        @map("cd_o_cd_s_id")
+  nameSinhala  String?     @map("cd_o_name_sinhala") @db.VarChar(255)
+  nameEnglish  String?     @map("cd_o_name_english") @db.VarChar(255)
+  nameTamil    String?     @map("cd_o_name_tamil") @db.VarChar(255)
+  officeTypeId Int?        @map("cd_o_office_type_id")
+  status       Int?        @map("cd_o_status")
+  createdDate  DateTime?   @map("cd_o_create_date") @db.DateTime(6)
+  code         String?     @map("cd_o_code") @db.VarChar(100)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.DateTime(0)
+  updatedAt    DateTime?   @map("updated_at") @db.DateTime(0)
+  sabha        Sabha?      @relation(fields: [sabhaId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_cd_o_cd_s_id")
+  officeType   OfficeType? @relation(fields: [officeTypeId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "fk_cd_o_office_type_id")
+
+  @@index([sabhaId], map: "fk_cd_o_cd_s_id")
+  @@index([officeTypeId], map: "fk_cd_o_office_type_id")
+  @@map("cd_office")
+}
+
+model Ward {
+  id          Int          @id @default(autoincrement()) @map("id")
+  code        String       @map("code") @db.VarChar(255)
+  name        String       @map("name") @db.VarChar(255)
+  isActive    Boolean      @default(true) @map("active")
+  createdAt   DateTime     @map("created_at") @db.DateTime(0)
+  updatedAt   DateTime     @map("updated_at") @db.DateTime(0)
+  subOfficeId Int          @map("sub_office_id")
+  sabha       Sabha        @relation(fields: [subOfficeId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_office_ward_sub_office_id")
+  streets     WardStreet[]
+
+  @@index([subOfficeId], map: "fk_office_ward_sub_office_id")
+  @@index([name], map: "index_office_ward_name")
+  @@index([code], map: "index_office_ward_number")
+  @@map("office_ward")
+}
+
+model Street {
+  id          Int          @id @default(autoincrement()) @map("id")
+  code        String       @map("code") @db.VarChar(255)
+  name        String       @map("name") @db.VarChar(255)
+  isActive    Boolean      @default(true) @map("active")
+  createdAt   DateTime     @map("created_at") @db.DateTime(0)
+  updatedAt   DateTime     @map("updated_at") @db.DateTime(0)
+  wardStreets WardStreet[]
+
+  @@index([code], map: "index_office_street_code")
+  @@index([name], map: "index_office_street_name")
+  @@map("office_street")
+}
+
+model WardStreet {
+  id        Int      @id @default(autoincrement()) @map("id")
+  isActive  Boolean  @default(true) @map("active")
+  createdAt DateTime @map("created_at") @db.DateTime(0)
+  updatedAt DateTime @map("updated_at") @db.DateTime(0)
+  wardId    Int      @map("ward_id")
+  streetId  Int      @map("street_id")
+  street    Street   @relation(fields: [streetId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_office_ward_street_id")
+  ward      Ward     @relation(fields: [wardId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_office_ward_street_ward_id")
+
+  @@index([wardId], map: "fk_office_ward_street_ward_id")
+  @@index([streetId], map: "fk_office_ward_street_id")
+  @@map("office_ward_street")
+}
+
+model GNDivisions {
+  id          Int       @id @default(autoincrement()) @map("id")
+  description String    @map("description") @db.VarChar(255)
+  code        String    @map("code") @db.VarChar(100)
+  officeId    Int?      @map("office_id")
+  createdAt   DateTime? @map("created_at") @db.DateTime(0)
+  updatedAt   DateTime? @map("updated_at") @db.DateTime(0)
+  isActive    Boolean   @default(true) @map("active")
+
+  @@index([officeId], map: "cd_gn_divisions_FK")
+  @@map("cd_gn_divisions")
+}
+
+view GNDivisionLocation {
+  gnId          Int     @unique @default(0)
+  gnName        String  @db.VarChar(255)
+  isActive      Boolean @default(true)
+  subOfficeId   Int?    @default(0)
+  subOfficeName String? @db.VarChar(255)
+  officeId      Int?    @default(0)
+  officeName    String? @db.VarChar(255)
+  districtId    Int?    @default(0)
+  districtName  String? @db.VarChar(255)
+  provinceId    Int?    @default(0)
+  provinceName  String? @db.VarChar(255)
 }

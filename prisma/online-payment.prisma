@@ -8,23 +8,60 @@ datasource db {
   url      = env("ONLINE_PAYMENT_DATABASE_URL")
 }
 
-model User {
-  id           Int      @id @default(autoincrement())
-  name         String   @db.VarChar(255)
-  tmpName      String?  @map("tmp_name") @db.VarChar(255)
-  nicNumber    String   @unique(map: "user_nic_number_uindex") @map("nic_number") @db.VarChar(255)
-  tmpNicNumber String?  @unique(map: "user_tmp_nic_number_uindex") @map("tmp_nic_number") @db.VarChar(255)
-  address      String   @db.Text
-  tmpAddress   String?  @map("tmp_address") @db.Text
-  mobileNumber String   @unique(map: "user_mobile_number_uindex") @map("mobile_number") @db.VarChar(45)
-  email        String?  @db.VarChar(255)
-  password     String   @db.VarChar(255)
-  isActive     Boolean  @default(true) @map("is_active")
-  createdAt    DateTime @map("created_at") @db.DateTime(0)
-  updatedAt    DateTime @map("updated_at") @db.DateTime(0)
-  gnDivisionId Int      @map("gn_division_id")
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([email], map: "user_email_index")
-  @@index([gnDivisionId], map: "user_gn_divisions_id_fk")
-  @@map("user")
+  @@unique([provider, providerAccountId])
+  @@index([userId], map: "Account_userId_fkey")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "Session_userId_fkey")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  address       String?
+  createdAt     DateTime? @default(now()) @db.Timestamp(0)
+  gnDivisionId  Int?
+  mobileNumber  String?
+  nicNumber     String?   @unique
+  tmpAddress    String?
+  tmpName       String?
+  updatedAt     DateTime? @updatedAt @db.Timestamp(0)
+  isActive      Boolean?
+  accounts      Account[]
+  sessions      Session[]
+
+  @@index([gnDivisionId], map: "User_cd_gn_divisions_id_fk")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
