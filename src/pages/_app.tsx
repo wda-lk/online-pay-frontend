@@ -6,6 +6,7 @@ import { NextComponentType } from "next"
 import React from "react"
 import { Session } from "next-auth"
 import { useRouter } from "next/router"
+import Loading from "@/components/loading";
 
 
 type AuthProps = {
@@ -22,7 +23,7 @@ const Auth = ({ children }: AuthProps) => {
   })
 
   if (status === "loading") {
-    return <div>Loading...</div>
+    return <Loading/>
   }
   return children
 }

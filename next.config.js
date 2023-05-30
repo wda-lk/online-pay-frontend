@@ -5,12 +5,12 @@ const nextConfig = {
     return [
       {
         source: "/",
-        destination: "/auth/sign-in",
+        destination: "/dashboard",
         permanent: true
       },
       {
         source: "/index",
-        destination: "/auth/sign-in",
+        destination: "/dashboard",
         permanent: true
       }
     ]
