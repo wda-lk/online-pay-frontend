@@ -1,11 +1,10 @@
-import Form, { FormFooter, FormHeader, FormSection } from "@atlaskit/form"
-import Button from "@atlaskit/button/standard-button"
+import Form, { FormHeader, FormSection } from "@atlaskit/form"
 import Card from "@/components/card"
 import Image from "next/future/image"
 import { NextPage } from "next"
 import SlotWrapper from "@/components/slot-wrapper"
 import openLetterImage from "../../../public/images/open-letter.svg"
-import { signOut } from "next-auth/react"
+
 
 const VerifyRequestPage: NextPage = () => {
   return (

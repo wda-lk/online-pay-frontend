@@ -14,7 +14,7 @@ type AuthProps = {
 
 const Auth = ({ children }: AuthProps) => {
   const router = useRouter()
-  const { data: session, status } = useSession({
+  const { status } = useSession({
     required: true,
     onUnauthenticated() {
       router.push("/auth/sign-in").then(console.log) // Always redirect if unauthenticated

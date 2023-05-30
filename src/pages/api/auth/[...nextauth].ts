@@ -20,29 +20,30 @@ export const authOptions = {
             rejectUnauthorized: false // This is insecure should be removed after setting up a proper email client
           }
         },
-        from: process.env.EMAIL_FROM,
-        maxAge: 10 * 60 // Magic links are valid for 10 min only
+        from: process.env.EMAIL_FROM
       }
     )
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async signIn({ user, account, profile, email }: any) {
+    async signIn({ user, email }: any) {
+      // If a user already has activated their account send them directly to the dashboard
       if (!email) {
         if (user.isActive) {
-          return true
+          return "/dashboard"
         }
-        return "/auth/user-info"
       }
       return true
     },
     async session({ session, user }: any) {
-      console.log(`Session callback: session - ${session}, user - ${user}`)
+      session.user.isActive = user.isActive
       return session
     }
   },
   pages: {
     signIn: "/auth/sign-in",
+    verifyRequest: "/auth/verify-request", // (used for check email message)
+    newUser: "/auth/new-user" // New users will be directed here on first sign in
   }
 }
 
