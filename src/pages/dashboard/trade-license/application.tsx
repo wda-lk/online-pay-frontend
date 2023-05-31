@@ -11,13 +11,13 @@ import { InferGetServerSidePropsType } from "next";
 import OwnerSection from "@/components/trade-license/owner-section"
 import PageHeader from "@atlaskit/page-header"
 import PreviewSection from "@/components/trade-license/preview-section"
+import ProgressTracker from "@/components/progress-tracker"
 import PropertySection from "@/components/trade-license/property-section"
 import { Step } from "@/../types/global"
 import Takeover from "@/components/takeover"
 import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { getServerSession } from "next-auth"
 import { signOut } from "next-auth/react"
-import styles from "./application.module.css"
 import { useRouter } from "next/router"
 
 
@@ -78,24 +78,24 @@ const ApplicationForm = ({ user, location }: any) => {
   const nextStep = (data: AllInputProps) => {
     if (data.applicantInputProps) {
       changeInputProps({
-          ...allInputProps,
-          applicantInputProps: data.applicantInputProps
-        })
+        ...allInputProps,
+        applicantInputProps: data.applicantInputProps
+      })
     } else if (data.propertyInputProps) {
       changeInputProps({
-          ...allInputProps,
-          propertyInputProps: data.propertyInputProps
-        })
+        ...allInputProps,
+        propertyInputProps: data.propertyInputProps
+      })
     } else if (data.ownerInputProps) {
       changeInputProps({
-          ...allInputProps,
-          ownerInputProps: data.ownerInputProps
-        })
+        ...allInputProps,
+        ownerInputProps: data.ownerInputProps
+      })
     } else if (data.businessInputProps) {
       changeInputProps({
-          ...allInputProps,
-          businessInputProps: data.businessInputProps
-        })
+        ...allInputProps,
+        businessInputProps: data.businessInputProps
+      })
     }
     changeStep(activeStepIndex + 1)
   }
@@ -184,43 +184,7 @@ const ApplicationForm = ({ user, location }: any) => {
 
   return (
     <Takeover
-      progressTracker={
-        <div className={styles.mainContainer}>
-          <div className={`${styles.stepContainer} ${styles["width-" + activeStepIndex]}`}>
-            {steps.map((step) => (
-              <div
-                className={styles.stepWrapper}
-                key={step.number}
-              >
-                <div className={
-                  `${styles.stepStyle} ${activeStepIndex >= step.number
-                                         ? styles.completed
-                                         : styles.incomplete}`
-                }
-                >
-                  {
-                    activeStepIndex > step.number
-                    ? <div className={styles.checkMark}>L</div>
-                    : <span className={
-                      `${styles.stepCount} ${activeStepIndex >= step.number
-                                             ? styles.completed
-                                             : styles.incomplete}`
-                    }
-                    >
-                      {step.number}
-                    </span>
-                  }
-                </div>
-                <div className={styles.stepsLabelContainer}>
-                  <span className={styles.stepLabel}>
-                    {step.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      }
+      progressTracker={<ProgressTracker steps={steps} activeStepIndex={activeStepIndex}/>}
       footer={
         <ButtonGroup>
           <Button
