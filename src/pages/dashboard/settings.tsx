@@ -1,11 +1,10 @@
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import Dashboard from "@/components/dashboard/dashboard"
 import EmptyState from "@atlaskit/empty-state"
-import { NextPage } from "next"
 import PageHeader from "@atlaskit/page-header"
 
 
-const SettingsPage: NextPage = () => {
+const SettingsPage = () => {
   const breadcrumbs = [
     { label: "Settings", href: "/dashboard/settings" }
   ]
@@ -26,4 +25,5 @@ const SettingsPage: NextPage = () => {
   )
 }
 
+SettingsPage.isAuth = true
 export default SettingsPage

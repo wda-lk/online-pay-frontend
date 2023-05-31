@@ -1,11 +1,10 @@
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
 import Dashboard from "@/components/dashboard/dashboard"
 import EmptyState from "@atlaskit/empty-state"
-import { NextPage } from "next"
 import PageHeader from "@atlaskit/page-header"
 
 
-const AssessmentTaxPaymentPage: NextPage = () => {
+const AssessmentTaxPaymentPage = () => {
   const navItems = [
     {
       key: "assessmentTaxPaymentNavItem",
@@ -39,4 +38,5 @@ const AssessmentTaxPaymentPage: NextPage = () => {
   )
 }
 
+AssessmentTaxPaymentPage.isAuth = true
 export default AssessmentTaxPaymentPage

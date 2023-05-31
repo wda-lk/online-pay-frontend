@@ -66,6 +66,7 @@ type PropertySectionProps = {
   formTitle: string
   handleSubmitSuccess: (data: AllInputProps) => void
   inputProps: PropertyInputProps
+  gnDivisions: any[]
 }
 
 type OwnerSectionProps = {

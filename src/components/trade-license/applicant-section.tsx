@@ -5,7 +5,12 @@ import { gnDivisions, taxTypes } from "@/lib/data"
 import TextField from "@atlaskit/textfield"
 
 
-const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: ApplicantSectionProps) => {
+const ApplicantSection = ({
+  formId,
+  formTitle,
+  handleSubmitSuccess,
+  inputProps
+}: ApplicantSectionProps) => {
   const {
     taxType,
     nicNumber,
@@ -39,7 +44,9 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
             title={formTitle}
             description="* indicates a required field"
           />
-          <FormSection description="Please select the Tax type, for which you're submitting this Application">
+          <FormSection
+            description="Please select the Tax type, for which you're submitting this Application"
+          >
             <Field<ValueType<OptionType>>
               id="taxTypeValue"
               name="taxType"
@@ -53,7 +60,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
                 return "Please select a tax type."
               }}
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <Select
                     id={`${id}Select`}
@@ -74,21 +84,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="NIC Number"
               defaultValue={nicNumber}
               isRequired
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
-                <>
-                  <TextField
-                    id={`${id}TextField`}
-                    style={{ textTransform: "uppercase" }}
-                    maxLength={12}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
-                </>
+              {({ fieldProps: { id, ...rest } }) => (
+                <TextField id={`${id}TextField`} {...rest}/>
               )}
             </Field>
             <Field
@@ -96,12 +95,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="Name (with initials)"
               defaultValue={name}
               isRequired
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest } }: any) => (
-                <TextField
-                  id={`${id}TextField`}
-                  {...rest}
-                />
+              {({ fieldProps: { id, ...rest } }) => (
+                <TextField id={`${id}TextField`} {...rest}/>
               )}
             </Field>
           </FormSection>
@@ -112,24 +109,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="District"
               defaultValue={district}
               isRequired
-              validate={(value) => {
-                if (value) {
-                  return
-                }
-                return "Please select a district."
-              }}
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
-                <>
-                  <Select
-                    id={`${id}Select`}
-                    options={gnDivisions}
-                    isSearchable
-                    isClearable
-                    {...rest}
-                  />
-                  {error && <ErrorMessage>{error}</ErrorMessage>}
-                </>
+              {({ fieldProps: { id, ...rest } }) => (
+                <Select id={`${id}Select`} options={[]} {...rest}/>
               )}
             </Field>
             <Field<ValueType<OptionType>>
@@ -138,24 +121,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="Local Authority"
               defaultValue={localAuthority}
               isRequired
-              validate={(value) => {
-                if (value) {
-                  return
-                }
-                return "Please select a local authority."
-              }}
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
-                <>
-                  <Select
-                    id={`${id}Select`}
-                    options={gnDivisions}
-                    isSearchable
-                    isClearable
-                    {...rest}
-                  />
-                  {error && <ErrorMessage>{error}</ErrorMessage>}
-                </>
+              {({ fieldProps: { id, ...rest } }) => (
+                <Select id={`${id}Select`} options={[]} {...rest}/>
               )}
             </Field>
             <Field<ValueType<OptionType>>
@@ -164,24 +133,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="GN Division"
               defaultValue={gnDivision}
               isRequired
-              validate={(value) => {
-                if (value) {
-                  return
-                }
-                return "Please select a GN division."
-              }}
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
-                <>
-                  <Select
-                    id={`${id}Select`}
-                    options={gnDivisions}
-                    isSearchable
-                    isClearable
-                    {...rest}
-                  />
-                  {error && <ErrorMessage>{error}</ErrorMessage>}
-                </>
+              {({ fieldProps: { id, ...rest } }) => (
+                <Select id={`${id}Select`} options={gnDivisions} {...rest}/>
               )}
             </Field>
             <Field
@@ -189,12 +144,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="Address"
               defaultValue={address}
               isRequired
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest } }: any) => (
-                <TextField
-                  id={`${id}TextField`}
-                  {...rest}
-                />
+              {({ fieldProps: { id, ...rest } }) => (
+                <TextField id={`${id}TextField`} {...rest}/>
               )}
             </Field>
           </FormSection>
@@ -205,20 +158,10 @@ const ApplicantSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }
               label="Mobile Number"
               defaultValue={mobileNumber}
               isRequired
+              isDisabled
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
-                <>
-                  <TextField
-                    id={`${id}TextField`}
-                    maxLength={10}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
-                </>
+              {({ fieldProps: { id, ...rest } }) => (
+                <TextField id={`${id}TextField`} {...rest}/>
               )}
             </Field>
           </FormSection>

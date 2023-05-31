@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { prismaCore, prismaOnlinePay } from "@/lib/prisma"
 import { AllInputProps } from "@/../types/trade-license"
 import ApplicantSection from "@/components/trade-license/applicant-section"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
@@ -6,27 +7,19 @@ import BusinessSection from "@/components/trade-license/business-section"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Dashboard from "@/components/dashboard/dashboard"
-import { NextPage } from "next"
+import { InferGetServerSidePropsType } from "next";
 import OwnerSection from "@/components/trade-license/owner-section"
 import PageHeader from "@atlaskit/page-header"
 import PreviewSection from "@/components/trade-license/preview-section"
+import ProgressTracker from "@/components/progress-tracker"
 import PropertySection from "@/components/trade-license/property-section"
 import { Step } from "@/../types/global"
 import Takeover from "@/components/takeover"
-import styles from "./application.module.css"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import { getServerSession } from "next-auth"
+import { signOut } from "next-auth/react"
 import { useRouter } from "next/router"
 
-
-const defaultApplicantInputProps = {
-  taxType: undefined,
-  nicNumber: "",
-  name: "",
-  district: undefined,
-  localAuthority: undefined,
-  gnDivision: undefined,
-  address: "",
-  mobileNumber: ""
-}
 
 const defaultPropertyInputProps = {
   gnDivision: undefined,
@@ -59,45 +52,50 @@ const defaultBusinessInputProps = {
   otherCharges: ""
 }
 
-const ApplicationForm = () => {
+const ApplicationForm = ({ user, userGNDivision, gnDivisions }: any) => {
   const router = useRouter()
-
+  // To control the progression of the form
   const [activeStepIndex, changeStep] = useState(1)
-
+  const defaultApplicantInputProps = {
+    taxType: undefined,
+    nicNumber: user.nicNumber,
+    name: user.name,
+    district: { label: userGNDivision.districtName, value: userGNDivision.districtId },
+    localAuthority: { label: userGNDivision.subOfficeName, value: userGNDivision.subOfficeId },
+    gnDivision: { label: userGNDivision.gnName, value: userGNDivision.gnId },
+    address: user.address,
+    mobileNumber: user.mobileNumber
+  }
+  // To store all the user inputs form the form
   const [allInputProps, changeInputProps] =
-    useState<AllInputProps>(
-      {
-        applicantInputProps: defaultApplicantInputProps,
-        propertyInputProps: defaultPropertyInputProps,
-        ownerInputProps: defaultOwnerInputProps,
-        businessInputProps: defaultBusinessInputProps
-      })
+    useState<AllInputProps>({
+      applicantInputProps: defaultApplicantInputProps,
+      propertyInputProps: defaultPropertyInputProps,
+      ownerInputProps: defaultOwnerInputProps,
+      businessInputProps: defaultBusinessInputProps
+    })
 
   const nextStep = (data: AllInputProps) => {
     if (data.applicantInputProps) {
-      changeInputProps(
-        {
-          ...allInputProps,
-          applicantInputProps: data.applicantInputProps
-        })
+      changeInputProps({
+        ...allInputProps,
+        applicantInputProps: data.applicantInputProps
+      })
     } else if (data.propertyInputProps) {
-      changeInputProps(
-        {
-          ...allInputProps,
-          propertyInputProps: data.propertyInputProps
-        })
+      changeInputProps({
+        ...allInputProps,
+        propertyInputProps: data.propertyInputProps
+      })
     } else if (data.ownerInputProps) {
-      changeInputProps(
-        {
-          ...allInputProps,
-          ownerInputProps: data.ownerInputProps
-        })
+      changeInputProps({
+        ...allInputProps,
+        ownerInputProps: data.ownerInputProps
+      })
     } else if (data.businessInputProps) {
-      changeInputProps(
-        {
-          ...allInputProps,
-          businessInputProps: data.businessInputProps
-        })
+      changeInputProps({
+        ...allInputProps,
+        businessInputProps: data.businessInputProps
+      })
     }
     changeStep(activeStepIndex + 1)
   }
@@ -138,6 +136,7 @@ const ApplicationForm = () => {
           formTitle="Property Information Section"
           handleSubmitSuccess={nextStep}
           inputProps={allInputProps.propertyInputProps || defaultPropertyInputProps}
+          gnDivisions={gnDivisions}
         />,
       secondaryButton: { label: "Back", onClick: previousStep },
       primaryButton: { label: "Next" }
@@ -186,35 +185,7 @@ const ApplicationForm = () => {
 
   return (
     <Takeover
-      progressTracker={
-        <div className={styles.mainContainer}>
-          <div className={`${styles.stepContainer} ${styles["width-" + activeStepIndex]}`}>
-            {steps.map((step) => (
-              <div
-                className={styles.stepWrapper}
-                key={step.number}
-              >
-                <div
-                  className={
-                    `${styles.stepStyle} ${activeStepIndex >= step.number ? styles.completed : styles.incomplete}`
-                  }
-                >
-                  {
-                    activeStepIndex > step.number
-                    ? (<div className={styles.checkMark}>L</div>)
-                    : (<span className={styles.stepCount}>{step.number}</span>)
-                  }
-                </div>
-                <div className={styles.stepsLabelContainer}>
-                  <span className={styles.stepLabel}>
-                    {step.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      }
+      progressTracker={<ProgressTracker steps={steps} activeStepIndex={activeStepIndex}/>}
       footer={
         <ButtonGroup>
           <Button
@@ -234,20 +205,56 @@ const ApplicationForm = () => {
         </ButtonGroup>
       }
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          overflow: "auto"
-        }}
-      >
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        overflow: "auto"
+      }}>
         {currentStep.content || "No Content Available"}
       </div>
     </Takeover>
   )
 }
 
-const TradeLicenseApplicationPage: NextPage = () => {
+const getServerSideProps = async (context: any) => {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  const user =
+    await prismaOnlinePay.user
+                         .findUnique({ where: { email: session?.user?.email } })
+  if (!user || !user.gnDivisionId) {
+    console.log(`Critical error occurred, Logged in user: ${session?.user?.email} is unavailable 
+    or invalid in the server.`)
+    await signOut()
+    return
+  }
+  const gnDivisions
+    = await prismaCore.gNDivisionLocation
+                      .findMany({
+                        where: { isActive: true },
+                        orderBy: { gnName: "asc" }
+                      })
+  const userGNDivision =
+    gnDivisions.filter(gn => gn.gnId === user.gnDivisionId)[0]
+  if (!userGNDivision) {
+    console.log(`Critical error occurred, User's GN Division: ${user.gnDivisionId} is not found in 
+    the database.`)
+    await signOut()
+    return
+  }
+  return {
+    props: {
+      user: JSON.parse(JSON.stringify(user)),
+      userGNDivision,
+      gnDivisions // load this async in the Select
+    }
+  }
+}
+
+const TradeLicenseApplicationPage = ({
+  user,
+  userGNDivision,
+  gnDivisions
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const navItems = [
     {
       key: "tradeLicenseListNavItem",
@@ -275,9 +282,11 @@ const TradeLicenseApplicationPage: NextPage = () => {
       <PageHeader breadcrumbs={<BreadcrumbsWrapper breadcrumbs={breadcrumbs}/>}>
         Application
       </PageHeader>
-      <ApplicationForm/>
+      <ApplicationForm user={user} userGNDivision={userGNDivision} gnDivisions={gnDivisions}/>
     </Dashboard>
   )
 }
 
+TradeLicenseApplicationPage.isAuth = true
 export default TradeLicenseApplicationPage
+export { getServerSideProps }

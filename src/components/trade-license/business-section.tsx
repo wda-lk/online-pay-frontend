@@ -6,7 +6,12 @@ import { DatePicker } from "@atlaskit/datetime-picker"
 import TextField from "@atlaskit/textfield"
 
 
-const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: BusinessSectionProps) => {
+const BusinessSection = ({
+  formId,
+  formTitle,
+  handleSubmitSuccess,
+  inputProps
+}: BusinessSectionProps) => {
   const {
     nature,
     subNature,
@@ -90,7 +95,10 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
                 return "Please select a business sub-nature."
               }}
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <Select
                     id={`${id}Select`}
@@ -112,17 +120,16 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={businessName}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <TextField
                     id={`${id}TextField`}
                     {...rest}
                   />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -133,15 +140,16 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={regDate}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <DatePicker
                     selectProps={{ inputId: `${id}TextField` }}
                     {...rest}
                   />
-                  {error &&
-                   <ErrorMessage>{error}</ErrorMessage>
-                  }
+                  {error && <ErrorMessage>{error}</ErrorMessage>}
                 </>
               )}
             </Field>
@@ -152,17 +160,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={regNumber}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -173,17 +177,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={employeeCount}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -196,18 +196,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={telNumber}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    maxLength={10}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} maxLength={10} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -221,7 +216,11 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               }
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error, valid }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error,
+                valid
+              }) => (
                 <>
                   <TextField
                     id={`${id}TextField`}
@@ -232,11 +231,7 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
                       Enter a valid Email which includes a `@` character
                     </HelperMessage>
                   )}
-                  {error && (
-                    <ErrorMessage>
-                      Your email is not valid.
-                    </ErrorMessage>
-                  )}
+                  {error && (<ErrorMessage>Your email is not valid.</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -249,15 +244,8 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
             >
               {({ fieldProps: { id, ...rest }, error }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -270,17 +258,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={lAnnualValue}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -291,17 +275,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={annualValue}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -312,17 +292,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={taxAmount}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -333,17 +309,13 @@ const BusinessSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={otherCharges}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>

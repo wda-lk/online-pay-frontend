@@ -1,4 +1,4 @@
-import { N30A, N700, N800 } from "@atlaskit/theme/colors"
+import { N30A, N400, N800 } from "@atlaskit/theme/colors"
 import Image from "next/future/image"
 import { ReactNode } from "react"
 import logo from "../../public/logo/logo.svg"
@@ -12,7 +12,7 @@ type CardProps = {
 }
 
 const Card = ({ children }: CardProps) => (
-  <div className={styles.fullHeightContainer}>
+  <div className={`${styles.fullHeightContainer} ${styles.backgroundImage}`}>
     <div
       className={styles.card}
       style={{
@@ -32,20 +32,19 @@ const Card = ({ children }: CardProps) => (
       {children}
       <div
         className={styles.footer}
-        style={{ borderTop: `1px solid ${token("color.border", N30A)}` }}
+        style={{ borderTop: `2px solid ${token("color.border", N30A)}` }}
       >
         <Image
           className={styles.footerLogo}
           src={logoCompact}
           alt="Cat2020 Neutral logo"
         />
-        <div
-          className={styles.footerText}
-          style={{ color: token("color.text.success", N700) }}
-        >
-          © 2023 CAT2020
-          <br/>
-          Wayamba Development Authority
+        <div className={styles.footerText}>
+          <p style={{ color: token("color.text.disabled", N400) }}>
+            © 2023 CAT2020
+            <br/>
+            Wayamba Development Authority
+          </p>
         </div>
       </div>
     </div>

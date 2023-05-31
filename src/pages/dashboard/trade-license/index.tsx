@@ -5,7 +5,7 @@ import { NextPage } from "next"
 import PageHeader from "@atlaskit/page-header"
 
 
-const TradeLicensePage: NextPage = () => {
+const TradeLicensePage = () => {
   const navItems = [
     {
       key: "tradeLicenseListNavItem",
@@ -45,4 +45,5 @@ const TradeLicensePage: NextPage = () => {
   )
 }
 
+TradeLicensePage.isAuth = true
 export default TradeLicensePage
