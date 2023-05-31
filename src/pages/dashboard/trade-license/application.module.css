@@ -33,7 +33,7 @@
 }
 
 .stepContainer:before {
-	content: '';
+	content: "";
 	position: absolute;
 	background: #B3D4FF;
 	height: 4px;
@@ -44,9 +44,9 @@
 }
 
 .stepContainer:after {
-	content: '';
+	content: "";
 	position: absolute;
-	background: #0052cc;
+	background: #0052CC;
 	height: 4px;
 	width: var(--width);
 	top: 50%;
@@ -64,7 +64,7 @@
 	width: 30px;
 	height: 30px;
 	border-radius: 50%;
-	background-color: #ffffff;
+	background-color: #FFFFFF;
 	border: 3px solid #B3D4FF;
 	transition: 0.4s ease;
 	display: flex;
@@ -73,11 +73,15 @@
 }
 
 .stepStyle.completed {
-	border-color: #0052cc;
+	border-color: #0052CC;
 }
 
 .stepCount {
 	color: #B3D4FF;
+}
+
+.stepCount.completed {
+	color: #0052CC;
 }
 
 .stepsLabelContainer {
@@ -100,7 +104,7 @@
 .checkMark {
 	font-size: 16px;
 	font-weight: 600;
-	color: #0052cc;
+	color: #0052CC;
 	-ms-transform: scaleX(-1) rotate(-46deg); /* IE 9 */
 	-webkit-transform: scaleX(-1) rotate(-46deg); /* Chrome, Safari, Opera */
 	transform: scaleX(-1) rotate(-46deg);

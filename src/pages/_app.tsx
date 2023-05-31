@@ -2,11 +2,11 @@ import "@atlaskit/css-reset/dist/bundle.css"
 import { SessionProvider, useSession } from "next-auth/react"
 import type { AppProps } from "next/app"
 import { FlagsProvider } from "@atlaskit/flag"
+import Loading from "@/components/loading";
 import { NextComponentType } from "next"
 import React from "react"
 import { Session } from "next-auth"
 import { useRouter } from "next/router"
-import Loading from "@/components/loading";
 
 
 type AuthProps = {

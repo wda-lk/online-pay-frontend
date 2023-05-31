@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { prismaCore, prismaOnlinePay } from "@/lib/prisma"
 import { AllInputProps } from "@/../types/trade-license"
 import ApplicantSection from "@/components/trade-license/applicant-section"
 import BreadcrumbsWrapper from "@/components/breadcrumbs-wrapper"
@@ -6,27 +7,19 @@ import BusinessSection from "@/components/trade-license/business-section"
 import Button from "@atlaskit/button/standard-button"
 import ButtonGroup from "@atlaskit/button/button-group"
 import Dashboard from "@/components/dashboard/dashboard"
-import { NextPage } from "next"
+import { InferGetServerSidePropsType } from "next";
 import OwnerSection from "@/components/trade-license/owner-section"
 import PageHeader from "@atlaskit/page-header"
 import PreviewSection from "@/components/trade-license/preview-section"
 import PropertySection from "@/components/trade-license/property-section"
 import { Step } from "@/../types/global"
 import Takeover from "@/components/takeover"
+import { authOptions } from "@/pages/api/auth/[...nextauth]"
+import { getServerSession } from "next-auth"
+import { signOut } from "next-auth/react"
 import styles from "./application.module.css"
 import { useRouter } from "next/router"
 
-
-const defaultApplicantInputProps = {
-  taxType: undefined,
-  nicNumber: "",
-  name: "",
-  district: undefined,
-  localAuthority: undefined,
-  gnDivision: undefined,
-  address: "",
-  mobileNumber: ""
-}
 
 const defaultPropertyInputProps = {
   gnDivision: undefined,
@@ -59,19 +52,27 @@ const defaultBusinessInputProps = {
   otherCharges: ""
 }
 
-const ApplicationForm = () => {
+
+const ApplicationForm = ({ user, location }: any) => {
   const router = useRouter()
-
   const [activeStepIndex, changeStep] = useState(1)
-
+  const defaultApplicantInputProps = {
+    taxType: undefined,
+    nicNumber: user.nicNumber,
+    name: user.name,
+    district: { label: location.districtName, value: location.districtId },
+    localAuthority: { label: location.subOfficeName, value: location.subOfficeId },
+    gnDivision: { label: location.gnName, value: location.gnId },
+    address: user.address,
+    mobileNumber: user.mobileNumber
+  }
   const [allInputProps, changeInputProps] =
-    useState<AllInputProps>(
-      {
-        applicantInputProps: defaultApplicantInputProps,
-        propertyInputProps: defaultPropertyInputProps,
-        ownerInputProps: defaultOwnerInputProps,
-        businessInputProps: defaultBusinessInputProps
-      })
+    useState<AllInputProps>({
+      applicantInputProps: defaultApplicantInputProps,
+      propertyInputProps: defaultPropertyInputProps,
+      ownerInputProps: defaultOwnerInputProps,
+      businessInputProps: defaultBusinessInputProps
+    })
 
   const nextStep = (data: AllInputProps) => {
     if (data.applicantInputProps) {
@@ -194,15 +195,23 @@ const ApplicationForm = () => {
                 className={styles.stepWrapper}
                 key={step.number}
               >
-                <div
-                  className={
-                    `${styles.stepStyle} ${activeStepIndex >= step.number ? styles.completed : styles.incomplete}`
-                  }
+                <div className={
+                  `${styles.stepStyle} ${activeStepIndex >= step.number
+                                         ? styles.completed
+                                         : styles.incomplete}`
+                }
                 >
                   {
                     activeStepIndex > step.number
-                    ? (<div className={styles.checkMark}>L</div>)
-                    : (<span className={styles.stepCount}>{step.number}</span>)
+                    ? <div className={styles.checkMark}>L</div>
+                    : <span className={
+                      `${styles.stepCount} ${activeStepIndex >= step.number
+                                             ? styles.completed
+                                             : styles.incomplete}`
+                    }
+                    >
+                      {step.number}
+                    </span>
                   }
                 </div>
                 <div className={styles.stepsLabelContainer}>
@@ -247,7 +256,32 @@ const ApplicationForm = () => {
   )
 }
 
-const TradeLicenseApplicationPage: NextPage = () => {
+export const getServerSideProps = async (context: any) => {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  const user =
+    await prismaOnlinePay.user
+                         .findUnique({ where: { email: session?.user?.email } })
+  if (!user || !user.gnDivisionId) {
+    console.log(`Critical error occurred, Logged in user: ${session?.user?.email} is unavailable 
+    or invalid in the server.`)
+    await signOut()
+    return
+  }
+  const location =
+    await prismaCore.gNDivisionLocation
+                    .findUnique({ where: { gnId: user.gnDivisionId } })
+  return {
+    props: {
+      user: JSON.parse(JSON.stringify(user)),
+      location
+    }
+  }
+}
+
+const TradeLicenseApplicationPage = ({
+  user,
+  location
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const navItems = [
     {
       key: "tradeLicenseListNavItem",
@@ -275,9 +309,10 @@ const TradeLicenseApplicationPage: NextPage = () => {
       <PageHeader breadcrumbs={<BreadcrumbsWrapper breadcrumbs={breadcrumbs}/>}>
         Application
       </PageHeader>
-      <ApplicationForm/>
+      <ApplicationForm user={user} location={location}/>
     </Dashboard>
   )
 }
 
+TradeLicenseApplicationPage.isAuth = true
 export default TradeLicenseApplicationPage
