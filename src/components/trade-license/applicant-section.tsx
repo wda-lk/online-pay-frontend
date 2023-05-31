@@ -44,7 +44,9 @@ const ApplicantSection = ({
             title={formTitle}
             description="* indicates a required field"
           />
-          <FormSection description="Please select the Tax type, for which you're submitting this Application">
+          <FormSection
+            description="Please select the Tax type, for which you're submitting this Application"
+          >
             <Field<ValueType<OptionType>>
               id="taxTypeValue"
               name="taxType"
@@ -58,7 +60,10 @@ const ApplicantSection = ({
                 return "Please select a tax type."
               }}
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <Select
                     id={`${id}Select`}
@@ -82,7 +87,7 @@ const ApplicantSection = ({
               isDisabled
             >
               {({ fieldProps: { id, ...rest } }) => (
-                <TextField id={`${id}TextField`}{...rest}/>
+                <TextField id={`${id}TextField`} {...rest}/>
               )}
             </Field>
             <Field
@@ -141,7 +146,7 @@ const ApplicantSection = ({
               isRequired
               isDisabled
             >
-              {({ fieldProps: { id, ...rest } }: any) => (
+              {({ fieldProps: { id, ...rest } }) => (
                 <TextField id={`${id}TextField`} {...rest}/>
               )}
             </Field>

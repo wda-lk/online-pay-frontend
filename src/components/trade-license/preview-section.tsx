@@ -5,10 +5,11 @@ import dynamic from "next/dynamic"
 import { token } from "@atlaskit/tokens"
 
 
-const PDFViewer = dynamic(
-  () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
-  { ssr: false }
-)
+const PDFViewer =
+  dynamic(
+    () => import("@react-pdf/renderer").then((module) => module.PDFViewer),
+    { ssr: false }
+  )
 
 const styles = StyleSheet.create(
   {
@@ -110,10 +111,20 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
             src="/images/gov-logo.png"
           />
           <View style={{ display: "flex", alignItems: "center", marginBottom: 30 }}>
-            <Text style={{ fontSize: 13, fontFamily: "Times-Bold", fontWeight: "bold", marginBottom: 5 }}>
+            <Text style={{
+              fontSize: 13,
+              fontFamily: "Times-Bold",
+              fontWeight: "bold",
+              marginBottom: 5
+            }}>
               Ministry of Public Administration, Home Affairs, Provincial Councils and Local Government
             </Text>
-            <Text style={{ fontSize: 12, fontFamily: "Times-Bold", textDecoration: "underline", marginBottom: 5 }}>
+            <Text style={{
+              fontSize: 12,
+              fontFamily: "Times-Bold",
+              textDecoration: "underline",
+              marginBottom: 5
+            }}>
               Payment Application for Trade License / Industrial tax / Business Tax for year 20{currentYear}
             </Text>
           </View>
@@ -241,8 +252,7 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
             <Text style={styles.paragraph}>Director,</Text>
             <Text style={[{ marginBottom: 10 }, styles.paragraph]}>Sri Lanka.</Text>
             <Text style={[styles.paragraph, { marginBottom: 10 }]}>
-              Please issue a trade license for the location of above mentioned industry / business for year of
-              20{currentYear}
+              Please issue a trade license for the location of above mentioned industry / business for year of 20{currentYear}
             </Text>
             <View style={styles.footerContainer}>
               <View style={styles.signatureDate}>
@@ -260,8 +270,7 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
             <Text style={styles.paragraph}>Recommendation of the revenue inspector,</Text>
             <Text style={[{ marginBottom: 10 }, styles.paragraph]}>Sri Lanka.</Text>
             <Text style={[{ marginBottom: 10 }, styles.paragraph]}>
-              I hereby report that the information provided by the applicant is accurate and for year 20{currentYear},
-              {businessInputProps?.businessName} is being maintained at this location.
+              I hereby report that the information provided by the applicant is accurate and for year 20{currentYear},{businessInputProps?.businessName} is being maintained at this location.
             </Text>
             <View style={styles.footerContainer}>
               <View style={styles.signatureDate}>
@@ -299,7 +308,9 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
                 <Text style={styles.paragraph}>Regional Medical officer of health,</Text>
                 <Text style={[{ marginBottom: 10 }, styles.paragraph]}>Sri Lanka.</Text>
               </View>
-              <Text style={[{ marginBottom: 10 }, styles.paragraph]}>My Number: Pol/L.G ....................</Text>
+              <Text style={[{ marginBottom: 10 }, styles.paragraph]}>
+                My Number: Pol/L.G ....................
+              </Text>
             </View>
             <View style={styles.footerContainer}>
               <View style={styles.signatureDate}>
@@ -342,13 +353,7 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
               <Text style={[{ marginBottom: 10 }, styles.paragraph]}>Approval of Revenue inspector,</Text>
             </View>
             <Text style={[{ marginBottom: 10 }, styles.paragraph]}>
-              All the information provided by the applicant is truthful, and for the year of 20
-              <Text style={styles.filler}>{currentYear}</Text>, business/industry&nbsp;
-              <Text style={styles.filler}>{businessInputProps?.businessName}</Text> which is situated at&nbsp;
-              <Text style={styles.filler}>{propertyInputProps?.address}</Text>, is valued for a net worth/net income
-              &nbsp;of Rs.<Text style={styles.filler}>{businessInputProps?.annualValue}</Text> should be charged with
-              &nbsp;a business tax/industrial tax/trade license tax of Rs.
-              <Text style={styles.filler}>{businessInputProps?.taxAmount}</Text>&nbsp;.
+              All the information provided by the applicant is truthful, and for the year of 20<Text style={styles.filler}>{currentYear}</Text>, business/industry <Text style={styles.filler}>{businessInputProps?.businessName}</Text> which is situated at <Text style={styles.filler}>{propertyInputProps?.address}</Text>, is valued for a net worth/net income of Rs.<Text style={styles.filler}>{businessInputProps?.annualValue}</Text> should be charged with a business tax/industrial tax/trade license tax of Rs.<Text style={styles.filler}>{businessInputProps?.taxAmount}</Text>.
             </Text>
             <View style={styles.footerContainer}>
               <View style={styles.signatureDate}>
@@ -364,7 +369,9 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
           <View style={styles.horizontalLine}></View>
           <View style={styles.sectionContainer}>
             <View style={styles.headerContainer}>
-              <Text style={[{ marginBottom: 10 }, styles.paragraph]}>Approve/Disapprove issuing of the license,</Text>
+              <Text style={[{ marginBottom: 10 }, styles.paragraph]}>
+                Approve/Disapprove issuing of the license,
+              </Text>
             </View>
             <View style={styles.footerContainer}>
               <View style={styles.signatureDate}>
@@ -381,7 +388,9 @@ const PreviewSection = ({ inputProps }: PreviewSectionProps) => {
           <View style={styles.horizontalLine}></View>
           <View style={styles.sectionContainer}>
             <View style={styles.headerContainer}>
-              <Text style={[{ marginBottom: 10 }, styles.paragraph]}>Approve/Disapprove issuing of the license,</Text>
+              <Text style={[{ marginBottom: 10 }, styles.paragraph]}>
+                Approve/Disapprove issuing of the license,
+              </Text>
             </View>
             <View style={styles.footerContainer}>
               <View style={styles.signatureDate}>

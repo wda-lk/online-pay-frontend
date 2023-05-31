@@ -55,6 +55,7 @@ const defaultBusinessInputProps = {
 
 const ApplicationForm = ({ user, location }: any) => {
   const router = useRouter()
+  // To control the progression of the form
   const [activeStepIndex, changeStep] = useState(1)
   const defaultApplicantInputProps = {
     taxType: undefined,
@@ -76,26 +77,22 @@ const ApplicationForm = ({ user, location }: any) => {
 
   const nextStep = (data: AllInputProps) => {
     if (data.applicantInputProps) {
-      changeInputProps(
-        {
+      changeInputProps({
           ...allInputProps,
           applicantInputProps: data.applicantInputProps
         })
     } else if (data.propertyInputProps) {
-      changeInputProps(
-        {
+      changeInputProps({
           ...allInputProps,
           propertyInputProps: data.propertyInputProps
         })
     } else if (data.ownerInputProps) {
-      changeInputProps(
-        {
+      changeInputProps({
           ...allInputProps,
           ownerInputProps: data.ownerInputProps
         })
     } else if (data.businessInputProps) {
-      changeInputProps(
-        {
+      changeInputProps({
           ...allInputProps,
           businessInputProps: data.businessInputProps
         })

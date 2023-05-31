@@ -3,7 +3,12 @@ import { OwnerSectionProps } from "@/../types/trade-license"
 import TextField from "@atlaskit/textfield"
 
 
-const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: OwnerSectionProps) => {
+const OwnerSection = ({
+  formId,
+  formTitle,
+  handleSubmitSuccess,
+  inputProps
+}: OwnerSectionProps) => {
   const {
     mobileNumber,
     ownerName,
@@ -39,16 +44,8 @@ const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: Ow
             >
               {({ fieldProps: { id, ...rest }, error }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    maxLength={10}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} maxLength={10} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -59,17 +56,13 @@ const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: Ow
               defaultValue={ownerName}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -80,7 +73,10 @@ const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: Ow
               defaultValue={nicNumber}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <TextField
                     id={`${id}TextField`}
@@ -88,11 +84,7 @@ const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: Ow
                     maxLength={12}
                     {...rest}
                   />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -103,17 +95,13 @@ const OwnerSection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: Ow
               defaultValue={address}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>

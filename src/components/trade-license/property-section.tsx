@@ -5,7 +5,12 @@ import TextField from "@atlaskit/textfield"
 import { gnDivisions } from "@/lib/data"
 
 
-const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }: PropertySectionProps) => {
+const PropertySection = ({
+  formId,
+  formTitle,
+  handleSubmitSuccess,
+  inputProps
+}: PropertySectionProps) => {
   const {
     gnDivision,
     ward,
@@ -22,8 +27,6 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
       assessmentNumber: string
       address: string
     }) => {
-    console.log("hi")
-
     handleSubmitSuccess({ propertyInputProps: data })
   }
 
@@ -49,7 +52,10 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
                 return "Please select a GN division."
               }}
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
                   <Select
                     id={`${id}Select`}
@@ -69,17 +75,13 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={ward}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -90,17 +92,13 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={street}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -111,17 +109,13 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={assessmentNumber}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
@@ -132,17 +126,13 @@ const PropertySection = ({ formId, formTitle, handleSubmitSuccess, inputProps }:
               defaultValue={address}
               isRequired
             >
-              {({ fieldProps: { id, ...rest }, error }) => (
+              {({
+                fieldProps: { id, ...rest },
+                error
+              }) => (
                 <>
-                  <TextField
-                    id={`${id}TextField`}
-                    {...rest}
-                  />
-                  {error && (
-                    <ErrorMessage>
-                      {error}
-                    </ErrorMessage>
-                  )}
+                  <TextField id={`${id}TextField`} {...rest}/>
+                  {error && (<ErrorMessage>{error}</ErrorMessage>)}
                 </>
               )}
             </Field>
