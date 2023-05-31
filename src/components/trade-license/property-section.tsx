@@ -2,14 +2,14 @@ import Form, { ErrorMessage, Field, FormHeader, FormSection } from "@atlaskit/fo
 import { InputSelect, PropertySectionProps } from "@/../types/trade-license"
 import Select, { OptionType, ValueType } from "@atlaskit/select"
 import TextField from "@atlaskit/textfield"
-import { gnDivisions } from "@/lib/data"
 
 
 const PropertySection = ({
   formId,
   formTitle,
   handleSubmitSuccess,
-  inputProps
+  inputProps,
+  gnDivisions
 }: PropertySectionProps) => {
   const {
     gnDivision,
@@ -59,7 +59,15 @@ const PropertySection = ({
                 <>
                   <Select
                     id={`${id}Select`}
-                    options={gnDivisions}
+                    maxMenuHeight={240}
+                    options={
+                      gnDivisions.map(gn => {
+                        return {
+                          value: gn.gnId.toString(),
+                          label: gn.gnName || "undefined"
+                        }
+                      })
+                    }
                     isSearchable
                     isClearable
                     {...rest}

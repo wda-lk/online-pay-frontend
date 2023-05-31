@@ -52,8 +52,7 @@ const defaultBusinessInputProps = {
   otherCharges: ""
 }
 
-
-const ApplicationForm = ({ user, location }: any) => {
+const ApplicationForm = ({ user, userGNDivision, gnDivisions }: any) => {
   const router = useRouter()
   // To control the progression of the form
   const [activeStepIndex, changeStep] = useState(1)
@@ -61,12 +60,13 @@ const ApplicationForm = ({ user, location }: any) => {
     taxType: undefined,
     nicNumber: user.nicNumber,
     name: user.name,
-    district: { label: location.districtName, value: location.districtId },
-    localAuthority: { label: location.subOfficeName, value: location.subOfficeId },
-    gnDivision: { label: location.gnName, value: location.gnId },
+    district: { label: userGNDivision.districtName, value: userGNDivision.districtId },
+    localAuthority: { label: userGNDivision.subOfficeName, value: userGNDivision.subOfficeId },
+    gnDivision: { label: userGNDivision.gnName, value: userGNDivision.gnId },
     address: user.address,
     mobileNumber: user.mobileNumber
   }
+  // To store all the user inputs form the form
   const [allInputProps, changeInputProps] =
     useState<AllInputProps>({
       applicantInputProps: defaultApplicantInputProps,
@@ -136,6 +136,7 @@ const ApplicationForm = ({ user, location }: any) => {
           formTitle="Property Information Section"
           handleSubmitSuccess={nextStep}
           inputProps={allInputProps.propertyInputProps || defaultPropertyInputProps}
+          gnDivisions={gnDivisions}
         />,
       secondaryButton: { label: "Back", onClick: previousStep },
       primaryButton: { label: "Next" }
@@ -204,20 +205,18 @@ const ApplicationForm = ({ user, location }: any) => {
         </ButtonGroup>
       }
     >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          overflow: "auto"
-        }}
-      >
+      <div style={{
+        display: "flex",
+        flexDirection: "column",
+        overflow: "auto"
+      }}>
         {currentStep.content || "No Content Available"}
       </div>
     </Takeover>
   )
 }
 
-export const getServerSideProps = async (context: any) => {
+const getServerSideProps = async (context: any) => {
   const session = await getServerSession(context.req, context.res, authOptions)
   const user =
     await prismaOnlinePay.user
@@ -228,20 +227,33 @@ export const getServerSideProps = async (context: any) => {
     await signOut()
     return
   }
-  const location =
-    await prismaCore.gNDivisionLocation
-                    .findUnique({ where: { gnId: user.gnDivisionId } })
+  const gnDivisions
+    = await prismaCore.gNDivisionLocation
+                      .findMany({
+                        where: { isActive: true },
+                        orderBy: { gnName: "asc" }
+                      })
+  const userGNDivision =
+    gnDivisions.filter(gn => gn.gnId === user.gnDivisionId)[0]
+  if (!userGNDivision) {
+    console.log(`Critical error occurred, User's GN Division: ${user.gnDivisionId} is not found in 
+    the database.`)
+    await signOut()
+    return
+  }
   return {
     props: {
       user: JSON.parse(JSON.stringify(user)),
-      location
+      userGNDivision,
+      gnDivisions // load this async in the Select
     }
   }
 }
 
 const TradeLicenseApplicationPage = ({
   user,
-  location
+  userGNDivision,
+  gnDivisions
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const navItems = [
     {
@@ -270,10 +282,11 @@ const TradeLicenseApplicationPage = ({
       <PageHeader breadcrumbs={<BreadcrumbsWrapper breadcrumbs={breadcrumbs}/>}>
         Application
       </PageHeader>
-      <ApplicationForm user={user} location={location}/>
+      <ApplicationForm user={user} userGNDivision={userGNDivision} gnDivisions={gnDivisions}/>
     </Dashboard>
   )
 }
 
 TradeLicenseApplicationPage.isAuth = true
 export default TradeLicenseApplicationPage
+export { getServerSideProps }
