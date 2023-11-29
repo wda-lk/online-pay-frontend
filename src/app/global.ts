@@ -1,1 +1,1 @@
-export const ip = "https://naththandiyaapi.cat2020.org/online/";
+export const ip = "https://udubaddawapsapi.cat2020.org/online/"

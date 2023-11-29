@@ -97,7 +97,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "https://bankofceylon.gateway.mastercard.com/checkout/version/58/checkout.js"
+              "https://bankofceylon.gateway.mastercard.com/api/rest/version/61/checkout.js"
             ]
           }
         },
